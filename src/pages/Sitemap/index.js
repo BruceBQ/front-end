@@ -73,7 +73,7 @@ class SitemapPage extends Component{
     }
 
     showModal = type => event => { 
-        this.props.showAddModal(type)
+        // this.props.showAddModal(type)
     }
     onChange = ({ center, zoom, bounds, marginBounds }) => {
 
@@ -85,7 +85,7 @@ class SitemapPage extends Component{
 
     onChildClick = (key, childProps) => {
         console.log(childProps)
-        this.props.showInfoWindow(childProps.detail._id)
+        // this.props.showInfoWindow(childProps.detail._id)
     }
     _distanceToMouse = (markerPos, mousePos, markerProps) => {
         console.log(markerPos)
@@ -93,10 +93,10 @@ class SitemapPage extends Component{
         console.log(markerProps)
     }
     toggleFilter = () => {
-        this.props.toggleFilter()
+        // this.props.toggleFilter()
     }
     componentWillUnmount(){
-        this.props.exitSitemapPage()
+        // this.props.exitSitemapPage()
     }
     
     render(){
@@ -161,15 +161,15 @@ const mapStateToProps = ({cameras, map, ui}) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    gotoSitemapPage: dispatch(CameraActions.gotoSitemapPage()),
-    exitSitemapPage: () => dispatch(CameraActions.exitSitemapPage()),
-    getListCameras: dispatch(CameraActions.getCameras()),
-    showAddModal: (modalType) => dispatch(ModalActions.showAddModal(modalType)),
-    showEditModal: (data) => dispatch(ModalActions.showEditModal(data)),
-    showDeleteModal: (data) => dispatch(ModalActions.showDeleteModal(data)),
-    showInfoWindow: (id) => dispatch(MapActions.showInfoWindow(id)),
-    closeInfoWindow: () => dispatch(MapActions.closeInfoWindow()),
-    toggleFilter: () => dispatch(UIActions.toggleFilter()),
+    // gotoSitemapPage: dispatch(CameraActions.gotoSitemapPage()),
+    // exitSitemapPage: () => dispatch(CameraActions.exitSitemapPage()),
+    // getListCameras: dispatch(CameraActions.getCameras()),
+    // showAddModal: (modalType) => dispatch(ModalActions.showAddModal(modalType)),
+    // showEditModal: (data) => dispatch(ModalActions.showEditModal(data)),
+    // showDeleteModal: (data) => dispatch(ModalActions.showDeleteModal(data)),
+    // showInfoWindow: (id) => dispatch(MapActions.showInfoWindow(id)),
+    // closeInfoWindow: () => dispatch(MapActions.closeInfoWindow()),
+    // toggleFilter: () => dispatch(UIActions.toggleFilter()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SitemapPage))

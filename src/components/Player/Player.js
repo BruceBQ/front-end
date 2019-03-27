@@ -21,7 +21,7 @@ class VideoPlayer extends Component{
             this.hls.loadSource('http://10.49.46.54:3000/hls/235/index.m3u8')
             this.hls.attachMedia(video)
             this.hls.on(Hls.Events.MANIFEST_LOADING, function(){
-
+              video.play()
             })
             this.hls.on(Hls.Events.MANIFEST_PARSED, function(){
                 video.play()

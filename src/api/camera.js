@@ -193,13 +193,37 @@ export function getDistrictsAvailable(province) {
 }
 
 export function connectCamera(payload){
-    return axios({
-        method: 'post',
-        url: `${API_URL}api/camera`,
-        headers: { 'Authorization': access_token },
-        params: {
-            step: 'connect'
-        },
-        data: {...payload}
-    })
+  return axios({
+    method: 'post',
+    url: `${API_URL}api/camera/connect`,
+    headers: { 'Authorization': access_token },
+    data: {...payload}
+  })
+}
+
+export function configParams(payload){
+  return axios({
+    method: 'post',
+    url: `${API_URL}api/camera/params`,
+    headers: { 'Authorization': access_token },
+    data: {...payload}
+  })
+}
+
+export function configFunctions(payload){
+  return axios({
+    method: 'post',
+    url: `${API_URL}api/camera/functions`,
+    headers: { 'Authorization': access_token },
+    data: {...payload}
+  })
+}
+
+export function searchCamera(payload){
+  return axios({
+    method: 'post',
+    url: `${API_URL}api/camera/search`,
+    headers: { 'Authorization': access_token },
+    data: { ...payload }
+  })
 }

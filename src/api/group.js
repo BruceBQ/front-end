@@ -13,3 +13,9 @@ export function createGroup(payload){
     })
 }
 
+export function getAllGroups(){
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/groups`
+  })
+}

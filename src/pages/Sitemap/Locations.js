@@ -6,7 +6,6 @@ import TextInput from '../../TextInput'
 import { getCameraLocations, loadDistrict, loadCommune, editCameraLocations } from '../../../actions/action_camera'
 import { isEmpty } from 'lodash'
 import _ from 'lodash'
-import { Formilk } from 'formik'
 const selectStyles = {
     control: (styles) => ({
         ...styles,

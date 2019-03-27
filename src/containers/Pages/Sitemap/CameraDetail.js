@@ -27,10 +27,10 @@ const mapStateToProps = ({cameras}) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    getCameraData: (id) => dispatch(CameraActions.getCamera(id)),
-    loadDistrict: (id) => dispatch(CameraActions.loadDistrict(id)),
-    loadCommune: (id) => dispatch(CameraActions.loadCommune(id)),
-    editCamera: (id, data) => dispatch(CameraActions.editCamera(id, data))
+    // getCameraData: (id) => dispatch(CameraActions.getCamera(id)),
+    // loadDistrict: (id) => dispatch(CameraActions.loadDistrict(id)),
+    // loadCommune: (id) => dispatch(CameraActions.loadCommune(id)),
+    // editCamera: (id, data) => dispatch(CameraActions.editCamera(id, data))
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CameraDetail))

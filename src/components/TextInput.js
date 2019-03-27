@@ -11,6 +11,7 @@ const styles = theme => ({
     fontSize: '0.875rem',
     padding: '12px 14px',
   },
+  
   inputLabel: {
     fontSize: '0.875rem',
     transform: 'translate(19px, 14px) scale(1)',
@@ -26,12 +27,13 @@ class TextInput extends Component {
   render() {
     const {
       classes,
+      fullWidth,
       ...other
     } = this.props
     return ( 
       <TextField 
         {...other}
-        fullWidth 
+        fullWidth={fullWidth}
         margin = "none"
         variant = "outlined"
         InputLabelProps = {{
