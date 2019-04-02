@@ -19,3 +19,13 @@ export function getAllGroups(){
     url: `${API_URL}api/groups`
   })
 }
+
+export function getAllGroupsSearch(){
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/groups`,
+    params: {
+      type: 'filter'
+    }
+  })
+}

@@ -59,6 +59,7 @@ export function getDistrictsAvailable(province){
 }
 
 export function getCommunesAvailable(district){
+  console.log(district)
   return axios({
     method: 'get',
     url: `${API_URL}api/political/communes/available`,
@@ -68,3 +69,4 @@ export function getCommunesAvailable(district){
     }
   })
 }
+

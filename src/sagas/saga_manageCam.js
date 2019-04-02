@@ -1,4 +1,5 @@
 import { takeEvery, call, put, all} from 'redux-saga/effects'
+import { searchCam } from '../actions/action_camera'
 import { reloadPolitical } from '../actions/action_political'
 
 import * as GroupApi from '../api/group'
@@ -30,9 +31,11 @@ export function* watchGetDataBeforeSearch(){
 
 function* workerGetDataBeforeSearch(){
   try {
+    //get all cameras
+    yield put(searchCam())
     const [provinces, groups] = yield all([
       call(PoliticalApi.getProvincesAvailable),
-      call(GroupApi.getAllGroups)
+      call(GroupApi.getAllGroupsSearch)
     ])
     yield put(reloadPolitical({
       provinces:provinces.data.data.province_list, 

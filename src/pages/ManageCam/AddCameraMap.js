@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { isEmpty } from 'lodash'
 import { getCameraLocation, changeAddCameraParams } from '../../actions/action_camera'
 import GoogleMap from '../../components/GoogleMap'
-import NewCameraMarker from '../../components/MarkerInstance/NewCameaMarker'
+import NewCameraMarker from '../../components/Marker/NewCameaMarker'
 
 class AddCameraMap extends Component{
   state = {

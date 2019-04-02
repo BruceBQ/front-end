@@ -9,7 +9,8 @@ function* workersignIn(action){
     localStorage.setItem('user', JSON.stringify(response.data))
     yield put( {type: types.LOGIN_SUCCESS, user: response.data })
   } catch (error) {
-    yield put( {type: types.LOGIN_FAILURE, error: error.response.data})
+    // console.log(error.response.data.data)
+    yield put( {type: types.LOGIN_FAILURE, errors: error.response.data.data})
     yield put(enqueueSnackbar({
       message: "Đăng nhập thất bại", 
       options: {

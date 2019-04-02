@@ -206,7 +206,7 @@ export function GroupControl(props) {
       variant="outlined"
       fullWidth
       value={isEmpty(value) ? '' : 'have value'}
-      label="Đường/Nhóm"
+      label="Chọn/Tạo nhóm"
       error={props.selectProps.error}
       helperText={props.selectProps.helperText}
       InputProps={{

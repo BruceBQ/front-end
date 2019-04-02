@@ -25,7 +25,7 @@ const reducer_user = ( state = INITIAL_STATE, action ) => {
       return Object.assign({}, state, {
         authenticated: false,
         user: {},
-        errors: action.error.data,
+        errors: action.errors,
         fetching: false
       })
     default:

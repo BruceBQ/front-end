@@ -40,7 +40,7 @@ const styles = theme => ({
   }
 })
 
-class Function extends Component{
+class EditFunctions extends Component{
 
   changeSwitch = name => event => {
     event.stopPropagation()
@@ -73,16 +73,10 @@ class Function extends Component{
         </div>
         <div className={classes.actionButton}>
         <Button 
-          variant="contained" 
-          color="default" 
-          className={classes.button}
-          onClick={this.handleBackStep}
-        >Quay lại</Button>
-        <Button 
           color="primary" 
           variant="contained"
           onClick={this.handleSubmit}
-        >Hoàn thành</Button>
+        >Lưu</Button>
         </div>
       </div>
     )
@@ -90,11 +84,11 @@ class Function extends Component{
 }
 
 const mapStateToProps = ({cameras}) => ({
-  addCamera: cameras.addCamera
+  // addCamera: cameras.addCamera
 })
 
 export default connect(mapStateToProps, {
-  backStep: backStep,
-  configFunctions: configFunctions
-})(withStyles(styles)(Function))
+  // backStep: backStep,
+  // configFunctions: configFunctions
+})(withStyles(styles)(EditFunctions))
 

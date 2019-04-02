@@ -1,22 +1,26 @@
 import * as types from '../constant/constant_actions'
+import { CardActions } from '@material-ui/core';
 
 const INITIAL_STATE = {
   cameras: [],
   addCamera: {
     activeStep: 0,
-    id: '',
-    name: 'Camera 226',
+    name: 'Camera 237',
     port: "80",
-    ip: '10.49.34.226',
+    ip: '10.49.34.237',
     cam_user: 'admin',
     cam_pass: 'centic.vn',
     lat: '',
     lng: '',
-    province: "",
-    district: '',
-    commune: '',
-    group: '',
-    quality: '',
+    information: {},
+    rtsp_link: '',
+    snapshot_url: '',
+    province: null,
+    district: null,
+    commune: null,
+    group: [],
+    encoding: '',
+    quality: null,
     quality_range: [],
     resolution: '',
     resolution_range: [],
@@ -24,17 +28,28 @@ const INITIAL_STATE = {
     fps_range: {},
     bitrate: '',
     bitrate_range: {},
-    enabled: true,
     record: true,
     record_max_keep_days: 30,
     record_file_duration: 20,
     stream: true,
     surveillance: true,
     alpr: true,
+    snapshot_image_url: '',
+    snapshot_image_name: '',
   },
+  searchCam: {
+    string: '',
+    province: null,
+    district: [],
+    commune: [],
+    group: [],
+    state_cam: null,
+  },
+  isSearching: false,
   isLoading: false,
   isProcessing: false,
   headerMenu: false,
+  cameraFocused: -1,
   errors: {},
 }
 
@@ -107,7 +122,49 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
       return Object.assign({}, state, {
 
       })
-    // step add camear
+    //change search camera params
+    case types.CHANGE_SEARCH_CAM_PARAMS:
+      return Object.assign({}, state, {
+        searchCam: {
+          ...state.searchCam,
+          ...action.payload
+        }
+      })
+    //clear province
+    case types.CLEAR_PROVINCE:
+      return Object.assign({}, state, {
+        searchCam: {
+          ...state.searchCam,
+          province: null,
+          district: [],
+          commune: [],
+        }
+      })
+    //clear district
+    case types.CLEAR_DISTRICT:
+      return Object.assign({}, state, {
+        searchCam: {
+          ...state.searchCam,
+          district: [],
+          commune: []
+        }
+      })
+    //search camera
+    case types.SEARCH_CAMERA: 
+      return Object.assign({}, state, {
+        isSearching: true
+      })
+    case types.SEARCH_CAMERA_SUCCESS:
+      return Object.assign({}, state, {
+        isSearching: false,
+        cameras: action.payload
+      })
+    case types.SEARCH_CAMERA_FAILURE: 
+      return Object.assign({}, state, {
+        isSearching: false,
+        errors: action.errors
+      })
+    // step add camera
     case types.NEXT_STEP:
       return Object.assign({}, state, {
         addCamera: {

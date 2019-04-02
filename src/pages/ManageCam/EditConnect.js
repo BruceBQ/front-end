@@ -1,20 +1,11 @@
-import React, { Component }  from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import Button from '@material-ui/core/Button'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Select from 'react-select'
-import TextInput from '../../components/TextInput'
-import Creatable from 'react-select/lib/Creatable';
 import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
 import { Scrollbars } from 'react-custom-scrollbars';
-import { 
-  changeAddCameraParams,
-  connectCamera
-} from '../../actions/action_camera'
-import {getDataBeforeConnect} from '../../actions/action_manageCam'
-
-import { showLoadingModal } from '../../actions/action_modal'
-import { getAllProvinces } from '../../actions/action_political'
+import Select from 'react-select'
+import Creatable from 'react-select/lib/Creatable';
+import TextInput from '../../components/TextInput'
 import {
   ProvinceControl,
   DistrictControl,
@@ -23,20 +14,18 @@ import {
   NoOptionsMessage,
   Option
 } from '../../components/Select/SelectControl'
-
-import isEmpty from 'lodash/isEmpty'
-
 const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    paddingLeft: 10,
   },
   formContent: {
     flexGrow: 1,
   },
   formGroup: {
-    marginTop: 10,
+    marginTop: 20,
     marginRight: 10
   },
   actionButton: {
@@ -76,64 +65,20 @@ const selectStyles = {
   }
 }
 
-class Connect extends Component{
-  state = {
-    value: ''
-  }
-  componentWillUnmount(){
-    // this.props.disabledAddCam()
-  }
+class EditConnect extends Component{
+  
   onChange = name => event => {
-    this.props.changeAddCameraParams({[name]: event.target.value})
-  }
-  componentDidMount() {
-    this.props.getDataBeforeConnect()
-    // this.props.getAllProvinces()
-    // this.props.activeAddCam()
-  }
-  changeSelect = name => value => {
-    console.log(value)
-    this.props.changeAddCameraParams({[name]: value })
-    // if(!isEmpty(value)){
-    // }
+    
   }
 
-  handleSubmit = (e) => {
-    // this.props.showLoadingModal("Đang kết nối tới camera")
-    const {
-      // id,
-      name,
-      lat,
-      lng,
-      province,
-      district,
-      commune,
-      group,
-      ip,
-      port,
-      cam_user,
-      cam_pass,
-    } = this.props.addCamera
-    this.props.connectCamera({
-      // id,
-      name,
-      lat,
-      lng,
-      province,
-      district,
-      commune,
-      group,
-      ip,
-      port,
-      cam_user,
-      cam_pass,
-    })
+  changeSelect = name => value => {
+
   }
+
   render(){
     const { 
-      classes, 
-      addCamera, 
-      errors = {},
+      classes,
+      // errors = {},
       provinceOptions = [],
       districtOptions = [],
       communeOptions = [],
@@ -145,55 +90,55 @@ class Connect extends Component{
           <Scrollbars style={{width: '100%', height: '100%'}}>
             <div className={classes.formGroup}>
               <div className="form-group">
-                <TextInput
+                <TextInput 
                   label="Tên camera"
-                  error={!isEmpty(errors.name)}
                   fullWidth
-                  value={addCamera.name}
                   onChange={this.onChange('name')}
-                  helperText={!isEmpty(errors.name) ? errors.name : ''}
+                  // value={addCamera.name}
+                  // error={!isEmpty(errors.name)}
+                  // helperText={!isEmpty(errors.name) ? errors.name : ''}
                 />
-              </div>          
+              </div>
               <div className="form-group">
                 <TextInput 
                   disabled
                   label="Vĩ độ"
                   type="number"
-                  value={addCamera.lat}
                   style={{
                     marginRight: 5,
                     width: 'calc(50% - 5px)'
                   }}
-                  error={!isEmpty(errors.lat)}
-                  helperText={!isEmpty(errors.lat) ? errors.lat : ''}
+                  // value={addCamera.lat}
+                  // error={!isEmpty(errors.lat)}
+                  // helperText={!isEmpty(errors.lat) ? errors.lat : ''}
                 />
                 <TextInput 
                   disabled
                   label="Kinh độ"
                   type="number"
-                  value={addCamera.lng}
                   style={{
                     marginLeft: 5,
                     width: 'calc(50% - 5px)'
                   }}
-                  error={!isEmpty(errors.lng)}
-                  helperText={!isEmpty(errors.lng) ? errors.lng : ''}
+                  // value={addCamera.lng}
+                  // error={!isEmpty(errors.lng)}
+                  // helperText={!isEmpty(errors.lng) ? errors.lng : ''}
                 />
               </div>
               <div className="form-group">
                 <Select
                   classes={classes}
                   components={{
-                      Control: ProvinceControl,
-                      NoOptionsMessage: NoOptionsMessage
+                    Control: ProvinceControl,
+                    NoOptionsMessage: NoOptionsMessage
                   }}
                   placeholder={false}
                   options={provinceOptions}
                   styles={selectStyles}
                   onChange={this.changeSelect('province')}
-                  value={addCamera.province}
-                  error={!isEmpty(errors.province)}
-                  helperText={!isEmpty(errors.province) ? errors.province : ''}
+                  // value={addCamera.province}
+                  // error={!isEmpty(errors.province)}
+                  // helperText={!isEmpty(errors.province) ? errors.province : ''}
                 />
               </div>
               <div className="form-group">
@@ -207,9 +152,9 @@ class Connect extends Component{
                   options={districtOptions}
                   styles={selectStyles}
                   onChange={this.changeSelect('district')}
-                  value={addCamera.district}
-                  error={!isEmpty(errors.district)}
-                  helperText={!isEmpty(errors.district) ? errors.district : ''}
+                  // value={addCamera.district}
+                  // error={!isEmpty(errors.district)}
+                  // helperText={!isEmpty(errors.district) ? errors.district : ''}
                 />
               </div>
               <div className="form-group">
@@ -223,9 +168,9 @@ class Connect extends Component{
                   options={communeOptions}
                   styles={selectStyles}
                   onChange={this.changeSelect('commune')}
-                  value={addCamera.commune}
-                  error={!isEmpty(errors.commune)}
-                  helperText={!isEmpty(errors.commune) ? errors.commune : ''}
+                  // value={addCamera.commune}
+                  // error={!isEmpty(errors.commune)}
+                  // helperText={!isEmpty(errors.commune) ? errors.commune : ''}
                 />
               </div>
               <div className="form-group">
@@ -241,62 +186,55 @@ class Connect extends Component{
                   options={groupOptions}
                   styles={selectStyles}
                   onChange={this.changeSelect('group')}
-                  value={addCamera.group}
-                  error={!isEmpty(errors.group)}
-                  helperText={!isEmpty(errors.group) ? errors.group : ''}
+                  // value={addCamera.group}
+                  // error={!isEmpty(errors.group)}
+                  // helperText={!isEmpty(errors.group) ? errors.group : ''}
                 />
-                { !isEmpty(errors.group) &&
-                  <FormHelperText 
-                    error={true} 
-                    className={classes.formHelperText}
-                  >
-                    {!isEmpty(errors.group) ? errors.group : ''}
-                  </FormHelperText>}
               </div>
               <div className="form-group">
                 <TextInput
                   label="Địa chỉ IP"
-                  value={addCamera.ip}
                   onChange={this.onChange('ip')}
                   style={{
                     marginRight: 5,
                     width: 'calc(50% - 5px)'
                   }}
-                  error={!isEmpty(errors.ip)}
-                  helperText={!isEmpty(errors.ip) ? errors.ip : ''}
+                  // value={addCamera.ip}
+                  // error={!isEmpty(errors.ip)}
+                  // helperText={!isEmpty(errors.ip) ? errors.ip : ''}
                 />
                 <TextInput
                   label="Port"
                   type="number"
-                  value={addCamera.port}
                   onChange={this.onChange('port')}
                   className={classes.textField}
                   style={{
                     marginLeft: 5,
                     width: 'calc(50% - 5px)'
                   }}
-                  error={!isEmpty(errors.port)}
-                  helperText={!isEmpty(errors.port) ? errors.port : ''}
+                  // value={addCamera.port}
+                  // error={!isEmpty(errors.port)}
+                  // helperText={!isEmpty(errors.port) ? errors.port : ''}
                 />
               </div>
               <div className="form-group">
                 <TextInput
                   label="Tên đăng nhập"
                   fullWidth
-                  value={addCamera.cam_user}
                   onChange={this.onChange('cam_user')}
-                  error={!isEmpty(errors.cam_user)}
-                  helperText={!isEmpty(errors.cam_user) ? errors.cam_user : ''}
+                  // value={addCamera.cam_user}
+                  // error={!isEmpty(errors.cam_user)}
+                  // helperText={!isEmpty(errors.cam_user) ? errors.cam_user : ''}
                 />
               </div>
               <div className="form-group">
                 <TextInput
                   label="Mật khẩu"
                   fullWidth
-                  value={addCamera.cam_pass}
                   onChange={this.onChange('cam_pass')}
-                  error={!isEmpty(errors.cam_pass)}
-                  helperText={!isEmpty(errors.cam_pass) ? errors.cam_pass : ''}
+                  // value={addCamera.cam_pass}
+                  // error={!isEmpty(errors.cam_pass)}
+                  // helperText={!isEmpty(errors.cam_pass) ? errors.cam_pass : ''}
                 />
               </div>
             </div>
@@ -308,28 +246,19 @@ class Connect extends Component{
             color="primary"
             onClick={this.handleSubmit}
           >
-            TIẾP THEO
+            Lưu
           </Button>
         </div>
-      </div>
+      </div>  
     )
   }
 }
 
-const mapStateToProps = ({cameras, political}) => ({
-    addCamera: cameras.addCamera,
-    errors: cameras.errors,
-    provinceOptions: political.provinces,
-    districtOptions: political.districts,
-    communeOptions: political.communes,
-    groupOptions: political.groups
-
+const mapStateToProps = ({political}) => ({
+  provinceOptions: political.provinces,
+  districtOptions: political.districts,
+  communeOptions: political.communes,
+  groupOptions: political.groups
 })
-export default connect(mapStateToProps, {
-    getAllProvinces: getAllProvinces,
-    changeAddCameraParams: changeAddCameraParams,
-    connectCamera: connectCamera,
-    showLoadingModal: showLoadingModal,
-    getDataBeforeConnect: getDataBeforeConnect
-})(withStyles(styles)(Connect))
 
+export default connect(mapStateToProps)(withStyles(styles)(EditConnect))

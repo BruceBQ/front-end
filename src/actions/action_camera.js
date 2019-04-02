@@ -57,20 +57,6 @@ export function getDistrictsAvailableSuccess(districts){
     }
 }
 
-export function searchCamera({province, district, commune, hamlet, street, crossroad, position, search_input}){
-    return {
-        type: types.SEARCH_CAMERA,
-        province,
-        district,
-        commune,
-        hamlet,
-        street,
-        crossroad,
-        position,
-        search_input
-    }
-}
-
 export function changeAddCameraParams(payload){
     return {
         type: types.CHANGE_CAMERA_PARAMS,
@@ -166,6 +152,13 @@ export function configFunctionsFailure(){
   }
 }
 
+export function changeSearchCamParams(payload){
+  return {
+    type: types.CHANGE_SEARCH_CAM_PARAMS,
+    payload,
+  }
+}
+
 export function nextStep(){
   return {
     type: types.NEXT_STEP
@@ -177,3 +170,39 @@ export function backStep(){
     type: types.BACK_STEP
   }
 }
+
+export function searchCam(){
+  return {
+    type: types.SEARCH_CAMERA
+  }
+}
+
+export function searchCamSuccess(payload){
+  return {
+    type: types.SEARCH_CAMERA_SUCCESS,
+    payload
+  }
+}
+
+export function searchCamFailure(errors){
+  return {
+    type: types.SEARCH_CAMERA_FAILURE,
+    errors
+  }
+}
+
+export function focusedCam({center, zoom, id}){
+  return {
+    type: types.FOCUSED_CAM,
+    center, 
+    zoom, 
+    id
+  }
+}
+
+export function cancelFocusedCam(){
+  return {
+    type: types.CANCEL_FOCUSED_CAM
+  }
+}
+

@@ -8,12 +8,15 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Loading from '../../components/Loading'
-import MarkerInstance from '../Sitemap/MarkerInstance'
-import { changeCameraParams, getCameraLocation } from '../../actions/action_camera'
-import { showLoadingModal } from '../../actions/action_modal'
+// import MarkerInstance from '../Sitemap/MarkerInstance'
+import { MarkerCam } from '../../components/Marker'
+import { changeBoundsMap } from '../../actions/action_map'
+import { focusedCam } from '../../actions/action_camera'
+
 const GoogleMap = lazy(() => import('../../components/GoogleMap'))
 const Filter = lazy(() => import('./Filter'))
 const AddCamera = lazy(() => import('./AddCamera'))
+const EditCamera = lazy(() => import('./EditCamera'))
 const RightSite = lazy(() => import('./RightSite'))
 
 function TabContainer({ children, dir }) {
@@ -52,19 +55,7 @@ const styles = (theme) => ({
 })
 
 class ManageCam extends Component{
-  static defaultProps = {
-    center: {
-      lat: 16.036308499726402,
-      lng: 108.20592484212307
-    },
-    zoom: 13
-  };
   state = {
-    center: {
-      lat: 16.036308499726402,
-      lng: 108.20592484212307
-    },
-    zoom: 13,
     value: 0,
     mapApiLoaded: false,
     mapInstance: null,
@@ -73,13 +64,13 @@ class ManageCam extends Component{
     activeStep: 0,
   }
 
-  apiHasLoaded = (map, maps) => {
-    this.setState({
-      mapApiLoaded: true,
-      mapInstance: map,
-      mapApi: maps
-    })
-  }
+  // apiHasLoaded = (map, maps) => {
+  //   this.setState({
+  //     mapApiLoaded: true,
+  //     mapInstance: map,
+  //     mapApi: maps
+  //   })
+  // }
 
   handleChange = (event, value) => {
     this.setState({ value });
@@ -89,9 +80,32 @@ class ManageCam extends Component{
     this.setState({ value: index });
   };
 
+  _onChange = ({ center, zoom, bounds, marginBounds }) => {
+    this.props.changeBoundsMap({center, zoom})
+  }
+  _onMarkerClick = ({lat, lng, id}, event) => {
+    console.log(event)
+    event.stopPropagation()
+    this.setState({
+      value: 1
+    })
+    this.props.focusedCam({
+      center: { lat, lng },
+      zoom: 15,
+      id
+    })
+  }
+
   render(){
-    const { classes, theme, newCameraPosition = {} } = this.props;
+    const { 
+      classes,
+      theme, 
+      center,
+      defaultZoom,
+      zoom,
+    } = this.props;
     const { value } = this.state
+    
     return(
       <div className={classes.root}>
         <div className={classes.left}>
@@ -118,7 +132,7 @@ class ManageCam extends Component{
             {value === 1 && 
               <TabContainer dir={theme.erver}>
                 <div className={classes.wrapper}>
-                  <AddCamera />
+                  <EditCamera />
                 </div>
               </TabContainer>}
             {value === 2 && 
@@ -133,18 +147,21 @@ class ManageCam extends Component{
           <Suspense fallback={<Loading />}>
             {(value === 0 || value === 1) && 
               <GoogleMap
-              center={this.state.center}
-              defaultZoom={this.props.zoom}
-              yesIWantToUseGoogleMapApiInternals
-              onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
+              center={center}
+              defaultZoom={defaultZoom}
+              zoom={zoom}
+              onChange={this._onChange}
+              // yesIWantToUseGoogleMapApiInternals
+              // onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
             >
               {this.props.cameras &&
                 this.props.cameras.map((camera, index) => (
-                  <MarkerInstance 
-                    lat={camera.location.coordinate.lat}
-                    lng={camera.location.coordinate.lng}
+                  <MarkerCam 
+                    lat={camera.lat}
+                    lng={camera.lng}
                     key={index}
                     detail={camera}
+                    onClick={this._onMarkerClick}
                     // displayInfoWindow={this.props.infoWindow === camera._id}
                     // showInfoWindow={this.props.showInfoWindow}
                     // closeInfoWindow={this.props.closeInfoWindow}
@@ -165,10 +182,12 @@ class ManageCam extends Component{
 
 const mapStateToProps = ({cameras, map}) => ({
     cameras: cameras.cameras,
-    // infoWindow: map.showInfoWindow,
+    center: map.center,
+    defaultZoom: map.defaultZoom,
+    zoom: map.zoom,
 })
 
 export default withRouter(connect(mapStateToProps, {
-  // getCameraLocation: getCameraLocation,
-  // showLoadingModal: showLoadingModal
+  changeBoundsMap: changeBoundsMap,
+  focusedCam: focusedCam
 })(withStyles(styles, { withTheme: true })(ManageCam)))

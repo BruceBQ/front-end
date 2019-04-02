@@ -72,7 +72,7 @@ class Record extends Component{
             />
           </div>
           <div>
-            <Typography>Record</Typography>
+            <Typography>Ghi hình</Typography>
           </div>
         </ExpansionPanelSummary>
         {addCamera.record && <ExpansionPanelDetails className={classes.expansionPanelDetails}>

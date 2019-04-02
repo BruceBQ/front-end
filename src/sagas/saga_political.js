@@ -52,3 +52,24 @@ function* workerChangeCameraParams(action){
     console.log(error)
   }
 }
+
+export function* watchClearProvince(){
+  yield takeEvery(types.CLEAR_PROVINCE, workerClearProvince)
+}
+
+function* workerClearProvince(action){
+  yield put(reloadPolitical({
+    districts: [],
+    communes: []
+  }))
+}
+
+export function* watchClearDistrict(){
+  yield takeEvery(types.CLEAR_DISTRICT, workerClearDistrict)
+}
+
+function* workerClearDistrict(action){
+  yield put(reloadPolitical({
+    communes: []
+  }))
+}

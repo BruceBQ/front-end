@@ -3,7 +3,11 @@ import { watcherSignIn }  from './saga_authentication'
 import { 
   watchConnectCamera,
   watchConfigParams,
-  watchConfigFunctions
+  watchConfigFunctions,
+  watchChangeSearchCamParams,
+  watchClearProvince,
+  watchClearDistrict,
+  watchSearchCam
 } from './saga_camera'
 import { 
   watchShowEditModal,
@@ -14,7 +18,9 @@ import { watchGetCameraLocation } from './saga_map'
 
 import {
   watchGetAllProvinces,
-  watchChangeCameraParams
+  watchChangeCameraParams,
+  // watchClearProvince,
+  // watchClearDistrict,
 } from './saga_political'
 
 import {
@@ -23,7 +29,7 @@ import {
 } from './saga_manageCam'
 
 import {
-  watchChangeSearchCamParams
+  
 } from './saga_search'
 
 export default function* rootSaga() {
@@ -33,6 +39,7 @@ export default function* rootSaga() {
     fork(watchConnectCamera),
     fork(watchConfigParams),
     fork(watchConfigFunctions),
+    fork(watchSearchCam),
     //modal
     fork(watchShowEditModal),
     fork(watchCloseModal),
@@ -42,6 +49,8 @@ export default function* rootSaga() {
     //political
     fork(watchGetAllProvinces),
     fork(watchChangeCameraParams),
+    fork(watchClearProvince),
+    fork(watchClearDistrict),
     //manageCam
     fork(watchGetDataBeforeSearch),
     fork(watchGetDataBeforeConnect),

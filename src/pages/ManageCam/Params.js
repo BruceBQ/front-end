@@ -19,68 +19,63 @@ import TextInput from '../../components/TextInput'
 import {
     CamModesControl,
     CamResolutionControl,
-    QualityControl
+    QualityControl,
+    NoOptionsMessage
 } from '../../components/Select/SelectControl'
 import { backStep } from '../../actions/action_camera'
 import isEmpty from 'lodash/isEmpty'
 const styles = theme => ({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-    },
-    formContent: {
-      flexGrow: 1,
-    },
-    formGroup: {
-      marginTop: 10,
-      marginRight: 10
-    },
-    actionButton: {
-      textAlign: 'right',
-      marginRight: 10,
-      marginBottom: 5,
-    },
-    textField: {
-        fontSize: '0.875rem',
-    },
-    inputAdornment:{
-      fontSize: '0.875rem',
-      whiteSpace: 'nowrap',
-    },
-    inputProps: {
-        fontSize: '0.875rem',
-        padding: '12px 14px',
-    },
-    inputLabel: {
-        fontSize: '0.875rem',
-        transform: 'translate(19px, 14px) scale(1)',
-    },
-    input: {
-        display: 'flex',
-        fontSize: '0.875rem',
-        padding: '2.5px 0 2.5px 6px',
-    },
-    button: {
-      marginRight: 10
-    }
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+  formContent: {
+    flexGrow: 1,
+  },
+  formGroup: {
+    marginTop: 10,
+    marginRight: 10
+  },
+  actionButton: {
+    textAlign: 'right',
+    marginRight: 10,
+    marginBottom: 5,
+  },
+  textField: {
+    fontSize: '0.875rem',
+  },
+  inputAdornment:{
+    fontSize: '0.875rem',
+    whiteSpace: 'nowrap',
+  },
+  inputProps: {
+    fontSize: '0.875rem',
+    padding: '12px 14px',
+  },
+  inputLabel: {
+    fontSize: '0.875rem',
+    transform: 'translate(19px, 14px) scale(1)',
+  },
+  input: {
+    display: 'flex',
+    fontSize: '0.875rem',
+    padding: '2.5px 0 2.5px 6px',
+  },
+  button: {
+    marginRight: 10
+  }
 })
 
 const selectStyles = {
-    menu: (styles) => {
-        return {
-            ...styles,
-            zIndex: 2
-        }
+  menu: (styles) => {
+    return {
+      ...styles,
+      zIndex: 2
     }
+  }
 }
 
-const modeOptions = [
-    { value: 'Surveillance', label: 'Surveillance' },
-    { value: 'Record', label: 'Record' },
-    { value: 'Stream', label: 'Stream' },
-    { value: 'ALPR', label: 'ALPR' },
-]
 
 class Param extends Component{
 
@@ -105,20 +100,22 @@ class Param extends Component{
 
   handleSubmit = (event) => {
     const {
-      id,
       resolution, 
       bitrate,
       fps,
-      quality
-
+      quality,
+      bitrate_range,
+      fps_range,
     } = this.props.addCamera
 
     this.props.configParams({
-      id,
+      // id,
       resolution, 
       bitrate,
       fps,
-      quality
+      quality,
+      bitrate_range,
+      fps_range,
     })
   }
 
@@ -161,7 +158,8 @@ class Param extends Component{
                 <Select 
                   classes={classes}
                   components={{
-                    Control: CamResolutionControl
+                    Control: CamResolutionControl,
+                    NoOptionsMessage: NoOptionsMessage
                   }}
                   value={resolution}
                   options={resolutionOptions}
@@ -176,7 +174,8 @@ class Param extends Component{
                 <Select
                   classes={classes}
                   components={{
-                    Control: QualityControl
+                    Control: QualityControl,
+                    NoOptionsMessage: NoOptionsMessage
                   }}
                   placeholder={false}
                   value={quality}

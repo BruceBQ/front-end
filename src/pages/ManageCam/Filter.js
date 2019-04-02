@@ -10,14 +10,14 @@ const styles = theme => ({
 })
 
 class Filter extends Component {
-    render(){
-        return(
-            <Fragment>
-                <Search/>
-                <SearchResult isManageCam/>
-            </Fragment>
-        )
-    }
+  render(){
+    return(
+      <Fragment>
+        <Search/>
+        <SearchResult isManageCam/>
+      </Fragment>
+    )
+  }
 }
 
 export default withStyles(styles)(Filter)

@@ -19,7 +19,7 @@
     &.camera-normal{
         background-image: url('../../assets/icon/marker_2_normal.png');
     }
-    &.camera-disable{
+    &.camera-disabled{
         background-image: url('../../assets/icon/marker_2_disable.png')
     }
     .camera-description{
@@ -37,8 +37,8 @@
         transform: translate(-50%, -100%);
     }
     &.marker-hover{
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         z-index: 2;
     }
     &.show-ballon{
@@ -101,3 +101,4 @@
         }
     }
 }
+

@@ -29,6 +29,10 @@ import {
   changeSearchCamParams
 } from '../../actions/action_search'
 
+import {
+  clearProvince,
+  clearDistrict
+} from '../../actions/action_political'
 const state = [
   {
     label: 'Bình thường',
@@ -86,7 +90,26 @@ class Search extends Component{
     this.props.changeSearchCamParams({[name]: event.target.value})
   }
 
+  handleProvinceChange = value => {
+    if(value === null){
+      this.props.clearProvince()
+    }else{
+      this.props.changeSearchCamParams({province: value})
+    }
+  }
+
+  handleDistrictChange = (value = []) => {
+    if(value.length === 0){
+      this.props.clearDistrict()
+    }else{
+      this.props.changeSearchCamParams({district: value})
+    }
+  }
+
   handleSwitchChange = name => value => {
+    if(name === 'province' && value === null){
+
+    }
     this.props.changeSearchCamParams({[name]: value})
   }
 
@@ -98,6 +121,7 @@ class Search extends Component{
       districtOptions = [],
       communeOptions = [],
       groupOptions = [],
+      searchCam = {}
     } = this.props
     return(
       <div className={classes.root}>
@@ -111,6 +135,7 @@ class Search extends Component{
                 fullWidth 
                 label="Nhập từ khóa tìm kiếm" 
                 type="search" 
+                value={searchCam.string}
                 onChange={this.handleInputChange('string')}
               />
             </div>
@@ -125,7 +150,8 @@ class Search extends Component{
                 options={provinceOptions}
                 placeholder={false}
                 styles={selectStyles}
-                onChange={this.handleSwitchChange('province')}
+                value={searchCam.province}
+                onChange={this.handleProvinceChange}
               />
             </div>
             <div className="form-group">
@@ -140,7 +166,8 @@ class Search extends Component{
                 placeholder={false}
                 isMulti
                 styles={selectStyles}
-                onChange={this.handleSwitchChange('district')}
+                value={searchCam.district}
+                onChange={this.handleDistrictChange}
               />
             </div>
             <div className="form-group">
@@ -155,6 +182,7 @@ class Search extends Component{
                 options={communeOptions}
                 placeholder={false}
                 styles={selectStyles}
+                value={searchCam.commune}
                 onChange={this.handleSwitchChange('commune')}
               />
             </div>
@@ -170,10 +198,11 @@ class Search extends Component{
                 options={groupOptions}
                 placeholder={false}
                 styles={selectStyles}
+                value={searchCam.group}
                 onChange={this.handleSwitchChange('group')}
               />
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <Select 
                 classes={classes}
                 components={{
@@ -186,7 +215,7 @@ class Search extends Component{
                 styles={selectStyles}
                 onChange={this.handleSwitchChange('state_cam')}
               />
-            </div>
+            </div> */}
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </div>
@@ -194,14 +223,17 @@ class Search extends Component{
   }
 }
 
-const mapStateToProps = ({political}) => ({
+const mapStateToProps = ({cameras, political}) => ({
   provinceOptions: political.provinces,
   districtOptions: political.districts,
   communeOptions: political.communes,
-  groupOptions: political.groups
+  groupOptions: political.groups,
+  searchCam: cameras.searchCam
 })
 
 export default connect(mapStateToProps, {
   getDataBeforeSearch: getDataBeforeSearch,
-  changeSearchCamParams: changeSearchCamParams
+  changeSearchCamParams: changeSearchCamParams,
+  clearProvince: clearProvince,
+  clearDistrict: clearDistrict, 
 })(withStyles(styles, {withTheme: true})(Search))

@@ -62,7 +62,7 @@ class Stream extends Component{
             />
           </div>
           <div>
-            <Typography>Stream</Typography>
+            <Typography>Live Stream</Typography>
           </div>
         </ExpansionPanelSummary>
       </ExpansionPanel>
