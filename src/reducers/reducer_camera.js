@@ -45,8 +45,14 @@ const INITIAL_STATE = {
     group: [],
     state_cam: null,
   },
+  currentCam: {
+    id: '',
+    connection: {},
+    params: {},
+    functions: {},
+  },
   isSearching: false,
-  isLoading: false,
+  isFetching: false,
   isProcessing: false,
   headerMenu: false,
   cameraFocused: -1,
@@ -179,6 +185,30 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
           activeStep: state.addCamera.activeStep - 1
         }
       })
+    //get connection
+    case types.GET_CAM_CONNECTION:
+      return Object.assign({}, state, {
+        currentCam: {
+          ...state.currentCam,
+          id: action.id
+        },
+        isFetching: true
+      })
+    case types.GET_CAM_CONNECTION_SUCCESS:
+      return Object.assign({}, state, {
+        currentCam: {
+          ...state.currentCam,
+          connection: action.connection
+        },
+        isFetching: false,
+      })
+    case types.GET_CAM_CONNECTION_FAILURE:
+      return Object.assign({}, state, {
+        isFetching: false
+      })
+    //get params
+
+    //get functions
     default:
       return state
   }

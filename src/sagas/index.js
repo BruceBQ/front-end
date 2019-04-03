@@ -7,7 +7,8 @@ import {
   watchChangeSearchCamParams,
   watchClearProvince,
   watchClearDistrict,
-  watchSearchCam
+  watchSearchCam,
+  watchGetCamConnection
 } from './saga_camera'
 import { 
   watchShowEditModal,
@@ -40,6 +41,7 @@ export default function* rootSaga() {
     fork(watchConfigParams),
     fork(watchConfigFunctions),
     fork(watchSearchCam),
+    fork(watchGetCamConnection),
     //modal
     fork(watchShowEditModal),
     fork(watchCloseModal),

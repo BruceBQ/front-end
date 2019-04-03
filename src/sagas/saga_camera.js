@@ -10,14 +10,15 @@ import {
     searchCam,
     searchCamSuccess, 
     searchCamFailure,
+    getCamConnectionSuccess, 
+    getCamConnectionFailure
 } from '../actions/action_camera'
-
 import * as CameraApi from '../api/camera'
 import * as PoliticalAPI from '../api/political'
-
 import { closeModal, showLoadingModal } from '../actions/action_modal'
 import { enqueueSnackbar, removeSnackbar } from '../actions/action_snackbar'
 import { reloadPolitical } from '../actions/action_political'
+import { switchTab } from '../actions/action_manageCam'
 import { } from '../actions/action_camera'
 import * as types from '../constant/constant_actions'
 import _ from 'lodash'
@@ -176,3 +177,30 @@ export function* workerSearchCam(action){
   }
 }
 
+export function* watchGetCamConnection(){
+  yield takeEvery(types.GET_CAM_CONNECTION, workerGetCamConnection)
+}
+
+function* workerGetCamConnection(action){
+  try {
+    const CONFIGS_TAB = 1
+    yield put(switchTab(CONFIGS_TAB))
+    const response = yield call(CameraApi.getCamConnection, action.id)
+    const {connect, political} = response.data.data
+    yield put(reloadPolitical({
+      provinces: political.province_list,
+      districts: political.district_list,
+      communes: political.commune_list,
+      groups: political.group_list,
+    }))
+    yield put(getCamConnectionSuccess(connect))
+  } catch (error) {
+    yield put(getCamConnectionFailure())
+    yield put(enqueueSnackbar({
+      message: error.response.data.notify, 
+      options: {
+        variant: 'error'
+      }
+    }))
+  }
+}

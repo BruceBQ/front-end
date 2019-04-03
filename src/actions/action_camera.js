@@ -1,116 +1,116 @@
 import * as types from '../constant/constant_actions'
 
 export function clearCameraErrors(){
-    return {
-        type: types.CLEAR_CAMERA_ERRORS
-    }
+  return {
+    type: types.CLEAR_CAMERA_ERRORS
+  }
 }
 
 export function getCameraLocations({id}){
-    return {
-        type: types.GET_CAMERA_LOCATIONS,
-        id
-    }
+  return {
+    type: types.GET_CAMERA_LOCATIONS,
+    id
+  }
 }
 export function getCameraLocationsSuccess(locations, provinces, districts, communes){
-    return {
-        type: types.GET_CAMERA_LOCATIONS_SUCCESS,
-        locations,
-        provinces,
-        districts,
-        communes
-    }
+  return {
+    type: types.GET_CAMERA_LOCATIONS_SUCCESS,
+    locations,
+    provinces,
+    districts,
+    communes
+  }
 }
 
 export function editCameraLocations({id}, data){
-    return {
-        type: types.EDIT_CAMERA_LOCATIONS,
-        id,
-        data
-    }
+  return {
+    type: types.EDIT_CAMERA_LOCATIONS,
+    id,
+    data
+  }
 }
 
 export function getProvincesAvailable(){
-    return {
-        type: types.GET_PROVINCES_AVAILABLE
-    }
+  return {
+    type: types.GET_PROVINCES_AVAILABLE
+  }
 }
 
 export function getProvincesAvailableSuccess(provinces){
-    return {
-        type: types.GET_PROVINCES_AVAILABLE_SUCCESS,
-        provinces
-    }
+  return {
+    type: types.GET_PROVINCES_AVAILABLE_SUCCESS,
+    provinces
+  }
 }
 
 export function getDistrictsAvailable(province) {
-    return {
-        type: types.GET_DISTRICTS_AVAILABLE,
-        province
-    }
+  return {
+    type: types.GET_DISTRICTS_AVAILABLE,
+    province
+  }
 }
 
 export function getDistrictsAvailableSuccess(districts){
-    return {
-        type: types.GET_DISTRICTS_AVAILABLE_SUCCESS,
-        districts
-    }
+  return {
+    type: types.GET_DISTRICTS_AVAILABLE_SUCCESS,
+    districts
+  }
 }
 
 export function changeAddCameraParams(payload){
-    return {
-        type: types.CHANGE_CAMERA_PARAMS,
-        payload
-    }
+  return {
+    type: types.CHANGE_CAMERA_PARAMS,
+    payload
+  }
 }
 
 export function getCameraLocation(payload){
-    return {
-        type: types.GET_CAMERA_LOCATION,
-        payload
-    }
+  return {
+    type: types.GET_CAMERA_LOCATION,
+    payload
+  }
 }
 
 export function gotoSitemapPage(){
-    return {
-        type: types.GOTO_SITEMAP_PAGE
-    }
+  return {
+    type: types.GOTO_SITEMAP_PAGE
+  }
 }
 
 export function exitSitemapPage(){
-    return {
-        type: types.EXIT_SITEMAP_PAGE
-    }
+  return {
+    type: types.EXIT_SITEMAP_PAGE
+  }
 }
 
 export function getCameraPositionSuccess(province, district, commune){
-    return {
-        type: types.GET_CAMERA_POSITION_SUCCESS,
-        province,
-        district,
-        commune
-    }
+  return {
+    type: types.GET_CAMERA_POSITION_SUCCESS,
+    province,
+    district,
+    commune
+  }
 }
 
 export function connectCamera(payload){
-    return {
-        type: types.CONNECT_CAMERA,
-        payload
-    }
+  return {
+    type: types.CONNECT_CAMERA,
+    payload
+  }
 }
 
 export function connectCameraSuccess(payload){
-    return {
-        type: types.CONNECT_CAMERA_SUCCESS,
-        payload
-    }
+  return {
+    type: types.CONNECT_CAMERA_SUCCESS,
+    payload
+  }
 }
 
 export function connectCameraFailure(errors){
-    return {
-        type: types.CONNECT_CAMERA_FAILURE,
-        errors
-    }
+  return {
+    type: types.CONNECT_CAMERA_FAILURE,
+    errors
+  }
 }
 
 export function configParams(payload){
@@ -206,3 +206,22 @@ export function cancelFocusedCam(){
   }
 }
 
+export function getCamConnection(id){
+  return {
+    type: types.GET_CAM_CONNECTION,
+    id
+  }
+}
+
+export function getCamConnectionSuccess(connection){
+  return {
+    type: types.GET_CAM_CONNECTION_SUCCESS,
+    connection
+  }
+}
+
+export function getCamConnectionFailure(){
+  return {
+    type: types.GET_CAM_CONNECTION_FAILURE
+  }
+}

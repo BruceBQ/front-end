@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
+import Switch from '@material-ui/core/Switch'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -15,8 +16,10 @@ import InfoOutlined from '@material-ui/icons/InfoOutlined'
 import RemoveRedEyeOutlined from '@material-ui/icons/RemoveRedEyeOutlined'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Typography from '@material-ui/core/Typography';
+import TooltipWrapper from '../../components/TooltipWrapper'
 import { changeBoundsMap } from '../../actions/action_map'
-import { focusedCam } from '../../actions/action_camera'
+import { switchTab } from '../../actions/action_manageCam'
+import { focusedCam, getCamConnection } from '../../actions/action_camera'
 
 
 const styles = theme => ({
@@ -33,12 +36,16 @@ const styles = theme => ({
     width: 150,
   },
   controls: {
+    display: 'flex',
+    alignItems: 'center',
     paddingLeft: 16
   },
   details: {
     width: 'calc(100% - 150px)',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    // alignItems: 'center',
+    justifyContent: 'center'
   },
   cardMedia: {
     width: '100%',
@@ -61,7 +68,11 @@ const styles = theme => ({
   description: {
     lineHeight: '1.5em',
     fontSize: '0.825rem'
-  }
+  },
+  switchBase: {
+    height: 20
+  },
+  
 })
 class CameraItem extends Component{
   handleClick = () => {
@@ -78,8 +89,12 @@ class CameraItem extends Component{
   _onMoustLeave = () => {
 
   }
-  handleIconClick = (event) => {
-    event.stopPropagation()
+  _onSwitchChange = (id) => (e) => {
+    e.stopPropagation()
+  }
+  handleConfigsClick = () => {
+    const CONFIGS_TAB = 1
+    this.props.getCamConnection(this.props.detail.id)
   }
   render(){
     const { classes, detail, focused_cam } = this.props
@@ -118,12 +133,28 @@ class CameraItem extends Component{
             </CardContent>
             <div className={classes.controls}>
               <Fragment>
-                <IconButton className={classes.iconButton} onClick={this.handleIconClick}>
+              <TooltipWrapper
+                title="Cấu hình"
+              >
+                <IconButton className={classes.iconButton} onClick={this.handleConfigsClick}>
                   <SettingsIcon  className={classes.icon}/>
                 </IconButton>
-                <IconButton className={classes.iconButton} onClick={this.handleIconClick}>
+              </TooltipWrapper>
+              <TooltipWrapper
+                title="Xóa"
+              >
+                <IconButton className={classes.iconButton} onClick={this.handleDeleteClick}>
                   <DeleteIcon className={classes.icon}/>
                 </IconButton>
+              </TooltipWrapper>
+                <Switch
+                  color="primary"
+                  classes={{
+                    switchBase: classes.switchBase
+                  }}
+                  checked={detail.status !== 'disabled'}
+                  onChange={this._onSwitchChange(detail.id)}
+                />
               </Fragment>
             </div>
           </div>
@@ -138,5 +169,7 @@ const mapStateToProps = ({map}) => ({
   focused_cam: map.focusedCam
 })
 export default connect(mapStateToProps, {
-  focusedCam: focusedCam
+  focusedCam: focusedCam,
+  // switchTab: switchTab,
+  getCamConnection: getCamConnection
 })(withStyles(styles)(CameraItem))

@@ -12,6 +12,7 @@ import Loading from '../../components/Loading'
 import { MarkerCam } from '../../components/Marker'
 import { changeBoundsMap } from '../../actions/action_map'
 import { focusedCam } from '../../actions/action_camera'
+import { switchTab } from '../../actions/action_manageCam'
 
 const GoogleMap = lazy(() => import('../../components/GoogleMap'))
 const Filter = lazy(() => import('./Filter'))
@@ -56,7 +57,7 @@ const styles = (theme) => ({
 
 class ManageCam extends Component{
   state = {
-    value: 0,
+    // value: 0,
     mapApiLoaded: false,
     mapInstance: null,
     mapApi: null,
@@ -73,7 +74,10 @@ class ManageCam extends Component{
   // }
 
   handleChange = (event, value) => {
-    this.setState({ value });
+    // console.log(event, value)
+    // this.setState({ value });
+    this.props.switchTab(value)
+    
   };
 
   handleChangeIndex = index => {
@@ -84,7 +88,6 @@ class ManageCam extends Component{
     this.props.changeBoundsMap({center, zoom})
   }
   _onMarkerClick = ({lat, lng, id}, event) => {
-    console.log(event)
     event.stopPropagation()
     this.setState({
       value: 1
@@ -103,6 +106,7 @@ class ManageCam extends Component{
       center,
       defaultZoom,
       zoom,
+      tabValue
     } = this.props;
     const { value } = this.state
     
@@ -111,7 +115,7 @@ class ManageCam extends Component{
         <div className={classes.left}>
           <AppBar position="static" color="default">
             <Tabs
-              value={this.state.value}
+              value={tabValue}
               onChange={this.handleChange}
               indicatorColor="primary"
               textColor="primary"
@@ -123,19 +127,19 @@ class ManageCam extends Component{
             </Tabs>
           </AppBar>
           <Suspense fallback={<Loading />}>
-            {value === 0 && 
+            {tabValue === 0 && 
               <TabContainer dir={theme.direction}>
                 <div className={classes.wrapper}>
                   <Filter />
                 </div>
               </TabContainer>}
-            {value === 1 && 
+            {tabValue === 1 && 
               <TabContainer dir={theme.erver}>
                 <div className={classes.wrapper}>
                   <EditCamera />
                 </div>
               </TabContainer>}
-            {value === 2 && 
+            {tabValue === 2 && 
               <TabContainer dir={theme.erver}>
                 <div className={classes.wrapper}>
                   <AddCamera />
@@ -145,7 +149,7 @@ class ManageCam extends Component{
         </div>
         <div className={classes.right}>
           <Suspense fallback={<Loading />}>
-            {(value === 0 || value === 1) && 
+            {(tabValue === 0 || tabValue === 1) && 
               <GoogleMap
               center={center}
               defaultZoom={defaultZoom}
@@ -171,7 +175,7 @@ class ManageCam extends Component{
               </GoogleMap>
             }
             {
-              value === 2 && <RightSite />
+              tabValue === 2 && <RightSite />
             }
           </Suspense>
         </div>
@@ -180,7 +184,8 @@ class ManageCam extends Component{
   }
 }
 
-const mapStateToProps = ({cameras, map}) => ({
+const mapStateToProps = ({cameras, map, manageCam}) => ({
+    tabValue: manageCam.tabValue,
     cameras: cameras.cameras,
     center: map.center,
     defaultZoom: map.defaultZoom,
@@ -189,5 +194,6 @@ const mapStateToProps = ({cameras, map}) => ({
 
 export default withRouter(connect(mapStateToProps, {
   changeBoundsMap: changeBoundsMap,
-  focusedCam: focusedCam
+  focusedCam: focusedCam,
+  switchTab: switchTab
 })(withStyles(styles, { withTheme: true })(ManageCam)))

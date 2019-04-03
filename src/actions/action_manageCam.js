@@ -14,3 +14,9 @@ export function getDataBeforeSearch(){
   }
 }
 
+export function switchTab(value){
+  return {
+    type: types.SWITCH_TAB,
+    value
+  }
+}
