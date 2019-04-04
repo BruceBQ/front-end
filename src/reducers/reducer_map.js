@@ -17,6 +17,8 @@ const INITIAL_STATE = {
     fitBoundsMap: false,
     showInfoWindow: -1,
     focusedCam: -1,
+    isEditingCam: false,
+    isAddingCam: false,
 }
 
 const reducer_map = (state = INITIAL_STATE, action) => {

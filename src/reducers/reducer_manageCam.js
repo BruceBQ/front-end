@@ -1,7 +1,9 @@
 import * as types from '../constant/constant_actions'
+const LIST_CAM = 0, PARAMS_CONFIGS = 1, FUNCTIONS_CONFIG = 2
 
 const INITIAL_STATE = {
-  tabValue: 0
+  tabValue: 0,
+  rightSiteState: LIST_CAM
 }
 
 const reducer_manageCam = (state =INITIAL_STATE, action) => {

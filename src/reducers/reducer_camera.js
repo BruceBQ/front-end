@@ -37,6 +37,7 @@ const INITIAL_STATE = {
     snapshot_image_url: '',
     snapshot_image_name: '',
   },
+
   searchCam: {
     string: '',
     province: null,
@@ -45,8 +46,14 @@ const INITIAL_STATE = {
     group: [],
     state_cam: null,
   },
+  editCam: {
+    connection: {},
+    params: {},
+    functions: {},
+  },
   currentCam: {
     id: '',
+    tabValue: 0,
     connection: {},
     params: {},
     functions: {},
@@ -200,11 +207,25 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
           ...state.currentCam,
           connection: action.connection
         },
+        editCam: {
+          ...state.editCam,
+          connection: action.connection
+        },
         isFetching: false,
       })
     case types.GET_CAM_CONNECTION_FAILURE:
       return Object.assign({}, state, {
         isFetching: false
+      })
+    case types.CHANGE_CAM_CONNECTION_PARAMS:
+      return Object.assign({}, state, {
+        editCam: {
+          ...state.editCam,
+          connection: {
+            ...state.editCam.connection,
+            ...action.payload
+          }
+        }
       })
     //get params
 

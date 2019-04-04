@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react';
 import { MAP_API_KEY } from '../constant/constant_endpoint'
 import MapControl from './MapControl'
-
+import _ from 'lodash'
 
 
 const styles = theme =>({
@@ -57,17 +57,11 @@ class GoogleMap extends Component{
   state = {
     mapControlShouldRender: false
   }
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   if(nextProps.fitBounds){
-  //     apiIsLoaded(this.map, this.maps, nextProps.cameras)
-  //   }
-  //   return null
-  // }
   
   componentDidUpdate(prevProps){
     const { cameras } = this.props
     if(prevProps.cameras.length > 0 && this.props.cameras.length > 0 
-      && prevProps.cameras !== cameras ){
+      && !_.isEqual(prevProps.cameras, cameras) ){
       apiIsLoaded(this.map, this.maps, cameras)
     }
   }

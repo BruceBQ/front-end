@@ -22,13 +22,13 @@ export function getCameraLocationsSuccess(locations, provinces, districts, commu
   }
 }
 
-export function editCameraLocations({id}, data){
-  return {
-    type: types.EDIT_CAMERA_LOCATIONS,
-    id,
-    data
-  }
-}
+// export function editCameraLocations({id}, data){
+//   return {
+//     type: types.EDIT_CAMERA_LOCATIONS,
+//     id,
+//     data
+//   }
+// }
 
 export function getProvincesAvailable(){
   return {
@@ -223,5 +223,32 @@ export function getCamConnectionSuccess(connection){
 export function getCamConnectionFailure(){
   return {
     type: types.GET_CAM_CONNECTION_FAILURE
+  }
+}
+
+export function changeCamConnectionParams(payload){
+  return {
+    type: types.CHANGE_CAM_CONNECTION_PARAMS,
+    payload
+  }
+}
+
+export function editCamConnection(id, payload){
+  return {
+    type: types.EDIT_CAM_CONNECTION,
+    id,
+    payload,
+  }
+}
+
+export function editCamConnectionSuccess(){
+  return {
+    type: types.EDIT_CAM_CONNECTION_SUCCESS
+  }
+}
+
+export function editCamConnectionFailure(){
+  return {
+    type: types.EDIT_CAM_CONNECTION_FAILURE
   }
 }

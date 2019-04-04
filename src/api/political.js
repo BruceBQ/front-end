@@ -15,11 +15,9 @@ export function loadDistricts(province){
   return axios({
     method: 'get',
     url: `${API_URL}api/political/districts`,
-    headers: {
-        'Authorization': access_token
-    },
+    headers: { 'Authorization': access_token },
     params: {
-        province: province
+      province: province
     }
   })
 }

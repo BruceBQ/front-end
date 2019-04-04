@@ -11,7 +11,8 @@ import {
     searchCamSuccess, 
     searchCamFailure,
     getCamConnectionSuccess, 
-    getCamConnectionFailure
+    getCamConnectionFailure,
+    changeCamConnectionParams
 } from '../actions/action_camera'
 import * as CameraApi from '../api/camera'
 import * as PoliticalAPI from '../api/political'
@@ -202,5 +203,36 @@ function* workerGetCamConnection(action){
         variant: 'error'
       }
     }))
+  }
+}
+
+export function* watchChangeCamConnectionParams(){
+  yield(takeEvery(types.CHANGE_CAM_CONNECTION_PARAMS, workerChangeCamConnectionParams))
+}
+
+function* workerChangeCamConnectionParams(action){
+  try {
+    if(!_.isEmpty(action.payload.province)){
+      yield put(changeCamConnectionParams({
+        district: null,
+        commune: null
+      }))
+      const response = yield call(PoliticalAPI.loadDistricts, action.payload.province.value)
+      yield put(reloadPolitical({
+        districts: response.data.data.district_list,
+        communes: []
+      }))
+    }
+    if(!_.isEmpty(action.payload.district)){
+      yield put(changeCamConnectionParams({
+        commune: null
+      }))
+      const response = yield call(PoliticalAPI.loadCommunes, action.payload.district.value)
+      yield put(reloadPolitical({
+        communes: response.data.data.commune_list
+      }))
+    }
+  } catch (error) {
+    console.log(error)
   }
 }
