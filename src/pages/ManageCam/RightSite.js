@@ -1,8 +1,16 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component, lazy, Suspense, Fragment } from 'react';
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import AddCameraMap from './AddCameraMap'
-import Zone from './Zone'
+import { isEmpty } from 'lodash'
+import GoogleMap from '../../components/GoogleMap';
+import { changeBoundsMap } from '../../actions/action_map'
+import NewCameaMarker from '../../components/Marker/NewCameaMarker';
+import { 
+  focusedCam, 
+  changeCamLocation, 
+  getCameraLocation 
+} from '../../actions/action_camera'
+import { MarkerCam } from '../../components/Marker';
 
 
 const styles = theme => ({
@@ -11,56 +19,79 @@ const styles = theme => ({
     height: '100%',
   }
 })
+
 class RightSite extends Component{
-  static defaultProps = {
-    center: {
-      lat: 16.036308499726402,
-      lng: 108.20592484212307
-    },
-    zoom: 13
-  };
-  state = {
-    center: {
-      lat: 16.036308499726402,
-      lng: 108.20592484212307
-    },
-    zoom: 13,
-    mapApiLoaded: false,
-    mapInstance: null,
-    mapApi: null,
+  // apiHasLoaded = (map, maps) => {
+  //   this.setState({
+  //     mapApiLoaded: true,
+  //     mapInstance: map,
+  //     mapApi: maps
+  //   })
+  // }
+  _onChange = ({ center, zoom, bounds, marginBounds }) => {
+    this.props.changeBoundsMap({center, zoom})
   }
-  apiHasLoaded = (map, maps) => {
-    this.setState({
-      mapApiLoaded: true,
-      mapInstance: map,
-      mapApi: maps
-    })
-  }
-  getCoordinates = ({ x, y, lat, lng, event }) => {
-    // this.props.
+
+  _onMapClick = ({ x, y, lat, lng, event }) => {
+    const { isEditingCam, isAddingCam } = this.props
+    if(isEditingCam) this.props.changeCamLocation({ lat, lng })
+    if(isAddingCam) this.props.getCameraLocation({ lat, lng }) //need change ???
   }
 
   render(){
-    const { 
-      classes, 
-      activeStep, 
-      cameras = []
-    } =  this.props
+    const {
+      center, zoom, defaultZoom, siteState, isEditingCam,
+      cameras, newCamCoor, currentCamId, editCam,
+    } = this.props
     return (
-      <div className={classes.root}>
-        {activeStep === 0 && <AddCameraMap /> }
-        {activeStep === 1 && <div></div>}
-        {activeStep === 2 && <Zone />}
-      </div>
+      <Fragment>
+        {siteState === 0 && 
+          <GoogleMap center={center} 
+            zoom={zoom} defaultZoom={defaultZoom}
+            onChange={this._onChange}
+            onClick={this._onMapClick}
+          >
+            {cameras && cameras.map((cam, index) => {
+              if(cam.id === currentCamId) return null
+              return <MarkerCam lat={cam.lat} lng={cam.lng}
+                        key={index} detail={cam}
+                        onClick={this._onMarkerClick} />
+            })}
+            {!isEmpty(newCamCoor) && 
+              <NewCameaMarker lat={newCamCoor.lat} lng={newCamCoor.lng} />
+            }
+            {isEditingCam && !isEmpty(currentCamId) && 
+              <MarkerCam lat={editCam.lat} lng={editCam.lng} detail={editCam} />
+            }
+          </GoogleMap>
+        }
+      </Fragment>
+
     )
   }
 }
 
-const mapStateToProps = ({cameras}) => ({
+const mapStateToProps = ({cameras, manageCam, map}) => ({
   cameras: cameras.cameras,
-  activeStep: cameras.addCamera.activeStep
+  siteState: manageCam.rightSiteState,
+  defaultZoom: map.defaultZoom,
+  center: map.center,
+  zoom: map.zoom,
+  currentCamId: cameras.currentCam.id,
+  editCam: cameras.editCam.connection,
+  isEditingCam: map.isEditingCam,
+  isAddingCam: map.isAddingCam,
+  newCamCoor: {
+    lat: cameras.addCamera.lat,
+    lng: cameras.addCamera.lng
+  }
 })
 
 export default connect(mapStateToProps, {
-  
+  changeBoundsMap: changeBoundsMap,
+  changeCamLocation: changeCamLocation,
+  getCameraLocation: getCameraLocation,
 })(withStyles(styles)(RightSite))
+
+
+  

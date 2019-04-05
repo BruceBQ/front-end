@@ -75,7 +75,8 @@ const styles = theme => ({
   
 })
 class CameraItem extends Component{
-  handleClick = () => {
+  handleClick = (e) => {
+    e.stopPropagation()
     const { lat, lng, id } = this.props.detail
     this.props.focusedCam({
       center: { lat, lng },
@@ -92,8 +93,8 @@ class CameraItem extends Component{
   _onSwitchChange = (id) => (e) => {
     e.stopPropagation()
   }
-  handleConfigsClick = () => {
-    const CONFIGS_TAB = 1
+  handleConfigsClick = (e) => {
+    e.stopPropagation()
     this.props.getCamConnection(this.props.detail.id)
   }
   render(){

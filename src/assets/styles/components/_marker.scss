@@ -41,6 +41,11 @@
         height: 35px;
         z-index: 2;
     }
+    &.marker-editing{
+        width: 35px;
+        height: 35px;
+        z-index: 3;
+    }
     &.show-ballon{
         z-index: 1;
     }

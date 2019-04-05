@@ -17,6 +17,7 @@ const INITIAL_STATE = {
     fitBoundsMap: false,
     showInfoWindow: -1,
     focusedCam: -1,
+    editingCam: -1,
     isEditingCam: false,
     isAddingCam: false,
 }
@@ -52,6 +53,15 @@ const reducer_map = (state = INITIAL_STATE, action) => {
       return Object.assign({}, state, {
         fitBoundsMap: true
       })
+    case types.TOGGLE_ADD_CAM_MAP:
+      return Object.assign({}, state, {
+        isAddingCam: !state.isAddingCam
+      })
+    case types.TOGGLE_EDIT_CAM_MAP:
+      return Object.assign({}, state, {
+        isEditingCam: !state.isEditingCam
+      })
+    case types.
     default:
       return { ...state }
   }

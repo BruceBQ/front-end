@@ -38,7 +38,7 @@ class Surveillance extends Component{
             />
           </div>
           <div>
-            <Typography>Giám sát thông minh</Typography>
+            <Typography>Giám sát thông minh (Cấu hình các vùng nhận dạng...)</Typography>
           </div>
         </ExpansionPanelSummary>
       </ExpansionPanel>

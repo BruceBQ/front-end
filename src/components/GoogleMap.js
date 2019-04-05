@@ -54,6 +54,7 @@ const apiIsLoaded = (map, maps, cameras) => {
   }
 }
 class GoogleMap extends Component{
+  
   state = {
     mapControlShouldRender: false
   }

@@ -4,7 +4,7 @@ import { CardActions } from '@material-ui/core';
 const INITIAL_STATE = {
   cameras: [],
   addCamera: {
-    activeStep: 0,
+    activeStep: 2,
     name: 'Camera 237',
     port: "80",
     ip: '10.49.34.237',
@@ -62,7 +62,8 @@ const INITIAL_STATE = {
   isFetching: false,
   isProcessing: false,
   headerMenu: false,
-  cameraFocused: -1,
+  focusedCam: -1,
+  editingCam: -1,
   errors: {},
 }
 
@@ -192,6 +193,11 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
           activeStep: state.addCamera.activeStep - 1
         }
       })
+    //focused cam
+    // case types.FOCUSED_CAM:
+    //   return Object.assign({}, state, {
+
+    //   })
     //get connection
     case types.GET_CAM_CONNECTION:
       return Object.assign({}, state, {
@@ -218,6 +224,26 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
         isFetching: false
       })
     case types.CHANGE_CAM_CONNECTION_PARAMS:
+      return Object.assign({}, state, {
+        editCam: {
+          ...state.editCam,
+          connection: {
+            ...state.editCam.connection,
+            ...action.payload
+          }
+        }
+      })
+    case types.CHANGE_CAM_LOCATION:
+      return Object.assign({}, state, {
+        editCam: {
+          ...state.editCam,
+          connection: {
+            ...state.editCam.connection,
+            ...action.payload
+          }
+        }
+      })
+    case types.CHANGE_CAM_POLITICAL:
       return Object.assign({}, state, {
         editCam: {
           ...state.editCam,

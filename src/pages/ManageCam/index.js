@@ -11,8 +11,13 @@ import Loading from '../../components/Loading'
 // import MarkerInstance from '../Sitemap/MarkerInstance'
 import { MarkerCam } from '../../components/Marker'
 import { changeBoundsMap } from '../../actions/action_map'
-import { focusedCam } from '../../actions/action_camera'
+import { 
+  focusedCam, 
+  changeCamLocation, 
+  getCameraLocation 
+} from '../../actions/action_camera'
 import { switchTab } from '../../actions/action_manageCam'
+import NewCameaMarker from '../../components/Marker/NewCameaMarker';
 
 const GoogleMap = lazy(() => import('../../components/GoogleMap'))
 const Filter = lazy(() => import('./Filter'))
@@ -98,6 +103,11 @@ class ManageCam extends Component{
       id
     })
   }
+  getCoordinates = ({ x, y, lat, lng, event }) =>{
+    const { isEditingCam, isAddingCam } = this.props
+    if(isEditingCam) this.props.changeCamLocation({ lat, lng })
+    if(isAddingCam) this.props.getCameraLocation({ lat, lng })
+  }
 
   render(){
     const { 
@@ -106,9 +116,13 @@ class ManageCam extends Component{
       center,
       defaultZoom,
       zoom,
-      tabValue
+      tabValue, 
+      rightSiteState,
+      currentCamId,
+      editCam,
+      isEditingCam,
+      newCamCoor,
     } = this.props;
-    const { value } = this.state
     
     return(
       <div className={classes.root}>
@@ -149,34 +163,7 @@ class ManageCam extends Component{
         </div>
         <div className={classes.right}>
           <Suspense fallback={<Loading />}>
-            {(tabValue === 0 || tabValue === 1) && 
-              <GoogleMap
-              center={center}
-              defaultZoom={defaultZoom}
-              zoom={zoom}
-              onChange={this._onChange}
-              // yesIWantToUseGoogleMapApiInternals
-              // onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
-            >
-              {this.props.cameras &&
-                this.props.cameras.map((camera, index) => (
-                  <MarkerCam 
-                    lat={camera.lat}
-                    lng={camera.lng}
-                    key={index}
-                    detail={camera}
-                    onClick={this._onMarkerClick}
-                    // displayInfoWindow={this.props.infoWindow === camera._id}
-                    // showInfoWindow={this.props.showInfoWindow}
-                    // closeInfoWindow={this.props.closeInfoWindow}
-                  />
-                ))
-              }
-              </GoogleMap>
-            }
-            {
-              tabValue === 2 && <RightSite />
-            }
+            <RightSite />
           </Suspense>
         </div>
       </div>
@@ -185,15 +172,27 @@ class ManageCam extends Component{
 }
 
 const mapStateToProps = ({cameras, map, manageCam}) => ({
-    tabValue: manageCam.tabValue,
-    cameras: cameras.cameras,
-    center: map.center,
-    defaultZoom: map.defaultZoom,
-    zoom: map.zoom,
+  tabValue: manageCam.tabValue,
+  rightSiteState: manageCam.rightSiteState,
+  cameras: cameras.cameras,
+  center: map.center,
+  defaultZoom: map.defaultZoom,
+  zoom: map.zoom,
+  isEditingCam: map.isEditingCam,
+  isAddingCam: map.isAddingCam,
+  currentCamId : cameras.currentCam.id,
+  editCam: cameras.editCam,
+  newCamCoor: {
+    lat: cameras.addCamera.lat,
+    lng: cameras.addCamera.lng
+  }
 })
 
 export default withRouter(connect(mapStateToProps, {
   changeBoundsMap: changeBoundsMap,
   focusedCam: focusedCam,
-  switchTab: switchTab
+  switchTab: switchTab, 
+  changeCamLocation: changeCamLocation,
+  getCameraLocation: getCameraLocation,
+  
 })(withStyles(styles, { withTheme: true })(ManageCam)))

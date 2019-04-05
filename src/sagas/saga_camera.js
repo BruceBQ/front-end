@@ -12,7 +12,9 @@ import {
     searchCamFailure,
     getCamConnectionSuccess, 
     getCamConnectionFailure,
-    changeCamConnectionParams
+    changeCamConnectionParams,
+    editCamConnectionSuccess,
+    focusedCam
 } from '../actions/action_camera'
 import * as CameraApi from '../api/camera'
 import * as PoliticalAPI from '../api/political'
@@ -182,10 +184,12 @@ export function* watchGetCamConnection(){
   yield takeEvery(types.GET_CAM_CONNECTION, workerGetCamConnection)
 }
 
+/* switch tab ->  get data -> */
 function* workerGetCamConnection(action){
   try {
     const CONFIGS_TAB = 1
     yield put(switchTab(CONFIGS_TAB))
+    yield put()
     const response = yield call(CameraApi.getCamConnection, action.id)
     const {connect, political} = response.data.data
     yield put(reloadPolitical({
@@ -234,5 +238,26 @@ function* workerChangeCamConnectionParams(action){
     }
   } catch (error) {
     console.log(error)
+  }
+}
+
+export function* watchEditCamConnection(){
+  yield takeEvery(types.EDIT_CAM_CONNECTION, workerEditCamConnection)
+}
+
+function* workerEditCamConnection(action){
+  try {
+    yield put(showLoadingModal('Đang thay đổi cấu hình camera'))
+    const response = yield call(CameraApi.editCamConnection(action.id, action.payload))
+    yield put(closeModal())
+    yield put(editCamConnectionSuccess())
+  } catch (error) {
+    yield put(closeModal())
+    yield enqueueSnackbar({
+      message: error.response.data.notify, 
+      options: {
+        variant: 'error'
+      }
+    })
   }
 }

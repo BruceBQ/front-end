@@ -16,9 +16,11 @@ const styles = theme => ({
   },
   tooltip: {
     maxWidth: 300,
-    backgroundColor: 'rgba(0, 0, 0, 1)',
-    color: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: '0 0 10px #333',
     fontSize: '0.725rem',
+    
     borderRadius: '4px',
     padding: '4px 8px',
     left: '50%',
@@ -37,7 +39,7 @@ const styles = theme => ({
       display: "block",
       borderStyle: 'solid',
       borderWidth: '0 1em 1em 1em',
-      borderColor: 'transparent transparent #000 transparent',
+      borderColor: 'transparent transparent #fff transparent',
     }
   },
   icon: {
@@ -84,34 +86,36 @@ class MarkerCam extends Component{
 
   render(){
     const { 
-      detail, 
+      detail={}, 
       classes, 
-      focusedCam,
+      // isEditingCam,
+      currentCamId,
+      // focusedCam,
       onClick
     } = this.props
-    const isFocused = focusedCam === detail.id
+    // const isFocused = focusedCam === detail.id
     const { hover } = this.state
-    
+    const isEditing = detail.id === currentCamId
     const markerStyles = cx('marker-instance',{
       'camera-normal': detail.status === 'enabled',
       'camera-disabled': detail.status === 'disabled',
-      'marker-hover' : isFocused || hover
-    }
-    )
+      'marker-hover' : hover,
+      'marker-editing': (detail.id === currentCamId)
+    })
     return (
       <div className={markerStyles}
         onMouseEnter={this._onMouseEnter}
         onMouseLeave={this._onMouseLeave}
-        onClick={(e) => onClick(detail, e)}
+        onClick={this._onMarkerClick}
       >
-        {(isFocused || hover) && <div className={classes.popper}>
+        {( hover) && <div className={classes.popper}>
           <div className={classes.tooltip}>
-          {isFocused && <IconButton 
+          {/* {isFocused && <IconButton 
             className={classes.icon}
             onClick={this.handleClick}
           >
             <ClearOutlined className={classes.smallIcon}/>
-          </IconButton>}
+          </IconButton>} */}
             <Typography 
               color="inherit" 
               noWrap
@@ -131,13 +135,36 @@ class MarkerCam extends Component{
             <span className="arrow"/>
           </div>
         </div>}
+        {isEditing && <div className={classes.popper}>
+          <div className={classes.tooltip}>
+          <Typography 
+              color="inherit" 
+              noWrap
+              align="center"
+            >{detail.name}</Typography>
+            <Typography 
+              color="inherit" 
+              noWrap
+              align="center"
+            >{detail.ip}</Typography>
+            <Typography 
+              color="inherit" 
+              noWrap
+              align="center"
+            >{detail.address}</Typography>
+            <span className="arrow"/>
+          </div>
+        </div>}
       </div>
     )
   }
 }
 
-const mapStateToProps = ({map}) => ({
-  focusedCam: map.focusedCam
+const mapStateToProps = ({cameras, map}) => ({
+  focusedCam: map.focusedCam,
+  editingCam: map.editingCam,
+  isEditingCam: map.isEditingCam,
+  currentCamId: cameras.currentCam.id,
 })
 export default connect(mapStateToProps, {
   cancelFocusedCam: cancelFocusedCam

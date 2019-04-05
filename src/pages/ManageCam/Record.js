@@ -20,6 +20,9 @@ const styles = theme => ({
   root: {
 
   },
+  row: {
+
+  },
   switch: {
     zIndex: 1
   },
@@ -36,6 +39,9 @@ const styles = theme => ({
     flexDirection: 'column'
   },
   pannelSummary: {
+    // display: 'flex',
+    // flexDirection: 'row',
+    // textAlign: 'left'
     // marginTop: -12,
     // marginBottom: -12
   },
@@ -72,8 +78,11 @@ class Record extends Component{
             />
           </div>
           <div>
-            <Typography>Ghi hình</Typography>
+            <Typography>Ghi hình (Độ dài file, thời gian lưu trữ...)</Typography>
           </div>
+          {/* <div>
+            <Typography noWrap>Độ dài file video, thời gian lưu trữ</Typography>
+          </div> */}
         </ExpansionPanelSummary>
         {addCamera.record && <ExpansionPanelDetails className={classes.expansionPanelDetails}>
           <div className="form-group">

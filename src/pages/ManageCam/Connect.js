@@ -9,10 +9,10 @@ import { withStyles } from '@material-ui/core/styles'
 import { Scrollbars } from 'react-custom-scrollbars';
 import { 
   changeAddCameraParams,
-  connectCamera
+  connectCamera,
 } from '../../actions/action_camera'
+import { toggleAddCamMap} from '../../actions/action_map'
 import {getDataBeforeConnect} from '../../actions/action_manageCam'
-
 import { showLoadingModal } from '../../actions/action_modal'
 import { getAllProvinces } from '../../actions/action_political'
 import {
@@ -80,16 +80,16 @@ class Connect extends Component{
   state = {
     value: ''
   }
-  componentWillUnmount(){
-    // this.props.disabledAddCam()
-  }
-  onChange = name => event => {
-    this.props.changeAddCameraParams({[name]: event.target.value})
-  }
   componentDidMount() {
     this.props.getDataBeforeConnect()
     // this.props.getAllProvinces()
-    // this.props.activeAddCam()
+    this.props.toggleAddCamMap()
+  }
+  componentWillUnmount(){
+    this.props.toggleAddCamMap()
+  }
+  onChange = name => event => {
+    this.props.changeAddCameraParams({[name]: event.target.value})
   }
   changeSelect = name => value => {
     console.log(value)
@@ -330,6 +330,7 @@ export default connect(mapStateToProps, {
     changeAddCameraParams: changeAddCameraParams,
     connectCamera: connectCamera,
     showLoadingModal: showLoadingModal,
-    getDataBeforeConnect: getDataBeforeConnect
+    getDataBeforeConnect: getDataBeforeConnect,
+    toggleAddCamMap: toggleAddCamMap
 })(withStyles(styles)(Connect))
 

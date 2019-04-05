@@ -21,6 +21,10 @@ import {
   changeCamConnectionParams,
   editCamConnection
 } from '../../actions/action_camera'
+import {
+  toggleEditCamMap
+} from '../../actions/action_map'
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -81,6 +85,12 @@ const selectStyles = {
 
 class EditConnect extends Component{
   
+  componentDidMount(){
+    this.props.toggleEditCamMap()
+  }
+  componentWillUnmount(){
+    this.props.toggleEditCamMap()
+  }
   onChange = name => event => {
     this.props.changeCamConnectionParams({
       [name]: event.target.value
@@ -287,6 +297,7 @@ class EditConnect extends Component{
 }
 
 const mapStateToProps = ({cameras, political}) => ({
+  id: cameras.currentCam.id,
   isFetching: cameras.isFetching,
   errors: cameras.errors,
   editConnectionData: cameras.editCam.connection,
@@ -301,4 +312,5 @@ const mapStateToProps = ({cameras, political}) => ({
 export default connect(mapStateToProps, {
   changeCamConnectionParams: changeCamConnectionParams,
   editCamConnection: editCamConnection,
+  toggleEditCamMap: toggleEditCamMap,
 })(withStyles(styles)(EditConnect))

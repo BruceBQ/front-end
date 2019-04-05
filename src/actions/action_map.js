@@ -21,5 +21,15 @@ export function changeBoundsMap({center, zoom}){
   }
 }
 
+export function toggleAddCamMap(){
+  return {
+    type: types.TOGGLE_ADD_CAM_MAP
+  }
+}
 
+export function toggleEditCamMap(){
+  return {
+    type: types.TOGGLE_EDIT_CAM_MAP
+  }
+}
 

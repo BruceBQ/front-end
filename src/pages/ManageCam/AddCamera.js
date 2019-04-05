@@ -38,6 +38,9 @@ function getSteps(){
 }
 
 class AddCamera extends Component{
+  componentDidMount(){
+    
+  }
   render(){
     const { classes, activeStep } = this.props
     const steps = getSteps()

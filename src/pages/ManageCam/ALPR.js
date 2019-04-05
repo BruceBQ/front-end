@@ -62,8 +62,9 @@ class ALPR extends Component{
             />
           </div>
           <div>
-            <Typography>Nhân dạng biển số</Typography>
+            <Typography>Nhận dạng biển số</Typography>
           </div>
+          
         </ExpansionPanelSummary>
       </ExpansionPanel>
     )

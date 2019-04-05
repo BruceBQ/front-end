@@ -12,6 +12,7 @@ const reducer_manageCam = (state =INITIAL_STATE, action) => {
       return Object.assign({}, state, {
         tabValue: action.value
       })
+    
     default:
       return state
   }

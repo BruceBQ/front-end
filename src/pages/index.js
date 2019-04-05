@@ -3,7 +3,7 @@ import LoginPage from './Login'
 import CameraDetail from './Sitemap/CameraDetail'
 
 export {
-    SitemapPage,
-    LoginPage,
-    CameraDetail,
+  SitemapPage,
+  LoginPage,
+  CameraDetail,
 }

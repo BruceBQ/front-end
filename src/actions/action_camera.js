@@ -63,10 +63,17 @@ export function changeAddCameraParams(payload){
     payload
   }
 }
-
+// get cam location via GoogleMapApi
 export function getCameraLocation(payload){
   return {
     type: types.GET_CAMERA_LOCATION,
+    payload
+  }
+}
+
+export function changeCamLocation(payload){
+  return {
+    type: types.CHANGE_CAM_LOCATION,
     payload
   }
 }
@@ -199,6 +206,7 @@ export function focusedCam({center, zoom, id}){
     id
   }
 }
+//
 
 export function cancelFocusedCam(){
   return {
@@ -232,7 +240,12 @@ export function changeCamConnectionParams(payload){
     payload
   }
 }
-
+export function changeCamPolitical(payload){
+  return {
+    type: types.CHANGE_CAM_POLITICAL,
+    payload
+  }
+}
 export function editCamConnection(id, payload){
   return {
     type: types.EDIT_CAM_CONNECTION,
