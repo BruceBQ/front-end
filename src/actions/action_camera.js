@@ -1,24 +1,29 @@
 import * as types from '../constant/constant_actions'
 
-export function clearCameraErrors(){
+export function clearCameraErrors() {
   return {
-    type: types.CLEAR_CAMERA_ERRORS
+    type: types.CLEAR_CAMERA_ERRORS,
   }
 }
 
-export function getCameraLocations({id}){
+export function getCameraLocations({ id }) {
   return {
     type: types.GET_CAMERA_LOCATIONS,
-    id
+    id,
   }
 }
-export function getCameraLocationsSuccess(locations, provinces, districts, communes){
+export function getCameraLocationsSuccess(
+  locations,
+  provinces,
+  districts,
+  communes,
+) {
   return {
     type: types.GET_CAMERA_LOCATIONS_SUCCESS,
     locations,
     provinces,
     districts,
-    communes
+    communes,
   }
 }
 
@@ -30,223 +35,233 @@ export function getCameraLocationsSuccess(locations, provinces, districts, commu
 //   }
 // }
 
-export function getProvincesAvailable(){
+export function getProvincesAvailable() {
   return {
-    type: types.GET_PROVINCES_AVAILABLE
+    type: types.GET_PROVINCES_AVAILABLE,
   }
 }
 
-export function getProvincesAvailableSuccess(provinces){
+export function getProvincesAvailableSuccess(provinces) {
   return {
     type: types.GET_PROVINCES_AVAILABLE_SUCCESS,
-    provinces
+    provinces,
   }
 }
 
 export function getDistrictsAvailable(province) {
   return {
     type: types.GET_DISTRICTS_AVAILABLE,
-    province
+    province,
   }
 }
 
-export function getDistrictsAvailableSuccess(districts){
+export function getDistrictsAvailableSuccess(districts) {
   return {
     type: types.GET_DISTRICTS_AVAILABLE_SUCCESS,
-    districts
+    districts,
   }
 }
 
-export function changeAddCameraParams(payload){
+export function changeAddCameraParams(payload) {
   return {
     type: types.CHANGE_CAMERA_PARAMS,
-    payload
+    payload,
   }
 }
 // get cam location via GoogleMapApi
-export function getCameraLocation(payload){
+export function getCameraLocation(payload) {
   return {
     type: types.GET_CAMERA_LOCATION,
-    payload
+    payload,
   }
 }
 
-export function changeCamLocation(payload){
+export function changeCamLocation(payload) {
   return {
     type: types.CHANGE_CAM_LOCATION,
-    payload
+    payload,
   }
 }
 
-export function gotoSitemapPage(){
+export function gotoSitemapPage() {
   return {
-    type: types.GOTO_SITEMAP_PAGE
+    type: types.GOTO_SITEMAP_PAGE,
   }
 }
 
-export function exitSitemapPage(){
+export function exitSitemapPage() {
   return {
-    type: types.EXIT_SITEMAP_PAGE
+    type: types.EXIT_SITEMAP_PAGE,
   }
 }
 
-export function getCameraPositionSuccess(province, district, commune){
+export function getCameraPositionSuccess(province, district, commune) {
   return {
     type: types.GET_CAMERA_POSITION_SUCCESS,
     province,
     district,
-    commune
+    commune,
   }
 }
 
-export function connectCamera(payload){
+export function connectCamera(payload) {
   return {
     type: types.CONNECT_CAMERA,
-    payload
+    payload,
   }
 }
 
-export function connectCameraSuccess(payload){
+export function connectCameraSuccess(payload) {
   return {
     type: types.CONNECT_CAMERA_SUCCESS,
-    payload
+    payload,
   }
 }
 
-export function connectCameraFailure(errors){
+export function connectCameraFailure(errors) {
   return {
     type: types.CONNECT_CAMERA_FAILURE,
-    errors
+    errors,
   }
 }
 
-export function configParams(payload){
+export function configParams(payload) {
   return {
     type: types.CONFIG_PARAMS,
-    payload
+    payload,
   }
 }
 
-export function configParamsSucess(){
+export function configParamsSucess() {
   return {
-    type: types.CONFIG_PARAMS_SUCCESS
+    type: types.CONFIG_PARAMS_SUCCESS,
   }
 }
 
-export function configParamsFailure(errors){
+export function configParamsFailure(errors) {
   return {
     type: types.CONFIG_PARAMS_FAILURE,
-    errors
+    errors,
   }
 }
 
-export function configFunctions(payload){
+export function configFunctions(payload) {
   return {
     type: types.CONFIG_FUNCTIONS,
-    payload
+    payload,
   }
 }
 
-export function configFunctionsSuccess(){
+export function configFunctionsSuccess() {
   return {
-    type: types.CONFIG_FUNCTIONS_SUCCESS
+    type: types.CONFIG_FUNCTIONS_SUCCESS,
   }
 }
 
-export function configFunctionsFailure(){
+export function configFunctionsFailure() {
   return {
-    type: types.CONFIG_FUNCTIONS_FAILURE
+    type: types.CONFIG_FUNCTIONS_FAILURE,
   }
 }
 
-export function changeSearchCamParams(payload){
+export function changeSearchCamParams(payload) {
   return {
     type: types.CHANGE_SEARCH_CAM_PARAMS,
     payload,
   }
 }
 
-export function nextStep(){
+export function nextStep() {
   return {
-    type: types.NEXT_STEP
+    type: types.NEXT_STEP,
   }
 }
 
-export function backStep(){
+export function backStep() {
   return {
-    type: types.BACK_STEP
+    type: types.BACK_STEP,
   }
 }
 
-export function searchCam(){
+export function searchCam() {
   return {
-    type: types.SEARCH_CAMERA
+    type: types.SEARCH_CAMERA,
   }
 }
 
-export function searchCamSuccess(payload){
+export function searchCamSuccess(payload) {
   return {
     type: types.SEARCH_CAMERA_SUCCESS,
-    payload
+    payload,
   }
 }
 
-export function searchCamFailure(errors){
+export function searchCamFailure(errors) {
   return {
     type: types.SEARCH_CAMERA_FAILURE,
-    errors
+    errors,
   }
 }
 
-export function focusedCam({center, zoom, id}){
+export function focusOnCam({ center, zoom, id }) {
   return {
-    type: types.FOCUSED_CAM,
-    center, 
-    zoom, 
-    id
+    type: types.FOCUS_ON_CAM,
+    center,
+    zoom,
+    id,
   }
 }
 //
 
-export function cancelFocusedCam(){
+export function cancelFocusedCam() {
   return {
-    type: types.CANCEL_FOCUSED_CAM
+    type: types.CANCEL_FOCUSED_CAM,
   }
 }
 
-export function getCamConnection(id){
+export function configCam({ id, center, zoom, name, ip }) {
+  return {
+    type: types.CONFIG_CAM,
+    name,
+    ip,
+    center,
+    zoom,
+    id,
+  }
+}
+export function getCamConnection(id) {
   return {
     type: types.GET_CAM_CONNECTION,
-    id
+    id,
   }
 }
 
-export function getCamConnectionSuccess(connection){
+export function getCamConnectionSuccess(connection) {
   return {
     type: types.GET_CAM_CONNECTION_SUCCESS,
-    connection
+    connection,
   }
 }
 
-export function getCamConnectionFailure(){
+export function getCamConnectionFailure() {
   return {
-    type: types.GET_CAM_CONNECTION_FAILURE
+    type: types.GET_CAM_CONNECTION_FAILURE,
   }
 }
 
-export function changeCamConnectionParams(payload){
+export function changeCamConnectionParams(payload) {
   return {
     type: types.CHANGE_CAM_CONNECTION_PARAMS,
-    payload
+    payload,
   }
 }
-export function changeCamPolitical(payload){
+export function changeCamPolitical(payload) {
   return {
     type: types.CHANGE_CAM_POLITICAL,
-    payload
+    payload,
   }
 }
-export function editCamConnection(id, payload){
+export function editCamConnection(id, payload) {
   return {
     type: types.EDIT_CAM_CONNECTION,
     id,
@@ -254,14 +269,55 @@ export function editCamConnection(id, payload){
   }
 }
 
-export function editCamConnectionSuccess(){
+export function editCamConnectionSuccess() {
   return {
-    type: types.EDIT_CAM_CONNECTION_SUCCESS
+    type: types.EDIT_CAM_CONNECTION_SUCCESS,
   }
 }
 
-export function editCamConnectionFailure(){
+export function editCamConnectionFailure(errors) {
   return {
-    type: types.EDIT_CAM_CONNECTION_FAILURE
+    type: types.EDIT_CAM_CONNECTION_FAILURE,
+    errors
+  }
+}
+
+export function getCamParams(id) {
+  return {
+    type: types.GET_CAM_PARAMS,
+    id
+  }
+}
+
+export function getCamParamsSuccess(params) {
+  return {
+    type: types.GET_CAM_PARAMS_SUCCESS,
+    params
+  }
+}
+
+export function getCamParamsFailure() {
+  return {
+    type: types.GET_CAM_PARAMS_FAILURE
+  }
+}
+
+export function editCamParams(id, payload) {
+  return {
+    type: types.EDIT_CAM_PARAMS,
+    id,
+    payload
+  }
+}
+
+export function editCamParamsSuccess() {
+  return {
+    type: types.EDIT_CAM_PARAMS_SUCCESS
+  }
+}
+
+export function editCamParamsFailure() {
+  return {
+    type: types.EDIT_CAM_PARAMS_FAILURE
   }
 }

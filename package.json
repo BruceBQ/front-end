@@ -36,6 +36,7 @@
     "redux-saga": "^0.16.2",
     "reselect": "^4.0.0",
     "source-map-explorer": "^1.8.0",
+    "ws": "^6.2.1",
     "yup": "^0.26.10"
   },
   "scripts": {

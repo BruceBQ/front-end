@@ -56,6 +56,7 @@ export function editCamConnection(id, payload){
 }
 
 export function getCamParams(id){
+  console.log(id)
   return axios({
     method: 'get',
     url: `${API_URL}api/camera/${id}/params`,

@@ -12,7 +12,18 @@ const reducer_manageCam = (state =INITIAL_STATE, action) => {
       return Object.assign({}, state, {
         tabValue: action.value
       })
-    
+    case types.CONFIG_CAM:
+      return Object.assign({}, state, {
+        tabValue: 1
+      })
+    case types.FOCUS_ON_CAM:
+      return Object.assign({}, state, {
+        tabValue: 0
+      })
+    case types.CANCEL_FOCUSED_CAM:
+      return Object.assign({}, state, {
+        tabValue: 0
+      })
     default:
       return state
   }

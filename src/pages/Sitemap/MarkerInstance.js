@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faCog, faEye, faExpand, faPlay } from '@fortawesome/free-solid-svg-icons'
 import cx from 'classnames'
 import Player from '../../components/Player/components/Player'
+
 class MarkerInstance extends Component{
     state = {
         hoverState: false

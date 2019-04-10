@@ -198,15 +198,44 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
     //   return Object.assign({}, state, {
 
     //   })
+    //focused cam
+    case types.FOCUS_ON_CAM:
+      return Object.assign({}, state, {
+        focusedCam: action.id
+      })
+    case types.CANCEL_FOCUSED_CAM:
+      return Object.assign({}, state, {
+        editCam: INITIAL_STATE.editCam,
+        focusedCam: -1,
+      })
+    // config cam
+    case types.CONFIG_CAM:
+      return Object.assign({}, state, {
+        focusedCam: action.id,
+        editCam: {
+          ...state.editCam,
+          connection: {
+            ...state.editCam.connection,
+            name: action.name,
+            ip: action.ip,
+            ...action.center
+          }
+        }
+      })
     //get connection
     case types.GET_CAM_CONNECTION:
       return Object.assign({}, state, {
         currentCam: {
           ...state.currentCam,
-          id: action.id
         },
+        editCam: {
+          ...state.editCam,
+        },
+        focusedCam: action.id,
+        editingCam: action.id,
         isFetching: true
       })
+    
     case types.GET_CAM_CONNECTION_SUCCESS:
       return Object.assign({}, state, {
         currentCam: {
@@ -217,12 +246,14 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
           ...state.editCam,
           connection: action.connection
         },
+        errors: {},
         isFetching: false,
       })
     case types.GET_CAM_CONNECTION_FAILURE:
       return Object.assign({}, state, {
-        isFetching: false
+        isFetching: false,
       })
+    //change cam connection params
     case types.CHANGE_CAM_CONNECTION_PARAMS:
       return Object.assign({}, state, {
         editCam: {
@@ -253,8 +284,38 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
           }
         }
       })
+    case types.EDIT_CAM_CONNECTION_SUCCESS: 
+      return Object.assign({}, state, {
+        errors: {}
+      })
+    case types.EDIT_CAM_CONNECTION_FAILURE:
+      return Object.assign({}, state, {
+        errors: action.errors
+      })
     //get params
-
+    case types.GET_CAM_PARAMS:
+      return Object.assign({}, state, {
+        isFetching: true
+      })
+    case types.GET_CAM_PARAMS_SUCCESS: 
+      return Object.assign({}, state, {
+        currentCam: {
+          ...state.currentCam,
+          params: action.params
+        },
+        editCam: {
+          ...state.editCam,
+          params: action.params
+        },
+        errors: {},
+        isFetching: false,
+      })
+    case types.GET_CAM_PARAMS_FAILURE: {
+      return Object.assign({}, state, {
+        
+        isFetching: false
+      })
+    }
     //get functions
     default:
       return state

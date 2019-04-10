@@ -19,6 +19,7 @@ import {
 } from '../../components/Select/SelectControl'
 import { 
   changeCamConnectionParams,
+  getCamConnection,
   editCamConnection
 } from '../../actions/action_camera'
 import {
@@ -86,7 +87,9 @@ const selectStyles = {
 class EditConnect extends Component{
   
   componentDidMount(){
+    const { focusedCam } = this.props
     this.props.toggleEditCamMap()
+    this.props.getCamConnection(focusedCam)
   }
   componentWillUnmount(){
     this.props.toggleEditCamMap()
@@ -104,8 +107,8 @@ class EditConnect extends Component{
   }
 
   handleSubmit = () => {
-    const { id, editConnectionData } = this.props
-    this.props.editCamConnection(id, editConnectionData)
+    const { focusedCam, editConnectionData } = this.props
+    this.props.editCamConnection(focusedCam, editConnectionData)
   }
 
   render(){
@@ -297,11 +300,12 @@ class EditConnect extends Component{
 }
 
 const mapStateToProps = ({cameras, political}) => ({
-  id: cameras.currentCam.id,
+  // id: cameras.currentCam.id,
+  focusedCam: cameras.focusedCam,
   isFetching: cameras.isFetching,
   errors: cameras.errors,
   editConnectionData: cameras.editCam.connection,
-  id: cameras.currentCam.id,
+  focusedCam: cameras.focusedCam,
   currentConnection: cameras.currentCam.connection,
   provinceOptions: political.provinces,
   districtOptions: political.districts,
@@ -311,6 +315,7 @@ const mapStateToProps = ({cameras, political}) => ({
 
 export default connect(mapStateToProps, {
   changeCamConnectionParams: changeCamConnectionParams,
+  getCamConnection: getCamConnection,
   editCamConnection: editCamConnection,
   toggleEditCamMap: toggleEditCamMap,
 })(withStyles(styles)(EditConnect))

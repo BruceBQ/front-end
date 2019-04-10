@@ -1,34 +1,39 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import {
-  TextField,
-  Button,
-  Switch,
-  InputAdornment
-} from '@material-ui/core'
-import { Scrollbars } from 'react-custom-scrollbars';
+import { TextField, Button, Switch, InputAdornment } from '@material-ui/core'
+import { Formik} from 'formik'
+import { Scrollbars } from 'react-custom-scrollbars'
+import _ from 'lodash'
 import Select from 'react-select'
 import {
   CamModesControl,
   CamResolutionControl,
-  QualityControl, 
-  NoOptionsMessage
+  QualityControl,
+  NoOptionsMessage,
 } from '../../components/Select/SelectControl'
+import { getCamParams, editCamParams } from '../../actions/action_camera'
+import Loading from '../../components/Loading';
+import EditParamsForm from './EditParamsForm'
 
 const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    paddingLeft: 10
+    paddingLeft: 10,
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%'
   },
   formContent: {
     flexGrow: 1,
   },
   formGroup: {
     marginTop: 20,
-    marginRight: 10
+    marginRight: 10,
   },
   actionButton: {
     textAlign: 'right',
@@ -38,7 +43,7 @@ const styles = theme => ({
   textField: {
     fontSize: '0.875rem',
   },
-  inputAdornment:{
+  inputAdornment: {
     fontSize: '0.875rem',
     whiteSpace: 'nowrap',
   },
@@ -56,132 +61,101 @@ const styles = theme => ({
     padding: '2.5px 0 2.5px 6px',
   },
   button: {
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 })
 
 const selectStyles = {
-  menu: (styles) => {
+  menu: styles => {
     return {
       ...styles,
-      zIndex: 2
+      zIndex: 2,
     }
-  }
+  },
 }
 
-class EditParams extends Component{
+class EditParams extends Component {
+  state = { 
+
+  }
+
+  componentDidMount() {
+    const { focusedCam } = this.props
+    this.props.getCamParams(focusedCam)
+  }
+
   onChange = name => event => {
 
   }
-  changeSelect = name =>value => {
 
+  changeSelect = name => value => {}
+
+  handleSubmit = (values) => {
+    const{ focusedCam } = this.props
+    console.log(this.props)
+    this.props.editCamParams(focusedCam, values)
   }
-  render(){
-    const { classes } = this.props
-    const resolutionOptions = [], qualityOptions = []
-    
+
+  render() {
+    const { 
+      classes,
+      isFetching,
+      editParamsData = {},
+      currentParams = {},
+      errors = {}
+    } = this.props
+    let resolutionOptions = [],
+      qualityOptions = [],
+      fps_range, bitrate_range,
+      resolution = {},
+      quality = {}
+       
+    if(_.has(currentParams, 'resolution_range')){
+      resolutionOptions = currentParams.resolution_range.map(r => ({
+        value: {
+          width: Number(r.width),
+          height: Number(r.height),
+        },
+        label: Number(r.width) + 'x' + Number(r.height)
+      }))
+    }
+    if(_.has(currentParams, 'quality_range')){
+      qualityOptions = currentParams.quality_range
+    }
+    if(_.has(currentParams, 'fps_range')){
+      fps_range = `${currentParams.fps_range.Min} - ${currentParams.fps_range.Max}`
+    }
+    if(_.has(currentParams, 'bitrate_range')){
+      bitrate_range = `${currentParams.bitrate_range.Min} - ${currentParams.bitrate_range.Max}`
+    }
+    if(_.has(currentParams, 'resolution')){
+      resolution = {
+        value: currentParams.resolution,
+        label: currentParams.resolution.width + 'x' + currentParams.resolution.height
+      }
+    }
+    if(_.has(currentParams, 'quality')){
+      quality = {
+        value: currentParams.quality,
+        label: currentParams.quality,
+      }
+    }
     return (
       <div className={classes.root}>
         <div className={classes.formContent}>
-          <Scrollbars style={{width: '100%', height: '100%'}}>
-            <div className={classes.formGroup}>
-              <div className="form-group">
-                <Select 
-                  classes={classes}
-                  components={{
-                    Control: CamResolutionControl,
-                    NoOptionsMessage: NoOptionsMessage
-                  }}
-                  options={resolutionOptions}
-                  placeholder={false}
-                  onChange={this.changeSelect('resolution')}
-                  styles={selectStyles}
-                  // error={!isEmpty(errors.resolution)}
-                  // value={resolution}
-                  // helperText={!isEmpty(errors.resolution) ? errors.resolution : ''}
-                />
-              </div>
-              <div className="form-group">
-                <Select
-                  classes={classes}
-                  components={{
-                    Control: QualityControl,
-                    NoOptionsMessage: NoOptionsMessage
-                  }}
-                  placeholder={false}
-                  options={qualityOptions}
-                  styles={selectStyles}
-                  onChange={this.changeSelect('quality')}
-                  // error={!isEmpty(errors.quality)}
-                  // value={quality}
-                  // helperText={!isEmpty(errors.quality) ? errors.quality : ''}
-                />
-              </div>
-              <div className="form-group">
-                <TextField 
-                  label="FPS"
-                  fullWidth
-                  margin = "none"
-                  type="number"
-                  variant = "outlined"
-                  InputLabelProps = {{
-                    classes: {
-                      root: classes.inputLabel
-                    },
-                  }}
-                  InputProps = {{
-                    inputProps: {
-                      className: classes.inputProps
-                    },
-                    endAdornment: 
-                      <InputAdornment position="end" className={classes.inputAdornment}>
-                        {/* {addCamera.fps_range.Min} - {addCamera.fps_range.Max} */}
-                      </InputAdornment>
-                  }}
-                  onChange={this.onChange('fps')}
-                  className = { classes.textField }
-                  // value={addCamera.fps}
-                  // error={!isEmpty(errors.fps)}
-                  // helperText={!isEmpty(errors.fps) ? errors.fps : ''}
-                />
-              </div>
-              <div className="form-group">
-                <TextField 
-                    label="Bitrate (Kbps)"
-                    fullWidth
-                    margin = "none"
-                    type="number"
-                    variant = "outlined"
-                    InputLabelProps = {{
-                      classes: {
-                        root: classes.inputLabel
-                      },
-                    }}
-                    InputProps = {{
-                      inputProps: {
-                        className: classes.inputProps
-                      },
-                      endAdornment: 
-                        <InputAdornment position="end" className={classes.inputAdornment}>
-                          {/* {addCamera.bitrate_range.Min} - {addCamera.bitrate_range.Max} */}
-                        </InputAdornment>,
-                    }}
-                    onChange={this.onChange('bitrate')}
-                    className = { classes.textField }
-                    // value={addCamera.bitrate}
-                    // error={!isEmpty(errors.bitrate)}
-                    // helperText={!isEmpty(errors.bitrate) ? errors.bitrate : ''}
-                  />
-              </div>
-            </div>
-          </Scrollbars>
-        </div>
-        <div className={classes.actionButton}>
-          <Button 
-            color="primary" 
-            variant="contained"
-            onClick={this.handleSubmit}
-          >Lưu</Button>
+          {isFetching ? <Loading /> : 
+            <Formik
+              initialValues={{
+                resolution,
+                quality,
+                fps: currentParams.fps,
+                bitrate: currentParams.bitrate,
+              }}
+              onSubmit={values => this.handleSubmit(values)}
+              render={(props) =>  <EditParamsForm {...props} />
+              }
+            />
+          }
         </div>
       </div>
     )
@@ -189,5 +163,15 @@ class EditParams extends Component{
 }
 
 
+const mapStateToProps = ({cameras}) => ({
+  isFetching: cameras.isFetching,
+  focusedCam: cameras.focusedCam,
+  editParamsData: cameras.editCam.params,
+  currentParams: cameras.currentCam.params,
+  errors: cameras.errors
+})
 
-export default connect()(withStyles(styles)(EditParams))
+export default connect(mapStateToProps, {
+  getCamParams: getCamParams,
+  editCamParams: editCamParams,
+})(withStyles(styles)(EditParams))

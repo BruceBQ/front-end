@@ -8,13 +8,13 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import TooltipWrapper from '../TooltipWrapper'
 import AppsOutlined from '@material-ui/icons/AppsOutlined'
 import MapsOutlined from '@material-ui/icons/MapOutlined'
 import VideocamOutlined from '@material-ui/icons/VideocamOutlined'
 import ScheduleOutlined from '@material-ui/icons/ScheduleOutlined'
 import IconButton from '@material-ui/core/IconButton';
 import  SettingsOutlined from '@material-ui/icons/SettingsOutlined'
-import Tooltip from '@material-ui/core/Tooltip';
 import SettingsMenu from './SettingsMenu'
 import { toggleSettingsMenu } from '../../actions/action_ui'
 
@@ -101,17 +101,17 @@ class Sidebar extends Component{
         <div className={classes.wrapper}>
           <div className={classes.topIcon}>
             <ul className={classes.nav}>
-              <Tooltip title="BẢN ĐỒ" placement="right">
                 <li className={classes.navItem}>
                   <NavLink to="/dashboard/sitemap" className={classes.navLink} activeClassName={classes.navLinkActive} exact={true}>
                     {/* <span className='sidebar-icon'><FontAwesomeIcon icon={faSitemap} /></span> */}
-                    <IconButton>
-                      <MapsOutlined className={classes.smallIcon}/>
-                    </IconButton>
+                    <TooltipWrapper title="BẢN ĐỒ" placement="right">
+                      <IconButton>
+                        <MapsOutlined className={classes.smallIcon}/>
+                      </IconButton>
+                    </TooltipWrapper>
                   </NavLink>
                 </li>
-              </Tooltip>
-              <Tooltip title="DS THEO DÕI" placement="right">
+              <TooltipWrapper title="DS THEO DÕI" placement="right">
                 <li className={classes.navItem}>
                   <NavLink to='/dashboard/follow_list' activeClassName='active' exact={true}>
                     <IconButton>
@@ -119,7 +119,7 @@ class Sidebar extends Component{
                     </IconButton>
                   </NavLink>
                 </li>
-              </Tooltip>
+              </TooltipWrapper>
             </ul>
           </div>
           <div className={classes.bottomIcon}>
@@ -145,14 +145,14 @@ class Sidebar extends Component{
                 <ListItemText primary="QUẢN LÝ CAMERA" classes={{primary: classes.listItemText}}/>
               </NavLink>
             </MenuItem>
-            <MenuItem onClick={this.handleClose}>
+            {/* <MenuItem onClick={this.handleClose}>
               <NavLink to="/dashboard/manage_cam" className={classes.navLink}>
                 <ListItemIcon className={classes.icon}>
                   <ScheduleOutlined  className={classes.smallIcon}/>
                 </ListItemIcon>
                 <ListItemText primary="LOGS" classes={{primary: classes.listItemText}}/>
               </NavLink>
-            </MenuItem>
+            </MenuItem> */}
           </Menu>
         </div>
         {/* {this.props.settingsMenu && <SettingsMenu />} */}

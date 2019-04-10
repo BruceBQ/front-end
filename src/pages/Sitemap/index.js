@@ -7,12 +7,12 @@ import Search  from './Search'
 import CameraList from './CameraList'
 import Button from '@material-ui/core/Button';
 import MarkerInstance from './MarkerInstance'
-import { MAP_API_KEY } from '../../constant/constant_endpoint'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilter, faCaretLeft, faCaretRight } from '@fortawesome/free-solid-svg-icons'
+// import { SitemapMarkerCam } from '../../components/Marker'
+import Marker from './Marker'
 import SearchCamera from '../ManageCam/Search'
-import SearchResult from '../ManageCam/SearchResult'
+import SearchResult from './SearchResult'
 import cx from 'classnames'
+import { changeBoundsMap } from '../../actions/action_map'
 import _ from 'lodash'
 import * as CameraActions from '../../actions/action_camera'
 import * as ModalActions from '../../actions/action_modal'
@@ -75,8 +75,8 @@ class SitemapPage extends Component{
   showModal = type => event => { 
       // this.props.showAddModal(type)
   }
-  onChange = ({ center, zoom, bounds, marginBounds }) => {
-
+  _onBoundsChange = ({ center, zoom, bounds, marginBounds }) => {
+    this.props.changeBoundsMap({center, zoom})
   }
 
   onClick = () => {
@@ -100,7 +100,11 @@ class SitemapPage extends Component{
   }
     
   render(){
-    const { classes, cameraFilterSidebar } = this.props
+    const { 
+      classes,
+      cameraFilterSidebar,
+      cameras = []
+    } = this.props
     const cameraSearchStyles = cx('camera-search',
       this.props.cameraFilterSidebar ? 'hidden-filter' : ''
     )
@@ -111,30 +115,24 @@ class SitemapPage extends Component{
             center={this.state.center}
             defaultZoom={this.props.zoom}
             onClick={this.onClick}
-            onChange={this.onChange}
-            debounced={true}
-            // onChildClick={this.onChildClick}
-            // onGoogleApiLoaded={({map, maps}) => this.renderMarkers(map, maps)}
+            onChange={this._onBoundsChange}
           >
-            {this.props.cameras &&
-              this.props.cameras.map((camera, index) => (
-                <MarkerInstance 
-                  lat={camera.lat}
-                  lng={camera.lng}
-                  key={index}
-                  detail={camera}
-                  displayInfoWindow={this.props.infoWindow === camera._id}
-                  showInfoWindow={this.props.showInfoWindow}
-                  closeInfoWindow={this.props.closeInfoWindow}
-                />
-            ))}
+            { !_.isEmpty(cameras) && cameras.map((cam, index) => (
+              <Marker
+                lat={cam.lat}
+                lng={cam.lng}
+                key={index}
+                detail={cam}
+              />
+            ))
+            }
           </GoogleMap>
         </div>
         <div className={cameraFilterSidebar ? classes.filterWrapper : classes.hideFilterWrapper}>
           {cameraFilterSidebar && 
             <Fragment>
               <SearchCamera />
-              <SearchResult isSitemap={true} />
+              <SearchResult />
             </Fragment>  
           }
         </div>
@@ -162,4 +160,8 @@ const mapDispatchToProps = (dispatch) => ({
   // toggleFilter: () => dispatch(UIActions.toggleFilter()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SitemapPage))
+export default connect(mapStateToProps, 
+  {
+    changeBoundsMap: changeBoundsMap
+  }
+)(withStyles(styles)(SitemapPage))

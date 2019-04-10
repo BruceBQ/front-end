@@ -1,26 +1,29 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import Switch from '@material-ui/core/Switch'
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Avatar from '@material-ui/core/Avatar'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import IconButton from '@material-ui/core/IconButton'
 import SettingsIcon from '@material-ui/icons/Settings'
 import InfoOutlined from '@material-ui/icons/InfoOutlined'
 import RemoveRedEyeOutlined from '@material-ui/icons/RemoveRedEyeOutlined'
 import DeleteIcon from '@material-ui/icons/Delete'
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
 import TooltipWrapper from '../../components/TooltipWrapper'
 import { changeBoundsMap } from '../../actions/action_map'
 import { switchTab } from '../../actions/action_manageCam'
-import { focusedCam, getCamConnection } from '../../actions/action_camera'
-
+import { 
+  focusOnCam, 
+  configCam,
+  getCamConnection
+} from '../../actions/action_camera'
 
 const styles = theme => ({
   card: {
@@ -33,7 +36,7 @@ const styles = theme => ({
     backgroundColor: '#e0e0e0'
   },
   cardMediaWrapper: {
-    width: 150,
+    width: 150
   },
   controls: {
     display: 'flex',
@@ -49,21 +52,21 @@ const styles = theme => ({
   },
   cardMedia: {
     width: '100%',
-    paddingTop: '56.25%',
+    paddingTop: '56.25%'
   },
   cardContent: {
     paddingTop: 5,
-    paddingBottom: 0,
+    paddingBottom: 0
   },
   iconButton: {
-    padding: '6px'
+    padding: 6
   },
   icon: {
     fontSize: 16
   },
   name: {
     fontSize: 16,
-    fontWeight: 500,
+    fontWeight: 500
   },
   description: {
     lineHeight: '1.5em',
@@ -71,106 +74,120 @@ const styles = theme => ({
   },
   switchBase: {
     height: 20
-  },
-  
+  }
 })
-class CameraItem extends Component{
-  handleClick = (e) => {
+class CameraItem extends Component {
+  handleClick = e => {
     e.stopPropagation()
     const { lat, lng, id } = this.props.detail
-    this.props.focusedCam({
+    this.props.focusOnCam({
       center: { lat, lng },
       zoom: 15,
       id
     })
   }
-  _onMoustLeave = () => {
-
-  }
-  _onMoustLeave = () => {
-
-  }
-  _onSwitchChange = (id) => (e) => {
+  _onMoustLeave = () => {}
+  _onMoustLeave = () => {}
+  _onSwitchChange = id => e => {
     e.stopPropagation()
   }
-  handleConfigsClick = (e) => {
+  handleConfigsClick = e => {
     e.stopPropagation()
-    this.props.getCamConnection(this.props.detail.id)
+    const { id, lat, lng, name, ip } = this.props.detail
+    this.props.configCam({
+      center: { lat, lng },
+      name,
+      ip,
+      zoom: 15,
+      id
+    })
+    // this.props.getCamConnection({
+    //   center: { lat, lng },
+    //   zoom: 15,
+    //   id
+    // })
   }
-  render(){
-    const { classes, detail, focused_cam } = this.props
-    const isFocused = focused_cam === detail.id
-    return(
-        <Card className={classNames(classes.card, {
+  render() {
+    const { classes, detail, focusedCam } = this.props
+    const isFocused = focusedCam === detail.id
+    return (
+      <Card
+        className={classNames(classes.card, {
           [classes.focused]: isFocused
-        })} 
-          onClick={this.handleClick}
-          onMouseEnter={this._onMouseEnter}
-          onMouseLeave={this._onMouseLeave}
-        >
-          <div className={classes.cardMediaWrapper}>
-            <CardMedia
-              className={classes.cardMedia}
-              image={detail.thumnail}
-            />
-          </div>
-          <div className={classes.details}>
-            <CardContent className={classes.cardContent}>
-              <Typography variant="inherit" noWrap className={classes.name}>
-                {detail.name}
-              </Typography>
-              <Typography variant="inherit" noWrap 
-                // color="textSecondary" 
-                // className={classes.description}
-              >
-                {/* {detail.ip} */}
-              </Typography>
-              <Typography variant="inherit" noWrap
-                // color="textSecondary" 
-                // className={classes.description}
-              >
-                {detail.address}
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}>
-              <Fragment>
-              <TooltipWrapper
-                title="Cấu hình"
-              >
-                <IconButton className={classes.iconButton} onClick={this.handleConfigsClick}>
-                  <SettingsIcon  className={classes.icon}/>
+        })}
+        onClick={this.handleClick}
+        onMouseEnter={this._onMouseEnter}
+        onMouseLeave={this._onMouseLeave}
+      >
+        <div className={classes.cardMediaWrapper}>
+          <CardMedia className={classes.cardMedia} image={detail.thumnail} />
+        </div>
+        <div className={classes.details}>
+          <CardContent className={classes.cardContent}>
+            <Typography variant="inherit" noWrap className={classes.name}>
+              {detail.name}
+            </Typography>
+            <Typography
+              variant="inherit"
+              noWrap
+              // color="textSecondary"
+              // className={classes.description}
+            >
+              {/* {detail.ip} */}
+            </Typography>
+            <Typography
+              variant="inherit"
+              noWrap
+              // color="textSecondary"
+              // className={classes.description}
+            >
+              {detail.address}
+            </Typography>
+          </CardContent>
+          <div className={classes.controls}>
+            <Fragment>
+              <TooltipWrapper title="Cấu hình">
+                <IconButton
+                  className={classes.iconButton}
+                  onClick={this.handleConfigsClick}
+                >
+                  <SettingsIcon className={classes.icon} />
                 </IconButton>
               </TooltipWrapper>
-              <TooltipWrapper
-                title="Xóa"
-              >
-                <IconButton className={classes.iconButton} onClick={this.handleDeleteClick}>
-                  <DeleteIcon className={classes.icon}/>
+              <TooltipWrapper title="Xóa">
+                <IconButton
+                  className={classes.iconButton}
+                  onClick={this.handleDeleteClick}
+                >
+                  <DeleteIcon className={classes.icon} />
                 </IconButton>
               </TooltipWrapper>
-                <Switch
-                  color="primary"
-                  classes={{
-                    switchBase: classes.switchBase
-                  }}
-                  checked={detail.status !== 'disabled'}
-                  onChange={this._onSwitchChange(detail.id)}
-                />
-              </Fragment>
-            </div>
+              <Switch
+                color="primary"
+                classes={{
+                  switchBase: classes.switchBase
+                }}
+                checked={detail.status !== 'disabled'}
+                onChange={this._onSwitchChange(detail.id)}
+              />
+            </Fragment>
           </div>
-        </Card>
+        </div>
+      </Card>
       // </ListItem>
     )
   }
 }
 
-
-const mapStateToProps = ({map}) => ({
-  focused_cam: map.focusedCam
+const mapStateToProps = ({ cameras }) => ({
+  focusedCam: cameras.focusedCam
 })
-export default connect(mapStateToProps, {
-  focusedCam: focusedCam,
-  // switchTab: switchTab,
-  getCamConnection: getCamConnection
-})(withStyles(styles)(CameraItem))
+export default connect(
+  mapStateToProps,
+  {
+    focusOnCam: focusOnCam,
+    // switchTab: switchTab,
+    configCam: configCam
+    // getCamConnection: getCamConnection
+  }
+)(withStyles(styles)(CameraItem))

@@ -12,7 +12,7 @@ import Loading from '../../components/Loading'
 import { MarkerCam } from '../../components/Marker'
 import { changeBoundsMap } from '../../actions/action_map'
 import { 
-  focusedCam, 
+  focusOnCam, 
   changeCamLocation, 
   getCameraLocation 
 } from '../../actions/action_camera'
@@ -97,7 +97,7 @@ class ManageCam extends Component{
     this.setState({
       value: 1
     })
-    this.props.focusedCam({
+    this.props.focusOnCam({
       center: { lat, lng },
       zoom: 15,
       id
@@ -190,7 +190,7 @@ const mapStateToProps = ({cameras, map, manageCam}) => ({
 
 export default withRouter(connect(mapStateToProps, {
   changeBoundsMap: changeBoundsMap,
-  focusedCam: focusedCam,
+  focusOnCam: focusOnCam,
   switchTab: switchTab, 
   changeCamLocation: changeCamLocation,
   getCameraLocation: getCameraLocation,

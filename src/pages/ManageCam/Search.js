@@ -127,7 +127,7 @@ class Search extends Component{
       <div className={classes.root}>
         <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>LỌC</Typography>
+            <Typography className={classes.heading}>TÌM KIẾM NÂNG CAO</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.details}>
             <div className="form-group">

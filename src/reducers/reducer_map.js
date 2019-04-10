@@ -39,15 +39,20 @@ const reducer_map = (state = INITIAL_STATE, action) => {
         zoom: action.zoom,
       })
     // focus camera
-    case types.FOCUSED_CAM:
+    case types.FOCUS_ON_CAM:
       return Object.assign({}, state, {
         center: action.center,
         zoom: action.zoom,
-        focusedCam: action.id
+        // focusedCam: action.id
       })
-    case types.CANCEL_FOCUSED_CAM:
+    // case types.CANCEL_FOCUSED_CAM:
+    //   return Object.assign({}, state, {
+    //     focusedCam: -1
+    //   })
+    case types.CONFIG_CAM:
       return Object.assign({}, state, {
-        focusedCam: -1
+        center: action.center,
+        zoom: action.zoom,
       })
     case types.SEARCH_CAMERA_SUCCESS:
       return Object.assign({}, state, {
@@ -61,7 +66,7 @@ const reducer_map = (state = INITIAL_STATE, action) => {
       return Object.assign({}, state, {
         isEditingCam: !state.isEditingCam
       })
-    case types.
+    // case types.
     default:
       return { ...state }
   }
