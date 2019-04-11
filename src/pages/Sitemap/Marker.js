@@ -45,8 +45,11 @@ class Marker extends Component {
     })
   }
   _onMarkerClick = () => {
-    const { id } = this.props.detail
-    this.props.showInfoWindow(id)
+    const { id, lat, lng } = this.props.detail
+    this.props.showInfoWindow({
+      center: { lat, lng },
+      id
+    })
     this.setState({
       hover: false
     })
@@ -62,7 +65,7 @@ class Marker extends Component {
     const markerStyles = cx('marker-instance', {
       'camera-normal': detail.status === 'enabled',
       'camera-disabled': detail.status === 'disabled',
-      'marker-hover': hover,
+      'marker-hover': hover && !isShowInfoWindow,
       'marker-editing': isShowInfoWindow
     })
     return(

@@ -24,7 +24,7 @@ class Video extends Component{
             })
             this.hls.on(Hls.Events.MANIFEST_PARSED,function(event, data) {
                 console.log('MANIFEST_PARSED')
-                // video.play()
+                video.play()
                 console.log('PLAY STREAM SRC=' + streamURL)
             });
             this.hls.on(Hls.Events.ERROR,  (event, data) => {

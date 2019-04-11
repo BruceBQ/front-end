@@ -15,9 +15,9 @@ import {
   watchEditCamParams
 } from './saga_camera'
 import { 
-  watchShowEditModal,
-  watchShowDeleteModal, 
-  watchCloseModal 
+  // watchShowEditModal,
+  // watchShowDeleteModal, 
+  // watchCloseModal 
 } from './saga_modal'
 import { 
   watchGetCameraLocation,
@@ -31,7 +31,9 @@ import {
   // watchClearProvince,
   // watchClearDistrict,
 } from './saga_political'
-
+import {
+  connectStream
+} from './saga_sitemap'
 import {
   watchGetDataBeforeConnect,
   watchGetDataBeforeSearch,
@@ -55,9 +57,9 @@ export default function* rootSaga() {
     fork(watchGetCamParams),
     fork(watchEditCamParams),
     //modal
-    fork(watchShowEditModal),
-    fork(watchCloseModal),
-    fork(watchShowDeleteModal),
+    // fork(watchShowEditModal),
+    // fork(watchCloseModal),
+    // fork(watchShowDeleteModal),
     //map
     fork(watchGetCameraLocation),
     fork(watchChangeCamLocation),
@@ -66,6 +68,8 @@ export default function* rootSaga() {
     fork(watchChangeCameraParams),
     fork(watchClearProvince),
     fork(watchClearDistrict),
+
+    fork(connectStream),
     //manageCam
     fork(watchGetDataBeforeSearch),
     fork(watchGetDataBeforeConnect),

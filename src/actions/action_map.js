@@ -1,9 +1,10 @@
 import * as types from '../constant/constant_actions'
 
-export function showInfoWindow(id) {
+export function showInfoWindow({id, center}) {
   return {
     type: types.SHOW_INFO_WINDOW,
-    id
+    id,
+    center,
   }
 }
 

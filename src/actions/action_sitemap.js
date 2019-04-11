@@ -5,3 +5,4 @@ export function getSitemap(){
     type: types.GET_SITEMAP
   }
 }
+

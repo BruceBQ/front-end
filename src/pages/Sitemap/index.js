@@ -103,7 +103,10 @@ class SitemapPage extends Component{
     const { 
       classes,
       cameraFilterSidebar,
-      cameras = []
+      cameras = [],
+      center = {}, 
+      defaultZoom,
+      zoom
     } = this.props
     const cameraSearchStyles = cx('camera-search',
       this.props.cameraFilterSidebar ? 'hidden-filter' : ''
@@ -112,8 +115,9 @@ class SitemapPage extends Component{
       <div className={classes.root}>
         <div className={cameraFilterSidebar ? classes.mapWraperWithFiller: classes.mapWrapper}>
           <GoogleMap
-            center={this.state.center}
-            defaultZoom={this.props.zoom}
+            center={center}
+            defaultZoom={defaultZoom}
+            zoom={zoom}
             onClick={this.onClick}
             onChange={this._onBoundsChange}
           >
@@ -145,7 +149,10 @@ const mapStateToProps = ({cameras, map, ui}) => ({
   cameras: cameras.cameras,
   isLoading: cameras.isLoading,
   infoWindow: map.showInfoWindow,
-  cameraFilterSidebar: ui.cameraFilterSidebar
+  cameraFilterSidebar: ui.cameraFilterSidebar,
+  center: map.center,
+  defaultZoom: map.defaultZoom,
+  zoom: map.zoom
 })
 
 const mapDispatchToProps = (dispatch) => ({

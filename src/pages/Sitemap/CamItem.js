@@ -23,6 +23,9 @@ const styles = theme => ({
   cardMediaWrapper: {
     width: 150
   },
+  focused: {
+    backgroundColor: '#e0e0e0'
+  },
   details: {
     width: 'calc(100% - 150px)',
     display: 'flex',
@@ -61,18 +64,25 @@ const styles = theme => ({
 
 class CamItem extends Component{
   _onCardClick = () => {
-    const { id } = this.props.detail
-    this.props.showInfoWindow(id)
+    const { id, lat, lng } = this.props.detail
+    this.props.showInfoWindow({
+      center: { lat, lng },
+      id
+      // zoom: 15
+    })
   }
   render(){
     const {
       classes,
       detail = {},
-
+      infoWindow
     } = this.props
+    const isShowInfoWindow = detail.id === infoWindow
     return (
       <Card
-        className={classNames(classes.card)}
+        className={classNames(classes.card, {
+          [classes.focused]: isShowInfoWindow
+        })}
         onClick={this._onCardClick}
       >
         <div className={classes.cardMediaWrapper}>
@@ -131,8 +141,8 @@ class CamItem extends Component{
   }
 }
 
-const mapStateToProps = ({cameras}) => ({
-
+const mapStateToProps = ({cameras, map}) => ({
+  infoWindow: map.showInfoWindow
 })
 
 export default connect(mapStateToProps, 

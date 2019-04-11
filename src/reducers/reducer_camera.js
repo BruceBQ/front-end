@@ -37,7 +37,6 @@ const INITIAL_STATE = {
     snapshot_image_url: '',
     snapshot_image_name: '',
   },
-
   searchCam: {
     string: '',
     province: null,
@@ -64,6 +63,8 @@ const INITIAL_STATE = {
   headerMenu: false,
   focusedCam: -1,
   editingCam: -1,
+  isFetchingStreaming: false,
+  streamingUrl: '',
   errors: {},
 }
 
@@ -317,6 +318,18 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
       })
     }
     //get functions
+
+    //streaming
+    case types.SHOW_INFO_WINDOW: 
+      return Object.assign({}, state, {
+        isFetchingStreaming: true,
+      })
+    case types.GET_STREAMING_URL_SUCCESS:
+      return Object.assign({}, state, {
+        isFetchingStreaming: false,
+        streamingUrl: action.streamingUrl
+      })
+    
     default:
       return state
   }

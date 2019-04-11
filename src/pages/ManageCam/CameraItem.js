@@ -86,8 +86,8 @@ class CameraItem extends Component {
       id
     })
   }
-  _onMoustLeave = () => {}
-  _onMoustLeave = () => {}
+  _onMouseLeave = () => {}
+  _onMouseLeave = () => {}
   _onSwitchChange = id => e => {
     e.stopPropagation()
   }

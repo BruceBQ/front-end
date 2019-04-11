@@ -26,7 +26,8 @@ const reducer_map = (state = INITIAL_STATE, action) => {
   switch(action.type){
     case types.SHOW_INFO_WINDOW:
       return Object.assign({}, state, {
-        showInfoWindow: action.id
+        showInfoWindow: action.id,
+        center: action.center
       })
     case types.CLOSE_INFO_WINDOW:
       return Object.assign({}, state, {

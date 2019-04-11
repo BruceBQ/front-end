@@ -6,6 +6,7 @@ import ClearOutlined from '@material-ui/icons/ClearOutlined'
 import { Typography } from '@material-ui/core';
 import Player from '../../components/Player/components/Player'
 import { closeInfoWindow } from '../../actions/action_map'
+import Loading from '../../components/Loading'
 
 const styles = theme => ({
   root: {
@@ -18,6 +19,7 @@ const styles = theme => ({
   popper: {
     position: 'absolute',
     transform: 'translate(-50%, -100%)',
+
     top: 0,
     left: '50%'
   },
@@ -63,13 +65,16 @@ class InfoWindow extends Component {
   render() {
     const { 
       classes,
-      detail = {}
+      detail = {},
+      isFetchingStreaming,
+      streamingUrl
     } = this.props
     return  (
       
         <div 
           className={classes.popper}
           onClick={this._onInfoWindowClick}
+          onMouseEnter={event => event.stopPropagation()}
         >
           <div className={classes.tooltip}>
             <div className={classes.header}>
@@ -83,16 +88,21 @@ class InfoWindow extends Component {
                 <ClearOutlined className={classes.icon} />
               </IconButton>
             </div>
-            <Player streamURL="http://10.49.46.54:3000/index.m3u8" />
+            {isFetchingStreaming ? <Loading /> :
+              <Player streamURL={streamingUrl} />
+            }
             <span className="arrow" />
           </div> 
-      
       </div>
     )
   }
 }
+const mapStateToProps = ({cameras}) => ({
+  isFetchingStreaming: cameras.isFetchingStreaming,
+  streamingUrl: cameras.streamingUrl
+})
 
-export default connect(null,
+export default connect(mapStateToProps,
   {
     closeInfoWindow: closeInfoWindow
   }
