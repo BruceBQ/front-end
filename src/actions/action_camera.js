@@ -321,3 +321,18 @@ export function editCamParamsFailure() {
     type: types.EDIT_CAM_PARAMS_FAILURE
   }
 }
+
+//snapshot
+export function getCamSnapshot(id){
+  return {
+    type: types.GET_CAM_SNAPSHOT,
+    id
+  }
+}
+
+export function getCamSnapshotSuccess(snapshotImageUrl){
+  return {
+    type: types.GET_CAM_SNAPSHOT_SUCCESS,
+    snapshotImageUrl
+  }
+}

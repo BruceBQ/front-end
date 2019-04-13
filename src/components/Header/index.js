@@ -89,7 +89,7 @@ class Header extends Component {
     let titlePage = ''
     switch (location.pathname) {
       case '/dashboard/sitemap':
-        titlePage = 'BẢN ĐỒ'
+        titlePage = 'BẢN ĐỒ CAMERA'
         break
       case '/dashboard/follow_list':
         titlePage = 'DANH SÁCH THEO DÕI'

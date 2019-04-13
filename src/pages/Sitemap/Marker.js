@@ -4,8 +4,11 @@ import { withStyles } from '@material-ui/core/styles'
 import cx from 'classnames'
 import { Typography } from '@material-ui/core';
 import { showInfoWindow } from '../../actions/action_map'
-import InfoWindow from './InfoWindow'
+import { closePrevStreaming }  from '../../actions/action_streaming'
+import LiveView from './LiveView'
+import Shapshot from './Snapshot'
 import './marker.scss'
+import InfoWindow from './InfoWindow';
 const styles = theme => ({
   root: {
 
@@ -13,6 +16,7 @@ const styles = theme => ({
   popper: {
     position: 'absolute',
     transform: 'translate(-50%, -100%)',
+    transformStyle: 'preserve-3d',
     top: 0,
     left: '50%'
   },
@@ -45,14 +49,20 @@ class Marker extends Component {
     })
   }
   _onMarkerClick = () => {
+    const { infoWindow } = this.props
     const { id, lat, lng } = this.props.detail
-    this.props.showInfoWindow({
-      center: { lat, lng },
-      id
-    })
     this.setState({
       hover: false
     })
+    if(infoWindow !== -1 && infoWindow !== id){
+      this.props.closePrevStreaming(infoWindow)
+    }
+    if(infoWindow !== id){
+      this.props.showInfoWindow({
+        center: { lat, lng },
+        id
+      })
+    }
   }
   render(){
     const {
@@ -82,16 +92,13 @@ class Marker extends Component {
                 {detail.name}
               </Typography>
               <Typography color="inherit" noWrap align="center">
-                {detail.ip}
-              </Typography>
-              <Typography color="inherit" noWrap align="center">
                 {detail.address}
               </Typography>
               <span className="arrow" />
             </div>
           </div>
         )}
-        {  isShowInfoWindow && <InfoWindow detail={detail}/> }
+        {  isShowInfoWindow && <InfoWindow detail={detail}/>  }
       </div>
     )
   }
@@ -103,6 +110,7 @@ const mapStateToProps = ({map}) => ({
 
 export default connect(mapStateToProps,
   {
-    showInfoWindow: showInfoWindow
+    showInfoWindow: showInfoWindow,
+    closePrevStreaming: closePrevStreaming
   }
 )(withStyles(styles)(Marker))

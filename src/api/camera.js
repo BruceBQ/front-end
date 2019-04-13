@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '../constant/constant_endpoint'
-import access_token from './utils'
+import { access_token } from './utils'
 
 export function connectCamera(payload){
   return axios({
@@ -91,3 +91,10 @@ export function editCamFunctions(id, payload){
   })
 }
 
+export function getCamSnapshot(id){
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/camera/${id}/snapshot`,
+    headers: { 'Authorization': access_token },
+  })
+}

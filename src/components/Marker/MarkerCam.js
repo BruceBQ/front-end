@@ -20,6 +20,7 @@ const styles = theme => ({
   popper: {
     position: 'absolute',
     transform: 'translate(-50%, -100%)',
+    transformStyle: 'preserve-3d',
     top: 0,
     left: '50%'
   },

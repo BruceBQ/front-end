@@ -8,9 +8,10 @@ export function showInfoWindow({id, center}) {
   }
 }
 
-export function closeInfoWindow(){
+export function closeInfoWindow(id){
   return {
-    type: types.CLOSE_INFO_WINDOW
+    type: types.CLOSE_INFO_WINDOW,
+    id
   }
 }
 

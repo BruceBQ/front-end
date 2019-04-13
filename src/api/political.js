@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '../constant/constant_endpoint'
-import access_token from './utils'
+import { access_token } from './utils'
 
 export function getAllProvinces(){
   return axios({

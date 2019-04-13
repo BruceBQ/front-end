@@ -2,40 +2,51 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
+import PlayArrow from '@material-ui/icons/PlayArrow'
 import ClearOutlined from '@material-ui/icons/ClearOutlined'
-import { Typography } from '@material-ui/core';
-import Player from '../../components/Player/components/Player'
+import Typography from '@material-ui/core/Typography';
+import { getCamSnapshot } from '../../actions/action_camera'
+import TooltipWrapper from '../../components/TooltipWrapper'
+import { getStreamingUrl } from '../../actions/action_streaming'
 import { closeInfoWindow } from '../../actions/action_map'
-import Loading from '../../components/Loading'
+import Loading from '../../components/Loading';
+import Snapshot from './Snapshot'
+import LiveView from './LiveView'
+// import Controls from './Controls'
 
 const styles = theme => ({
-  root: {
-    width: 510,
-    height: 270,
-    cursor: 'default',
-    background: theme.palette.common.white,
-    borderRadius: 4,
-  },
   popper: {
     position: 'absolute',
     transform: 'translate(-50%, -100%)',
-
+    transformStyle: 'preserve-3d',
     top: 0,
-    left: '50%'
+    left: '50%',
+    cursor: 'default'
   },
   tooltip: {
-    // maxWidth: 300,
     width: 480,
     height: 300,
     backgroundColor: 'rgba(255, 255, 255, 1)',
     color: 'rgba(0, 0, 0, 0.87)',
     boxShadow: '0 0 10px #333',
     fontSize: '0.725rem',
-
     borderRadius: '4px',
     // padding: '4px 8px',
     left: '50%',
     margin: '10px 0'
+  },
+  snapshot: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: theme.palette.common.black,
+    position: 'relative'
+
+  },
+  snapshotImg: {
+    // width: '100%',
+    height: 270
   },
   header: {
     display: 'flex',
@@ -52,58 +63,88 @@ const styles = theme => ({
   },
   icon: {
     fontSize: 14
+  },
+  controls: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 20px 20px 20px'
+  }, 
+  playIcon: {
+    color: 'rgba(255, 0, 0, 0.6);'
   }
 })
 
-class InfoWindow extends Component {
-  _onInfoWindowClick = (event) => {
-    event.stopPropagation()
+class InfoWindow extends Component{
+  state = {
+    livestream: false
   }
-  _onCloseInfoWindowClick = () => {
-    this.props.closeInfoWindow()
+  
+  componentDidMount(){
+    // const { id } = this.props.detail
+    // this.props.getCamSnapshot(id)
   }
-  render() {
+
+  _onCloseInfoWindowClick = (e) => {
+    const { id } = this.props.detail
+    this.props.closeInfoWindow(id)
+  }
+
+  _onLiveStreamClick = () => {
+    const { id } = this.props.detail
+    this.props.getStreamingUrl(id)
+  }
+  render(){
     const { 
       classes,
       detail = {},
+      isGettingSnapshot,
       isFetchingStreaming,
-      streamingUrl
+      snapshotImageUrl,
+      isShowLiveView,
     } = this.props
-    return  (
-      
-        <div 
-          className={classes.popper}
-          onClick={this._onInfoWindowClick}
-          onMouseEnter={event => event.stopPropagation()}
-        >
-          <div className={classes.tooltip}>
-            <div className={classes.header}>
-              <Typography noWrap className={classes.title}>
-                {detail.name}
-              </Typography>
-              <IconButton 
-                className={classes.iconButton}
-                onClick={this._onCloseInfoWindowClick}
-              >
-                <ClearOutlined className={classes.icon} />
-              </IconButton>
-            </div>
-            {isFetchingStreaming ? <Loading /> :
-              <Player streamURL={streamingUrl} />
-            }
-            <span className="arrow" />
-          </div> 
+
+    return (
+      <div 
+        className={classes.popper}
+        // onClick={ e => e.stopPropagation()}
+      >
+        <div className={classes.tooltip}>
+          <div className={classes.header}>
+            <Typography noWrap className={classes.title}>
+              {detail.name}
+            </Typography>
+            <IconButton 
+              className={classes.iconButton}
+              onClick={this._onCloseInfoWindowClick}
+            >
+              <ClearOutlined className={classes.icon} />
+            </IconButton>
+          </div>
+          {isShowLiveView ? 
+            <LiveView id={detail.id} /> : 
+            <Snapshot id={detail.id} />
+          }
+          <span className="arrow" />
+        </div>
       </div>
     )
   }
 }
-const mapStateToProps = ({cameras}) => ({
-  isFetchingStreaming: cameras.isFetchingStreaming,
-  streamingUrl: cameras.streamingUrl
-})
 
-export default connect(mapStateToProps,
+const mapStateToProps = ({cameras}) => ({
+  isGettingSnapshot: cameras.isGettingSnapshot,
+  snapshotImageUrl: cameras.snapshotImageUrl,
+  isShowLiveView: cameras.isShowLiveView,
+  isFetchingStreaming: cameras.isFetchingStreaming
+})   
+
+export default connect(mapStateToProps, 
   {
-    closeInfoWindow: closeInfoWindow
+    getCamSnapshot: getCamSnapshot,
+    closeInfoWindow: closeInfoWindow,
+    getStreamingUrl: getStreamingUrl,
   }
 )(withStyles(styles)(InfoWindow))

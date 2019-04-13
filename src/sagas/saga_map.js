@@ -57,3 +57,4 @@ function* workerChangeCamLocation(action){
     console.log(error)
   }
 }
+

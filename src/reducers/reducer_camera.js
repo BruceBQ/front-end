@@ -60,12 +60,28 @@ const INITIAL_STATE = {
   isSearching: false,
   isFetching: false,
   isProcessing: false,
+  isGettingSnapshot: false,
   headerMenu: false,
+
   focusedCam: -1,
   editingCam: -1,
+  isShowLiveView: false,
   isFetchingStreaming: false,
+  snapshotImageUrl: null,
   streamingUrl: '',
   errors: {},
+}
+
+function updateCam(cams, action) {
+  return cams.map((cam, index) => {
+    if(action.camId.includes(cam.id)){
+      return {
+        ...cam,
+        is_in_followlist: !cam.is_in_followlist
+      }
+    }
+    return cam
+  })
 }
 
 const reducer_camera = ( state = INITIAL_STATE, action ) => {
@@ -101,6 +117,20 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
           commune: action.commune
         }
       })
+
+    //get snapshot
+    case types.GET_CAM_SNAPSHOT:
+      return Object.assign({}, state, {
+        isGettingSnapshot: true, 
+        isFetchingStreaming: true,
+        snapshotImageUrl: null
+      })
+    case types.GET_CAM_SNAPSHOT_SUCCESS:
+      return Object.assign({}, state, {
+        isGettingSnapshot: false,
+        snapshotImageUrl: action.snapshotImageUrl
+      })
+
     // connect camera
     case types.CONNECT_CAMERA_SUCCESS: 
       return Object.assign({}, state, {
@@ -320,9 +350,20 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
     //get functions
 
     //streaming
+    case types.GET_STREAMING_URL:
+      return Object.assign({}, state, {
+        isShowLiveView: true,
+        // isFetchingStreaming: true
+      })
     case types.SHOW_INFO_WINDOW: 
       return Object.assign({}, state, {
-        isFetchingStreaming: true,
+        // isFetchingStreaming: true,
+      })
+    case types.CLOSE_INFO_WINDOW:
+      return Object.assign({}, state, {
+        isShowLiveView: false,
+        isFetchingStreaming: false,
+        streamingUrl: null
       })
     case types.GET_STREAMING_URL_SUCCESS:
       return Object.assign({}, state, {
@@ -330,6 +371,15 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
         streamingUrl: action.streamingUrl
       })
     
+    // update follow list
+    case types.ADD_CAM_TO_FOLLOWLIST_SUCCESS:
+      return Object.assign({}, state, {
+        cameras: updateCam(state.cameras, action)
+      })
+    case types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS:
+      return Object.assign({}, state, {
+        cameras: updateCam(state.cameras, action)
+      })
     default:
       return state
   }

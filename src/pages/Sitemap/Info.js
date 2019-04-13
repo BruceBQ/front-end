@@ -1,86 +1,46 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Configs from './Configs'
-import TextInput from '../../TextInput'
-import { getCameraInfo } from '../../../actions/action_camera'
-import { isEmpty } from 'lodash'
+import { withStyles } from '@material-ui/core/styles'
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 
-class Info extends Component{
+const styles = theme => ({
+  popper: {
+    position: 'absolute',
+    transform: 'translate(-50%, -100%)',
+    transformStyle: 'preserve-3d',
+    top: 0,
+    left: '50%'
+  },
+  tooltip: {
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: '0 0 10px #333',
+    fontSize: '0.725rem',
+    borderRadius: '4px',
+    // padding: '4px 8px',
+    left: '50%',
+    margin: '10px 0'
+  },
 
-    componentDidMount(){
-        console.log(this.props)
-        this.props.getCameraInfo(this.props.match.params)
-    }
+})
 
-    render(){
-        const { match, info, isLoading } = this.props
-        const camera ={}
-        if(isLoading) return <div className="loader"></div>
-        return(
-            <div>
-                <div className="camera-detail ml-4">
-                    <div className="item">
-                        <span className="info-title">Địa chỉ IP: </span>
-                        <div className="fix-width-input">
-                            <TextInput name="ip" value={info.ip} disabled/>
-                        </div>
-                    </div>
-                    <div className="item">
-                        <span className="info-title">Port: </span>
-                        <div className="fix-width-input">
-                            <TextInput name="port" disabled value={info.port} />
-                        </div>
-                    </div>
-                    {/* <div className="item">
-                        <span className="info-title">Tên đăng nhập camera: </span>
-                        <div className="fix-width-input">
-                            <TextInput name="cam_user" disabled value={camera.details ? camera.details.cam_user: ''} onChange={this.onChange}/>
-                        </div>
-                    </div>
-                    <div className="item">
-                        <span className="info-title">Mật khẩu camera: </span>
-                        <div className="fix-width-input">
-                            <TextInput name="cam_pass" disabled value={camera.details ? camera.details.cam_pass: ''} onChange={this.onChange}/>
-                        </div>
-                    </div> */}
-
-                    <div className="item">
-                        <span className="info-title">Nhà sản xuất: </span>
-                        <div className="fix-width-input">
-                            <TextInput disabled value={info.information ? info.information.Manufacturer : ''} />
-                        </div>
-                    </div>
-                    <div className="item">
-                        <span className="info-title">Model: </span>
-                        <div className="fix-width-input">
-                            <TextInput disabled value={info.information ? info.information.Model : ''} />
-                        </div>
-                    </div>
-                    <div className="item">
-                        <span className="info-title">Serial Number: </span>
-                        <div className="fix-width-input">
-                            <TextInput disabled value={info.information ? info.information.SerialNumber : ''} />
-                        </div>
-                    </div>
-                    <div className="item">
-                        <span className="info-title">Firmware Version: </span>
-                        <div className="fix-width-input">
-                            <TextInput disabled value={info.information ? info.information.FirmwareVersion : ''} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+class InfoWindow extends Component{
+  render(){
+    const { classes } = this.props
+    return(
+      <div className={classes.popper}>
+        <div className={classes.tooltip}>
+          <Card>
+            
+          </Card>
+        </div>
+      </div>
+    )
+  }
 }
 
-const mapStateToProps = ({cameras}) => {
-    return{
-        info: cameras.currentCamera.information,
-        isLoading: cameras.isLoading
-    }
-}
-
-export default connect(mapStateToProps, {
-    getCameraInfo
-})(Info)
+export default connect()(withStyles(styles)(InfoWindow))

@@ -26,15 +26,18 @@ import {
   focusedCam,
   editCamConnectionFailure,
   getCamParamsSuccess,
+  getCamSnapshotSuccess
 } from '../actions/action_camera'
 import * as CameraApi from '../api/camera'
 import * as PoliticalAPI from '../api/political'
+import * as FollowListApi from '../api/followList'
 import { closeModal, showLoadingModal } from '../actions/action_modal'
 import { enqueueSnackbar, removeSnackbar } from '../actions/action_snackbar'
 import { reloadPolitical } from '../actions/action_political'
 import { switchTab } from '../actions/action_manageCam'
 import {} from '../actions/action_camera'
 import _ from 'lodash'
+import { removeCamFromFollowListSuccess, addCamToFollowListSuccess } from '../actions/action_followList';
 
 export function* watchConnectCamera() {
   yield takeEvery(types.CONNECT_CAMERA, workerConnectCamera)
@@ -342,5 +345,74 @@ function* workerEditCamParams(action){
     const response = yield call(CameraApi.editCamParams, action.id, action.payload)
   } catch (error) {
     
+  }
+}
+
+//get snapshot
+export function* watchGetCamSnapshot(){
+  yield takeEvery(types.GET_CAM_SNAPSHOT, workerGetCamSnapshot)
+}
+
+function* workerGetCamSnapshot(action){
+  try {
+    const response = yield call(CameraApi.getCamSnapshot, action.id)
+    yield put(getCamSnapshotSuccess(response.data.data.snapshot_image_url))
+  } catch (error) {
+    yield put(enqueueSnackbar({
+      message: error.response.data.notify,
+      options: {
+        variant: 'error',
+      },
+    }))
+  }
+}
+
+//add cam to followlist
+export function *watchAddCamToFollowList(){
+  yield takeEvery(types.ADD_CAM_TO_FOLLOWLIST, workerAddCamToFollowList)
+}
+
+function* workerAddCamToFollowList(action){
+  try {
+    const response = yield call(FollowListApi.addCamToFollowList, action.camId)
+    yield put(addCamToFollowListSuccess(action.camId))
+    yield put(enqueueSnackbar({
+      message: response.data.notify,
+      options: {
+        variant: 'success',
+      },
+    }))
+  } catch (error) {
+    yield put(enqueueSnackbar({
+      message: error.response.data.notify,
+      options: {
+        variant: 'error',
+      },
+    }))
+  }
+}
+
+//remove cam from followlist
+export function* watchRemoveCamFromFollowList(){
+  yield takeEvery(types.REMOVE_CAM_FROM_FOLLOWLIST, workerRemoveCamFromFollowList)
+}
+
+function* workerRemoveCamFromFollowList(action){
+  try {
+    const response = yield call(FollowListApi.removeCamFromFollowList, action.camId)
+    yield put(removeCamFromFollowListSuccess(action.camId))
+    yield put(enqueueSnackbar({
+      message: response.data.notify,
+      options: {
+        variant: 'success',
+      },
+    }))
+  } catch (error) {
+    yield put(enqueueSnackbar({
+      message: error.response.data.notify,
+      options: {
+        variant: 'error',
+      },
+    }))
   }
 }
