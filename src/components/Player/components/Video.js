@@ -44,6 +44,10 @@ class Video extends Component {
       })
       this.hls.on(Hls.Events.BUFFER_APPENDED, (event, data) => {})
     }
+    
+    this.video.onError = function(){
+      console.log('error')
+    }
   }
   componentWillUnmount() {
     if (this.hls) {
@@ -55,7 +59,6 @@ class Video extends Component {
       <video
         className="centic-video"
         ref={c => (this.video = c)}
-        hls={this.hls}
       />
     )
   }

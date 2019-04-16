@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 class FollowToggle extends Component {
-  constructor(props, context) {
-    super(props, context)
-  }
 
   render() {
     return (

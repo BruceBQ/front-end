@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import IconButton from '@material-ui/core/IconButton'
+import FullScreenIcon from '@material-ui/icons/Fullscreen'
+import FullScreenExitIcon from '@material-ui/icons/FullscreenExit'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExpand, faCompress } from '@fortawesome/free-solid-svg-icons'
 import classNames from 'classnames'
 import fullscreen from '../utils/fullscreen'
+
+const styles = theme => ({
+
+})
 
 class FullScreenToggle extends Component {
   componentDidMount() {}
@@ -27,4 +35,4 @@ class FullScreenToggle extends Component {
   }
 }
 
-export default FullScreenToggle
+export default withStyles(styles)(FullScreenToggle)
