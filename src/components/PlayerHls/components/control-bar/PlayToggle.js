@@ -7,37 +7,36 @@ import TooltipWrapper from '../../../TooltipWrapper'
 
 class PlayToggle extends Component {
   _onClick = () => {
-    const { player, video } = this.props
-    console.log(video.current.video)
+    // console.log(this.props)
+    const { player, actions, video } = this.props
+    
     if (player.paused) {
-      // video.current.play()
-    }else {
-      // video.current.pause()
+      console.log('playing')
+      // video.get(0).play()
+    } else {
+      console.log('playing')
+      // video.get(0).pause()
     }
   }
   render() {
     const { player } = this.props
-    const controlText = player.paused ? 'Phát' : 'Dừng'
+    const titleText = player.paused ? 'Phát' : 'Dừng'
     return (
-      <TooltipWrapper placement="top-start" title={controlText}>
-        <button
-          className="control-button"
-          type="button"
-          onClick={this._onClick}
-        >
-          {player.paused ? (
-            <PlayArrow className="control-button__icon" />
-          ) : (
-            <Pause className="control-button__icon" />
-          )}
-        </button>
-      </TooltipWrapper>
+      <button
+        className="control-button control-button__play"
+        type="button"
+        onClick={this._onClick}
+      >
+        {player.paused ? (
+          <PlayArrow className="control-button__icon" />
+        ) : (
+          <Pause className="control-button__icon" />
+        )}
+        <div className="title-tip">{titleText}</div>
+      </button>
     )
   }
 }
 
-const mapStateToProps = ({ player }) => ({
-  player: player,
-})
 
-export default connect(mapStateToProps)(PlayToggle)
+export default PlayToggle

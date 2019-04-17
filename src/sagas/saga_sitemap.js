@@ -7,6 +7,7 @@ import { enqueueSnackbar, removeSnackbar } from '../actions/action_snackbar'
 import { closeModal } from '../actions/action_modal'
 import * as types from '../constant/constant_actions'
 import { getStreamingUrlSuccess } from '../actions/action_streaming'
+import { getFollowListSuccess } from '../actions/action_followList'
 
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
@@ -58,12 +59,54 @@ function createSocketChannel(socket) {
     return unsubscribe
   })
 }
+function getUserId(){
+  try {
+    return JSON.parse(localStorage.getItem('USER')).id
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 function* listenForSocketMessages(){
   let socket, socketChannel
   try {
     socket = yield call(createWebSocketConnection)
-    console.log(yield cancelled())
+    const userId = getUserId()
+    yield apply(socket, socket.send, [
+      JSON.stringify({
+        type: 'start_followlist',
+        data: {
+          id: userId
+        }
+      })
+    ])
+
+    yield takeEvery(types.GET_FOLLOWLIST, function* (){        
+        const userId = getUserId()
+        yield apply(socket, socket.send, [
+          JSON.stringify({
+            type: 'get_followlist',
+            data: {
+              id: userId
+            }
+          })
+        ])
+      
+    })
+
+    yield takeEvery(types.LOGIN_SUCCESS, function*(){
+      const userId = getUserId()
+      yield apply(socket, socket.send, [
+        JSON.stringify({
+          type: 'start_followlist',
+          data: {
+            id: userId
+          }
+        })
+      ])
+    })
+    
+    
     yield takeEvery(types.CLOSE_PREV_STREAMING, function*(action){
       yield apply(socket, socket.send, [
         JSON.stringify({
@@ -74,6 +117,7 @@ function* listenForSocketMessages(){
         })
       ])
     })
+
     yield takeEvery(types.GET_CAM_SNAPSHOT, function*(action){
       yield apply(socket, socket.send, [ 
         JSON.stringify({
@@ -84,16 +128,7 @@ function* listenForSocketMessages(){
         })
       ])
     })
-    // yield takeEvery(types.GET_STREAMING_URL, function*(action) {
-    //   yield apply(socket, socket.send, [ 
-    //     JSON.stringify({
-    //       type: 'start_streaming',
-    //       data: {
-    //         id: action.id  
-    //       }
-    //     })
-    //   ])
-    // })
+
     yield takeEvery(types.CLOSE_INFO_WINDOW, function*(action) {
       yield apply(socket, socket.send, [
         JSON.stringify({
@@ -108,15 +143,21 @@ function* listenForSocketMessages(){
 
     while(true){
       const payload = yield take(socketChannel)
-
-      if(payload.type === 'start_streaming'){
-        // console.log(a)
+      //start streaming success
+      
+      if(payload.type === 'start_streaming_success'){
         yield put(getStreamingUrlSuccess(payload.data))
       }
-      
+      if(payload.type === 'start_followlist_success'){
+        yield put(getFollowListSuccess(payload.data))
+      }
+      //get followlist success
+      // if(
+
+      // ){}
     }
   } catch (error) {
-    console.log(error)
+    
     yield put(
       enqueueSnackbar({
         message: "Kết nối với server thất bại!",

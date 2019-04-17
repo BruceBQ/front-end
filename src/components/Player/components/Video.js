@@ -13,19 +13,19 @@ class Video extends Component {
   }
 
   componentDidMount() {
+    const { cam = {} } = this.props
     if (Hls.isSupported()) {
-      console.log(Hls.version)
       const video = this.video
-      const { streamURL } = this.props
+      const { stream_url } = cam
       this.hls.attachMedia(video)
       this.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
         console.log('MEDIA_ATTACHED')
-        this.hls.loadSource(this.props.streamURL)
+        this.hls.loadSource(cam.stream_url)
       })
       this.hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
         console.log('MANIFEST_PARSED')
         video.play()
-        console.log('PLAY STREAM SRC=' + streamURL)
+        console.log('PLAY STREAM SRC=' + stream_url)
       })
       this.hls.on(Hls.Events.ERROR, (event, data) => {
         if (data.fatal) {

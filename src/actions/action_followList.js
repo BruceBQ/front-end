@@ -1,10 +1,10 @@
 import * as types from '../constant/constant_actions'
 import  actionCreator from '../utils/actionCreator'
 
-export function changeListSize(list_size) {
+export function changeListSize(listSize) {
   return {
     type: types.CHANGE_LIST_SIZE,
-    list_size,
+    listSize,
   }
 }
 
@@ -19,6 +19,10 @@ export function exitFollowListPage() {
     type: types.EXIT_FOLLOWLIST_PAGE,
   }
 }
+
+export const getFollowList = actionCreator(types.GET_FOLLOWLIST)
+
+export const getFollowListSuccess = actionCreator(types.GET_FOLLOWLIST_SUCCESS, 'camList')
 
 export const addCamToFollowList = actionCreator(types.ADD_CAM_TO_FOLLOWLIST, 'camId')
 

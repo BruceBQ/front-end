@@ -29,6 +29,9 @@ class Player extends Component {
     this.player = React.createRef()
     this.manager = new Manager(props.store)
     this.actions = this.manager.getActions()
+    this.manager.subscribeToPlayerStateChange(
+      this.handleStateChange.bind(this)
+    )
   }
 
   componentDidMount() {
@@ -38,13 +41,14 @@ class Player extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
-    fullscreen.removeEventListener(this.handleFullScreenChange)
+    fullscreen.removeEventListener(this.handleFullscreenChange)
   }
 
   handleResize = () => {}
 
   handFullscreenChange = () => {
-    this.props.handleFullscreenChange(fullscreen.isFullscreen)
+    console.log('change fullscreen')
+    this.actions.handleFullscreenChange(fullscreen.isFullscreen)
   }
 
   getDefaultChildren(originalChildren) {
@@ -54,7 +58,7 @@ class Player extends Component {
         order={0.0}
         ref={el => {
           this.video = el;
-          this.manager.video = this.video
+          this.manager.video = this.video ? this.video.video : null
         }}
       />,
       <LoadingSpinner key="loading-spinner" order={1.0} />,
@@ -83,16 +87,25 @@ class Player extends Component {
     return this.manager.getState()
   }
 
+  // play video
   play = () => {
     this.video.play()
   }
 
+  //pause video 
   pause = () => {
     this.video.pause()
   }
 
-  toggleFullscreen = () => {}
-
+  handleStateChange = (state, prevState) => {
+    if(state.isFullscreen !== prevState.isFullscreen){
+      this.handleResize()
+    }
+    this.forceUpdate()
+  }
+  componentDidUpdate(){
+    console.log('force update')
+  }
   render() {
     const { player } = this.manager.getState()
     const {
@@ -110,7 +123,7 @@ class Player extends Component {
     const children = this.getChildren(props)
     return (
       <div 
-        className="video-player" 
+        className="video-player"
         ref={el => {
           this.manager.rootElement = el
         }}
@@ -121,9 +134,5 @@ class Player extends Component {
   }
 }
 
-const mapStateToProps = ({ player, cameras }) => ({
-  player: player,
-  cameras: cameras,
-})
 
 export default Player

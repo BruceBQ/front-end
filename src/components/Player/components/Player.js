@@ -3,6 +3,7 @@ import Video from './Video'
 import ControlBar from './ControlBar'
 import LoadingSpinner from './LoadingSpinner'
 import PropTypes from 'prop-types'
+import './player.scss'
 import fullscreen from '../utils/fullscreen'
 import Hls from 'hls.js'
 
@@ -14,11 +15,10 @@ class Player extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isShowControls: false,
-      isPaused: false,
-      isFullScreen: false,
-      isLive: true,
-      isReload: false,
+      showControls: false,
+      paused: false,
+      fullscreen: false,
+      waiting: true,
     }
     this.video = React.createRef()
     this.player = React.createRef()
@@ -40,10 +40,9 @@ class Player extends Component {
           ']',
       )
     }
-    console.log(this.video.video.currentTime)
+
   }
   componentDidMount() {
-    // setInterval(this.getBuffer, 2000)
     window.addEventListener('resize', this.handleResize)
     fullscreen.addEventListener(this.handleFullScreenChange)
   }
@@ -58,13 +57,13 @@ class Player extends Component {
 
   handleMouseMove = () => {
     this.setState({
-      isShowControls: true,
+      showControls: true,
     })
   }
 
   handleMouseLeave = () => {
     this.setState({
-      isShowControls: false,
+      showControls: false,
     })
   }
 
@@ -74,17 +73,10 @@ class Player extends Component {
 
   handleFullScreenChange = () => {
     this.setState({
-      isFullScreen: !this.state.isFullScreen,
+      fullscreen: !this.state.fullscreen,
     })
-    // const player = this.player.current
-    // if(fullscreen.isFullscreen){
-    //     console.log('full')
-    //     fullscreen.exit()
-    // }else{
-    //     console.log('exit')
-    //     fullscreen.request(player)
-    // }
   }
+
   toggleFullScreen = () => {
     const player = this.player.current
     if (fullscreen.isFullscreen) {
@@ -96,30 +88,31 @@ class Player extends Component {
 
   handlePlayOrPause = () => {
     this.setState({
-      isPaused: !this.state.isPaused,
+      paused: !this.state.paused,
     })
   }
 
-  handleLive = () => {
+  handlePlaying = () => {
     this.setState({
-      isLive: true,
+      waiting: false
     })
   }
-
-  handleNotLive = () => {
+  handleWaiting = () => {
     this.setState({
-      isLive: false,
+      waiting: false
     })
   }
 
   handleReload = () => {
     this.video.hls.on(Hls.Events.ERROR, (event, data) => {
-      console.log(event)
-      console.log(data)
+      
     })
   }
 
   render() {
+    const {
+      cam
+    } = this.props
     return (
       <div
         className="video-player"
@@ -131,33 +124,28 @@ class Player extends Component {
         ref={this.player}
       >
         <Video
-          streamURL={this.props.streamURL}
+          cam={cam}
           ref={video => (this.video = video)}
+          handlePlayOrPause={this.handlePlayOrPause}
+          handlePlaying={this.handlePlaying}
+          handleWaiting={this.handleWaiting}
+        />
+        <LoadingSpinner 
+          playerControl={this.state}
+          handlePlaying={this.handlePlaying}
+          handleWaiting={this.handleWaiting}
         />
         <ControlBar
-          isPaused={this.state.isPaused}
-          isLive={this.state.isLive}
-          isShowControls={this.state.isShowControls}
-          isFullScreen={this.state.isFullScreen}
+          playerControl={this.state}
           handlePlayOrPause={this.handlePlayOrPause}
+          handlePlaying={this.handlePlaying}
+          handleWaiting={this.handleWaiting}
           toggleFullScreen={this.toggleFullScreen}
           handlePlay={this.handlePlay}
-          handleLive={this.handleLive}
-          handleNotLive={this.handleNotLive}
           video={this.video}
           player={this.player}
           handleReload={this.handleReload}
-          src={this.props.streamURL}
         />
-        {/* <div className="real-player">
-                    <div className="real-player__content-container">
-                        <div className="player-live">
-                            <div className="centic-video-container">
-                        
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
       </div>
     )
   }

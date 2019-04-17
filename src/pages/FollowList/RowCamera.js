@@ -3,8 +3,8 @@ import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
-// import Player from '../../components/Player/components/Player'
-import  { Player } from '../../components/PlayerHls'
+import Player from '../../components/Player/components/Player'
+// import  { Player } from '../../components/PlayerHls'
 import WrapperPlayer from './WrapperPlayer'
 import { isEmpty } from 'lodash'
 
@@ -19,22 +19,25 @@ const styles = theme => ({
 })
 
 class RowCamera extends Component {
-  state = {}
-  componentDidMount() {}
+  state = {
+
+  }
+  componentDidMount() {
+
+  }
 
   renderRow = () => {
-    console.log(this.props.cameras)
+    
   }
 
   render() {
-    // const { children } = this.renderRow()
-    const { cameras } = this.props
+    
+    const { cams = [] } = this.props
     return (
       <div className="row-camera">
-        {!isEmpty(cameras) &&
-          cameras.map((camera, index) => (
+          {cams.map((cam, index) => (
             <WrapperPlayer key={index}>
-              <Player streamURL={camera.stream_url} key={index} />
+              <Player cam={cam} key={index} />
             </WrapperPlayer>
           ))}
       </div>
@@ -42,8 +45,5 @@ class RowCamera extends Component {
   }
 }
 
-RowCamera.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
 
 export default withStyles(styles)(RowCamera)

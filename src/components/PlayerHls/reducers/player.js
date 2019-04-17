@@ -7,7 +7,7 @@ const initialState = {
   waiting: true,
 }
 
-const player = (state = initialState, action) => {
+export default function player (state = initialState, action) {
   switch(action.type){
     case 'FULLSCREEN_CHANGE':
       return {
@@ -39,5 +39,3 @@ const player = (state = initialState, action) => {
       return state
   }
 }
-
-export default player

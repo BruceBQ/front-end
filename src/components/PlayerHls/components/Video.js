@@ -12,11 +12,12 @@ class Video extends Component{
   }
 
   componentDidMount(){
+    const { actions } = this.props
     if(Hls.isSupported()){
       const video = this.video
       this.hls.attachMedia(video)
       this.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        // this.props.handleWaiting()
+        
         console.log('MEDIA_ATTACHED')
         // this.hls.loadSource("http://10.49.46.54:3000/hls/231/index.m3u8")
         this.hls.loadSource("https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8")
@@ -24,7 +25,7 @@ class Video extends Component{
       this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
         console.log('MANIFEST_PARSED')
         video.play().then(_ => {
-          // this.props.handlePlaying()
+        
           console.log('video playback started')
         }).catch(e => console.log(e))
 
@@ -32,7 +33,7 @@ class Video extends Component{
       })
 
       this.hls.on(Hls.Events.FRAG_BUFFERED, () => {
-        
+        actions.handlePlaying()
       })
       this.hls.on(Hls.Events.ERROR, (event, data) => {
         console.log(event, data)
@@ -51,7 +52,7 @@ class Video extends Component{
         } else {
           switch(data.type){
             case Hls.ErrorDetails.MEDIA_ERROR:
-              this.props.handleWaiting()
+              
             default:
               break;
           }
@@ -66,14 +67,14 @@ class Video extends Component{
     }
   }
   _onWaiting = () => {
-    this.props.handleWaiting()      
+    this.props.actions.handleWaiting()
   }
   _onError = (args) => {
-    console.log('error')
-    console.log(...args)
+    
+    
   }
   _onPlaying = () => {
-    this.props.handlePlaying()
+    this.props.actions.handlePlaying()
   }
   render(){
     const {
@@ -89,12 +90,5 @@ class Video extends Component{
     )
   }
 }
-const mapStateToProps =({player}) => ({
-  player: player
-})
-export default connect(mapStateToProps, 
-  {
-    handleWaiting: handleWaiting,
-    handlePlaying: handlePlaying
-  }
-)(Video)
+
+export default Video

@@ -24,6 +24,7 @@ class LoadingSpinner extends Component {
     const {
       classes, player
     } = this.props
+    
     return (
       <div className={classNames(classes.root,{
         [classes.hidden]: !player.waiting
@@ -33,8 +34,6 @@ class LoadingSpinner extends Component {
     )
   }
 }
-const mapStateToProps =({player}) => ({
-  player: player
-})
 
-export default  connect(mapStateToProps)(withStyles(styles)(LoadingSpinner))
+
+export default  withStyles(styles)(LoadingSpinner)

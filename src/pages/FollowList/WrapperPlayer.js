@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
 import classnames from 'classnames'
 class WrapperPlayer extends Component {
   constructor(props) {
@@ -8,14 +9,14 @@ class WrapperPlayer extends Component {
   saveRef = elm => (this.wrapper = elm)
 
   render() {
-    const { list_size } = this.props
+    const { listSize } = this.props
     return (
       <div
         className={classnames('p-0', {
-          'column-50': list_size === '4',
-          'column-33': list_size === '9',
-          'column-25': list_size === '16',
-          'column-20': list_size === '25',
+          'column-50': listSize === 4,
+          'column-33': listSize === 9,
+          'column-25': listSize === 16,
+          'column-20': listSize === 25,
         })}
         ref={this.saveRef}
       >
@@ -26,7 +27,7 @@ class WrapperPlayer extends Component {
 }
 
 const mapStateToProps = ({ followList }) => ({
-  list_size: followList.list_size,
+  listSize: followList.listSize,
 })
 
 export default connect(mapStateToProps)(WrapperPlayer)

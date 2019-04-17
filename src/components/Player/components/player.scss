@@ -58,20 +58,42 @@
   position: absolute;
   color: #fff;
   font-size: 12px;
-  background-color: rgba($color: #000000, $alpha: .6);
+  background-color: rgba($color: #000000, $alpha: .7);
   bottom: 130%;
   padding: 5px;
-  
 }
 
 .control-button__fullscreen .title-tip{
   right: 0px;
 }
+
 .control-button__play .title-tip{
   left: 0;
 }
 
+.control-button__reload .title-tip{
+  transform: translate(-50%, 0);
+  left: 50%;
+}
+
+.control-button__follow .title-tip{
+  transform: translate(-50%, 0);
+  left: 50%;
+}
+
 .control-button__fullscreen:hover {
+  .title-tip{
+    visibility: visible;
+  }
+}
+
+.control-button__reload:hover{
+  .title-tip{
+    visibility: visible;
+  }
+}
+
+.control-button__follow:hover{
   .title-tip{
     visibility: visible;
   }

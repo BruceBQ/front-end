@@ -9,12 +9,39 @@ export function handleFullscreenChange(isFullscreen){
   }
 }
 
-export function toggleFullscreen(player, rootEl){
+
+export function play(
+  operation = {
+    action: 'play',
+    source: ''
+  }
+){
+  this.video.play().then().catch(err => console.log(err))
+  return {
+    type: OPERATE,
+    operation
+  }
+}
+
+export function pause(
+  operation = {
+    action: 'pause',
+    source: ''
+  }
+){
+  this.video.pause().then().catch(err => console.log(err))
+  return {
+    type: OPERATE,
+    operation
+  }
+}
+
+export function toggleFullscreen(player){
   if(fullscreen.enabled){
     if(fullscreen.isFullscreen){
       fullscreen.exit()
     } else {
-      fullscreen.request(rootEl)
+      fullscreen.request(this.rootElement)
     }
     return {
       type: OPERATE,
@@ -23,6 +50,7 @@ export function toggleFullscreen(player, rootEl){
       }
     }
   }
+  console.log('cannot fullscreen')
   return {
     type: FULLSCREEN_CHANGE,
     isFullscreen: !player.isFullscreen

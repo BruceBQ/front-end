@@ -1,89 +1,85 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
 import { withRouter } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import { isEmpty, chunk } from 'lodash'
-import {
-  activeFollowListPage,
-  exitFollowListPage,
-} from '../../actions/action_followList'
-import RowCamera from './RowCamera'
+import _ from 'lodash'
+import Loading from '../../components/Loading'
+import RowCamera from './RowCamera';
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  wrapper: {
+    background: 'green',
+  },
+})
 
 class FollowList extends Component {
   state = {
-    wrapper_height: 0,
-    wrapper_width: 0,
+    height: 0,
+    width: 0,
   }
 
   componentDidMount() {
-    this.props.dispatch(activeFollowListPage())
-    this.getInnerWindow()
-    window.addEventListener('resize', this.getInnerWindow)
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
   }
 
-  componentWillUnmount() {
-    this.props.dispatch(exitFollowListPage())
-    window.removeEventListener('resize', this.getInnerWindow)
+  componentWillMount() {
+    window.removeEventListener('resize', this.handleResize)
   }
 
-  getInnerWindow = () => {
+  handleResize = () => {
     const height = window.innerHeight - 60,
       width = window.innerWidth - 50
     if (height / width <= 9 / 16) {
-      console.log('awfnknwnwf')
       this.setState({
-        wrapper_height: height,
-        wrapper_width: (height * 16) / 9,
+        height: height,
+        width: (height * 16) / 9,
       })
     } else {
       this.setState({
-        wrapper_height: (width * 9) / 16,
-        wrapper_width: width,
+        height: (width * 9) / 16,
+        width: width,
       })
     }
   }
 
   render() {
-    const sizeWrapper = {
-      height: this.state.wrapper_height,
-      width: this.state.wrapper_width,
-      backgroundColor: 'green',
-      overflow: 'hidden',
-      padding: '0',
-      margin: '5px 0',
+    const stylesWrapper = {
+      height: this.state.height,
+      width: this.state.width,
     }
-    const { cameras, list_size } = this.props
-    const list_camera = chunk(cameras, Math.sqrt(parseInt(list_size)))
+    const { classes, cams, listSize, isFetching } = this.props
+
+    const listCams = _.chunk(cams, Math.sqrt(parseInt(listSize)))
     return (
-      <div className="container-fluid" style={{ padding: '0' }}>
-        <div className="row follow-list-page">
-          {/* <Size />     */}
-          <div style={sizeWrapper}>
-            {/* <WrapperPlayer >
-                            <Player  streamURL="http://10.49.46.54:80/livestream/hls/221/index.m3u8"/>
-                        </WrapperPlayer> */}
-            {/* {!isEmpty(list_camera) && list_camera.map( (camera, index) => (
-                            <WrapperPlayer key={index}>
-                                <Player streamURL={camera.stream_url} />
-                            </WrapperPlayer>
-                        ))} */}
-            {!isEmpty(list_camera) &&
-              list_camera.map((cameras, index) => (
-                <RowCamera cameras={cameras} key={index} />
-              ))}
-          </div>
-          {/* <Pagination />    */}
+      <div className={classes.root}>
+        <div className={classes.wrapper} style={stylesWrapper}>
+          {isFetching ? <Loading /> : listCams.map((cams, index) => {
+            return <RowCamera cams={cams} key={index} />
+          })}
         </div>
       </div>
     )
   }
 }
 
-FollowList.propTypes = {}
-
 const mapStateToProps = ({ followList }) => ({
-  cameras: followList.cameras,
-  list_size: followList.list_size,
+  cams: followList.cameras,
+  isFetching: followList.isFetching,
+  listSize: followList.listSize,
 })
-
-export default withRouter(connect(mapStateToProps)(FollowList))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {},
+  )(withStyles(styles)(FollowList)),
+)

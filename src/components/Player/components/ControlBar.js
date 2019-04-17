@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import FollowToggle from './FollowToggle'
 import FullScreenToggle from './FullScreenToggle'
 import PlayToggle from './PlayToggle'
+import Reload from './Reload'
 import LiveToggle from './LiveToggle'
 
 class ControlBar extends Component {
   render() {
     const {
-      isShowControls,
-      isPaused,
+      playerControl,
       video,
-      isLive,
+      handlePlaying,
+      handleWaiting,
       handlePlayOrPause,
       handleLive,
       handleNotLive,
@@ -20,25 +21,33 @@ class ControlBar extends Component {
     return (
       <div
         className={
-          isShowControls
-            ? 'video-controls'
-            : 'video-controls video-controls--hide'
+          // isShowControl
+          true
+            ? 'control-bar'
+            : 'control-bar control-bar__hide'
         }
       >
         <div className="video-controls__left">
           <PlayToggle
             video={video}
-            isPaused={isPaused}
+            playerControl={playerControl}
+            // isPaused={isPaused}
             handlePlayOrPause={handlePlayOrPause}
             handleLive={this.props.handleLive}
-            handleNotLive={handleNotLive}
-            src={src}
+            // handleNotLive={handleNotLive}
+            // src={src}
           />
-          <LiveToggle isLive={isLive} reload={handleReload} />
+          <Reload 
+            playerControl={playerControl}
+            handlePlaying={handlePlaying}
+            handleWaiting={handleWaiting}
+          />
+          {/* <LiveToggle isLive={isLive} reload={handleReload} /> */}
         </div>
         <div className="video-controls__right">
           <FollowToggle />
           <FullScreenToggle
+            playerControl={playerControl}
             isFullScreen={this.props.isFullScreen}
             toggleFullScreen={this.props.toggleFullScreen}
             player={this.props.player}

@@ -16,6 +16,7 @@ import classnames from 'classnames'
 import { toggleCameraFilter } from '../../actions/action_ui'
 import { NotificationImportantOutlined, SearchOutlined } from '@material-ui/icons'
 import TooltipWrapper from '../TooltipWrapper'
+import FollowListSize from './FollowListSize'
 
 const styles = theme => ({
   root: {
@@ -112,6 +113,9 @@ class Header extends Component {
                   <SearchOutlined className={classes.smallIcon} />
                 </IconButton>
               </TooltipWrapper>
+            }
+            {location.pathname === '/dashboard/follow_list' && 
+              <FollowListSize />
             }
           </div>
           <div className={classes.rightControls}>

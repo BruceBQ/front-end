@@ -10,11 +10,8 @@ import classNames from 'classnames'
 
 class FullscreenToggle extends Component {
   _onClick = () => {
-    const {
-      player,
-      rootElement
-    } = this.props
-    this.props.toggleFullscreen(player, rootElement.current)
+    const { player, actions } = this.props
+    actions.toggleFullscreen(player)
   }
 
   render() {
@@ -23,9 +20,8 @@ class FullscreenToggle extends Component {
       ? 'Thoát khỏi toàn màn hinh'
       : 'Toàn màn hình'
     return (
-      <TooltipWrapper placement="top-end" title={titleText}>
         <button
-          className="control-button"
+          className="control-button control-button__fullscreen"
           onClick={this._onClick}
           type="button"
         >
@@ -34,8 +30,8 @@ class FullscreenToggle extends Component {
           ) : (
             <Fullscreen className="control-button__icon" />
           )}
+          <div className="title-tip">{titleText}</div>
         </button>
-      </TooltipWrapper>
     )
   }
 }
@@ -43,9 +39,4 @@ const mapStateToProps = ({ player }) => ({
   player: player,
 })
 
-export default connect(
-  mapStateToProps,
-  {
-    toggleFullscreen: toggleFullscreen,
-  },
-)(FullscreenToggle)
+export default FullscreenToggle
