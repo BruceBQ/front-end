@@ -5,27 +5,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 
 class PlayToggle extends Component {
-
-  handleClick = e => {
+  _onClick = e => {
     e.stopPropagation()
     this.props.handlePlayOrPause()
-    this.props.handleNotLive()
-    const { video, src } = this.props
-
+    const { video } = this.props
     if (video.video.paused) {
-      console.log('video is play 1')
       video.video.play()
-      video.hls.attachMedia(video.video)
     } else {
-      console.log('video is pause')
-
       video.video.pause()
-      video.hls.stopLoad()
-    
     }
   }
   render() {
-    console.log(this.props)
     const { playerControl } = this.props
     const titleText = playerControl.paused ? 'Phát' : 'Dừng'
     return (

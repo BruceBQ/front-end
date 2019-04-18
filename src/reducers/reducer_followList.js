@@ -1,15 +1,11 @@
 import * as types from '../constant/constant_actions'
 const INITIAL_STATE = {
   isCurrentPage: false,
-  cameras: [
-    {
-      stream_url: 'http://10.49.46.54:80/livestream/hls/231/index.m3u8',
-    },
-  ],
+  cameras: [],
   isFetching: false,
-  listSize: 9,
+  listSize: 4,
   currentPage: 1,
-  totalPage: 8,
+  totalPage: 1,
 }
 
 const reducer_followList = (state = INITIAL_STATE, action) => {
@@ -25,6 +21,12 @@ const reducer_followList = (state = INITIAL_STATE, action) => {
     case types.CHANGE_LIST_SIZE:
       return Object.assign({}, state, {
         listSize: action.listSize,
+        currentPage: 1,
+        totalPage: Math.ceil(state.cameras.length/action.listSize)
+      })
+    case types.CHANGE_FOLLOWLIST_PAGE: 
+      return Object.assign({}, state, {
+        currentPage: action.page
       })
     case types.GET_FOLLOWLIST:
       return Object.assign({}, state, {
@@ -33,8 +35,10 @@ const reducer_followList = (state = INITIAL_STATE, action) => {
     case types.GET_FOLLOWLIST_SUCCESS:
       return Object.assign({}, state, {
         isFetching: false,
-        cameras: action.camList
+        cameras: action.camList,
+        totalPage: Math.ceil(action.camList.length/state.listSize)
       })
+
     default:
       return state
   }

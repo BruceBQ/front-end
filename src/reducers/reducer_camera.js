@@ -68,7 +68,7 @@ const INITIAL_STATE = {
   isShowLiveView: false,
   isFetchingStreaming: false,
   snapshotImageUrl: null,
-  streamingUrl: '',
+  streamingUrl: {},
   errors: {},
 }
 
@@ -368,7 +368,7 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
     case types.GET_STREAMING_URL_SUCCESS:
       return Object.assign({}, state, {
         isFetchingStreaming: false,
-        streamingUrl: action.streamingUrl
+        streamingUrl: (action.streamingUrl)
       })
     
     // update follow list

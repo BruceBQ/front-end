@@ -4,8 +4,10 @@ import Replay from '@material-ui/icons/Replay'
 
 class Reload extends Component{
   
-  _onClick = () => {
-
+  _onClick = (e) => {
+    e.stopPropagation()
+    const { video } = this.props
+    video.hls.attachMedia(video.video)
   }
 
   render(){

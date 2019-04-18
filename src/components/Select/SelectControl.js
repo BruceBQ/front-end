@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { isEmpty } from 'lodash'
 
-export function NoOptionsMessage(props){
+export function NoOptionsMessage(props) {
   return (
     <Typography
       color="textSecondary"
       style={{
         textAlign: 'center',
-        padding: '8px 12px'
+        padding: '8px 12px',
       }}
       className={props.selectProps.classes.noOptionsMessage}
       {...props.innerProps}
@@ -20,15 +20,14 @@ export function NoOptionsMessage(props){
   )
 }
 
-
 function inputComponent({ inputRef, ...props }) {
-  return <div ref={inputRef} {...props} />;
+  return <div ref={inputRef} {...props} />
 }
 
-export function ProvinceControl(props){
+export function ProvinceControl(props) {
   const value = props.getValue()
   return (
-    <TextField 
+    <TextField
       variant="outlined"
       fullWidth
       value={isEmpty(value) ? '' : 'have value'}
@@ -46,18 +45,18 @@ export function ProvinceControl(props){
       }}
       InputLabelProps={{
         classes: {
-          root: props.selectProps.classes.inputLabel
-        }
+          root: props.selectProps.classes.inputLabel,
+        },
       }}
       {...props.selectProps.textFieldProps}
     />
-  ) 
+  )
 }
 
-export function DistrictControl(props){
+export function DistrictControl(props) {
   const value = props.getValue()
   return (
-    <TextField 
+    <TextField
       variant="outlined"
       fullWidth
       value={isEmpty(value) ? '' : 'have value'}
@@ -75,18 +74,18 @@ export function DistrictControl(props){
       }}
       InputLabelProps={{
         classes: {
-          root: props.selectProps.classes.inputLabel
-        }
+          root: props.selectProps.classes.inputLabel,
+        },
       }}
       {...props.selectProps.textFieldProps}
     />
-  ) 
+  )
 }
 
-export function CommuneControl(props){
+export function CommuneControl(props) {
   const value = props.getValue()
   return (
-    <TextField 
+    <TextField
       variant="outlined"
       fullWidth
       value={isEmpty(value) ? '' : 'have value'}
@@ -104,18 +103,18 @@ export function CommuneControl(props){
       }}
       InputLabelProps={{
         classes: {
-          root: props.selectProps.classes.inputLabel
-        }
+          root: props.selectProps.classes.inputLabel,
+        },
       }}
       {...props.selectProps.textFieldProps}
     />
-  ) 
+  )
 }
 
-export function CamStateControl(props){
+export function CamStateControl(props) {
   const value = props.getValue()
   return (
-    <TextField 
+    <TextField
       variant="outlined"
       fullWidth
       value={isEmpty(value) ? '' : 'have value'}
@@ -133,18 +132,18 @@ export function CamStateControl(props){
       }}
       InputLabelProps={{
         classes: {
-          root: props.selectProps.classes.inputLabel
-        }
+          root: props.selectProps.classes.inputLabel,
+        },
       }}
       {...props.selectProps.textFieldProps}
     />
-  ) 
+  )
 }
 
-export function CamModesControl(props){
+export function CamModesControl(props) {
   const value = props.getValue()
   return (
-    <TextField 
+    <TextField
       variant="outlined"
       fullWidth
       value={isEmpty(value) ? '' : 'have value'}
@@ -152,28 +151,28 @@ export function CamModesControl(props){
       error={props.selectProps.error}
       helperText={props.selectProps.helperText}
       InputProps={{
-          inputComponent,
-          inputProps: {
-              className: props.selectProps.classes.input,
-              inputRef: props.innerRef,
-              children: props.children,
-              ...props.innerProps,
-          },
+        inputComponent,
+        inputProps: {
+          className: props.selectProps.classes.input,
+          inputRef: props.innerRef,
+          children: props.children,
+          ...props.innerProps,
+        },
       }}
       InputLabelProps={{
-          classes: {
-              root: props.selectProps.classes.inputLabel
-          }
+        classes: {
+          root: props.selectProps.classes.inputLabel,
+        },
       }}
       {...props.selectProps.textFieldProps}
     />
-  ) 
+  )
 }
 
-export function CamResolutionControl(props){
+export function CamResolutionControl(props) {
   const value = props.getValue()
   return (
-    <TextField 
+    <TextField
       variant="outlined"
       fullWidth
       value={isEmpty(value) ? '' : 'have value'}
@@ -191,12 +190,12 @@ export function CamResolutionControl(props){
       }}
       InputLabelProps={{
         classes: {
-          root: props.selectProps.classes.inputLabel
-        }
+          root: props.selectProps.classes.inputLabel,
+        },
       }}
       {...props.selectProps.textFieldProps}
     />
-  ) 
+  )
 }
 
 export function GroupControl(props) {
@@ -220,15 +219,15 @@ export function GroupControl(props) {
       }}
       InputLabelProps={{
         classes: {
-          root: props.selectProps.classes.inputLabel
-        }
+          root: props.selectProps.classes.inputLabel,
+        },
       }}
       {...props.selectProps.textFieldProps}
     />
   )
 }
 
-export function QualityControl(props){
+export function QualityControl(props) {
   const value = props.getValue()
   return (
     <TextField
@@ -249,8 +248,64 @@ export function QualityControl(props){
       }}
       InputLabelProps={{
         classes: {
-          root: props.selectProps.classes.inputLabel
-        }
+          root: props.selectProps.classes.inputLabel,
+        },
+      }}
+      {...props.selectProps.textFieldProps}
+    />
+  )
+}
+
+export function ListSizeControl(props) {
+  const value = props.getValue()
+  return (
+    <TextField
+      variant="outlined"
+      fullWidth
+      value={isEmpty(value) ? '' : 'have value'}
+      label="Tỷ lệ"
+      InputProps={{
+        inputComponent,
+        inputProps: {
+          className: props.selectProps.classes.input,
+          inputRef: props.innerRef,
+          children: props.children,
+          ...props.innerProps,
+        },
+      }}
+      InputLabelProps={{
+        classes: {
+          root: props.selectProps.classes.inputLabel,
+        },
+      }}
+      {...props.selectProps.textFieldProps}
+    />
+  )
+}
+
+export function PaginationControl(props) {
+  const value = props.getValue()
+  return (
+    <TextField
+      variant="outlined"
+      fullWidth
+      value={isEmpty(value) ? '' : 'have value'}
+      label="Trang"
+      error={props.selectProps.error}
+      helperText={props.selectProps.helperText}
+      InputProps={{
+        inputComponent,
+        inputProps: {
+          className: props.selectProps.classes.input,
+          inputRef: props.innerRef,
+          children: props.children,
+          ...props.innerProps,
+        },
+      }}
+      InputLabelProps={{
+        classes: {
+          root: props.selectProps.classes.inputLabel,
+        },
       }}
       {...props.selectProps.textFieldProps}
     />

@@ -4,6 +4,7 @@ import FullScreenToggle from './FullScreenToggle'
 import PlayToggle from './PlayToggle'
 import Reload from './Reload'
 import LiveToggle from './LiveToggle'
+import classNames from 'classnames'
 
 class ControlBar extends Component {
   render() {
@@ -20,12 +21,9 @@ class ControlBar extends Component {
     } = this.props
     return (
       <div
-        className={
-          // isShowControl
-          true
-            ? 'control-bar'
-            : 'control-bar control-bar__hide'
-        }
+        className={classNames('control-bar', {
+          'control-bar__hide': !playerControl.showControls
+        })}
       >
         <div className="video-controls__left">
           <PlayToggle
@@ -38,6 +36,7 @@ class ControlBar extends Component {
             // src={src}
           />
           <Reload 
+            video={video}
             playerControl={playerControl}
             handlePlaying={handlePlaying}
             handleWaiting={handleWaiting}
@@ -50,7 +49,7 @@ class ControlBar extends Component {
             playerControl={playerControl}
             isFullScreen={this.props.isFullScreen}
             toggleFullScreen={this.props.toggleFullScreen}
-            player={this.props.player}
+            // player={this.props.player}
           />
         </div>
       </div>

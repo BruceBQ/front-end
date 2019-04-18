@@ -28,6 +28,7 @@ class Video extends Component {
         console.log('PLAY STREAM SRC=' + stream_url)
       })
       this.hls.on(Hls.Events.ERROR, (event, data) => {
+        console.log(event, data)
         if (data.fatal) {
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
@@ -40,6 +41,8 @@ class Video extends Component {
               this.hls.destroy()
               break
           }
+        }else{
+          this.props.handleWaiting()
         }
       })
       this.hls.on(Hls.Events.BUFFER_APPENDED, (event, data) => {})
@@ -54,10 +57,23 @@ class Video extends Component {
       this.hls.destroy()
     }
   }
+
+  _onPlaying = () => {
+    this.props.handlePlaying() 
+  }
+
+  _onWaiting = () => {
+    this.props.handleWaiting()
+  }
+  
   render() {
     return (
       <video
+        // autoPlay
+        muted
         className="centic-video"
+        onWaiting={this._onWaiting}
+        onPlaying={this._onPlaying}
         ref={c => (this.video = c)}
       />
     )

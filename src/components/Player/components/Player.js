@@ -7,10 +7,6 @@ import './player.scss'
 import fullscreen from '../utils/fullscreen'
 import Hls from 'hls.js'
 
-const propTypes = {
-  streamURL: PropTypes.string,
-}
-
 class Player extends Component {
   constructor(props) {
     super(props)
@@ -20,6 +16,7 @@ class Player extends Component {
       fullscreen: false,
       waiting: true,
     }
+    this.controlHideTimer = null
     this.video = React.createRef()
     this.player = React.createRef()
   }
@@ -40,15 +37,20 @@ class Player extends Component {
           ']',
       )
     }
-
   }
+
   componentDidMount() {
+    console.log(this.props.cam)
     window.addEventListener('resize', this.handleResize)
     fullscreen.addEventListener(this.handleFullScreenChange)
   }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
     fullscreen.removeEventListener(this.handleFullScreenChange)
+    if (this.controlsHideTimer) {
+      window.clearTimeout(this.controlsHideTimer);
+    }
   }
 
   handleResize = () => {}
@@ -56,16 +58,27 @@ class Player extends Component {
   handleMouseDown = () => {}
 
   handleMouseMove = () => {
-    this.setState({
-      showControls: true,
-    })
+    this.startControlsTimer()
   }
 
-  handleMouseLeave = () => {
+  startControlsTimer = () => {
     this.setState({
-      showControls: false,
+      showControls: true
     })
+    let controlBarActiveTime = 1000
+    clearTimeout(this.controlHideTimer)
+    this.controlHideTimer = setTimeout(() => {
+      this.setState({
+        showControls: false
+      })
+    }, controlBarActiveTime)
   }
+
+  // handleMouseLeave = () => {
+  //   this.setState({
+  //     showControls: false,
+  //   })
+  // }
 
   handleFocus = () => {}
 
@@ -94,12 +107,14 @@ class Player extends Component {
 
   handlePlaying = () => {
     this.setState({
-      waiting: false
+      waiting: false,
+      paused: false,
     })
   }
   handleWaiting = () => {
     this.setState({
-      waiting: false
+      waiting: true,
+      
     })
   }
 
@@ -124,7 +139,7 @@ class Player extends Component {
         ref={this.player}
       >
         <Video
-          cam={cam}
+          cam={cam} 
           ref={video => (this.video = video)}
           handlePlayOrPause={this.handlePlayOrPause}
           handlePlaying={this.handlePlaying}

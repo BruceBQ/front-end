@@ -26,7 +26,7 @@ class LoadingSpinner extends Component{
     } = this.props
     return (
       <div className={classNames(classes.root, {
-        [classes.hidden]: playerControl.waiting
+        [classes.hidden]: !playerControl.waiting
       })}>
         <CircularProgress className={classes.loading} />
       </div>

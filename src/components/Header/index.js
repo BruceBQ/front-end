@@ -17,6 +17,8 @@ import { toggleCameraFilter } from '../../actions/action_ui'
 import { NotificationImportantOutlined, SearchOutlined } from '@material-ui/icons'
 import TooltipWrapper from '../TooltipWrapper'
 import FollowListSize from './FollowListSize'
+import Size from './Size'
+import Pagination from './Pagination'
 
 const styles = theme => ({
   root: {
@@ -68,7 +70,16 @@ const styles = theme => ({
     paddingLeft: 10,
   },
   leftControls: {
+    display: 'flex',
+    flexDirection: 'row',
     paddingRight: 10,
+    height: '100%',
+  },
+  followList: {
+    display: 'flex',
+    flexDirection: 'row',
+    height: '100%',
+    alignItems: 'center'
   }
 })
 class Header extends Component {
@@ -115,7 +126,11 @@ class Header extends Component {
               </TooltipWrapper>
             }
             {location.pathname === '/dashboard/follow_list' && 
-              <FollowListSize />
+              // <FollowListSize />
+              <div className={classes.followList}>
+                <Pagination />
+                <Size />
+              </div>
             }
           </div>
           <div className={classes.rightControls}>

@@ -73,7 +73,7 @@ class LiveView extends Component {
     return  (
       <Fragment>
         {isFetchingStreaming ? <Loading /> :
-          <Player streamURL={streamingUrl} />
+          <Player cam={streamingUrl} onClick={e =>e.stopPropagation}/>
         }
       </Fragment>
     )

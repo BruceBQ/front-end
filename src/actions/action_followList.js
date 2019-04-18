@@ -20,6 +20,8 @@ export function exitFollowListPage() {
   }
 }
 
+export const changeFollowListPage = actionCreator(types.CHANGE_FOLLOWLIST_PAGE, 'page')
+
 export const getFollowList = actionCreator(types.GET_FOLLOWLIST)
 
 export const getFollowListSuccess = actionCreator(types.GET_FOLLOWLIST_SUCCESS, 'camList')
