@@ -37,4 +37,3 @@ export const removeCamFromFollowList = actionCreator(types.REMOVE_CAM_FROM_FOLLO
 export const removeCamFromFollowListSuccess = actionCreator(types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS, 'camId')
 
 export const removeCamFromFollowListFailure = actionCreator(types.REMOVE_CAM_FROM_FOLLOWLIST_FAILURE)
-

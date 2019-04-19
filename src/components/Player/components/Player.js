@@ -65,7 +65,7 @@ class Player extends Component {
     this.setState({
       showControls: true
     })
-    let controlBarActiveTime = 1000
+    let controlBarActiveTime = 1500
     clearTimeout(this.controlHideTimer)
     this.controlHideTimer = setTimeout(() => {
       this.setState({
@@ -80,6 +80,20 @@ class Player extends Component {
   //   })
   // }
 
+  handleControlBarMouseEnter = () => {
+    // if(this.controlHideTimer){
+    //   clearTimeout(this.controlsHideTimer);
+    // }
+    this.setState({
+      showControls: true
+    })
+  }
+
+  handleControlBarMouseLeave = () => {
+    this.setState({
+      showControls: false,
+    })
+  }
   handleFocus = () => {}
 
   handleBlur = () => {}
@@ -94,6 +108,7 @@ class Player extends Component {
     const player = this.player.current
     if (fullscreen.isFullscreen) {
       fullscreen.exit()
+      // fullscreen.request(player)
     } else {
       fullscreen.request(player)
     }
@@ -128,9 +143,17 @@ class Player extends Component {
     const {
       cam
     } = this.props
+    if(cam.stream_url == null){
+      return (
+        <div classeName="video-player">
+          <div>CÓ LỖI</div>
+        </div>
+      )
+    }
     return (
       <div
         className="video-player"
+        onDoubleClick={e=>e.stopPropagation()}
         onMouseDown={this.handleMouseDown}
         onMouseMove={this.handleMouseMove}
         onMouseLeave={this.handleMouseLeave}
@@ -151,7 +174,12 @@ class Player extends Component {
           handleWaiting={this.handleWaiting}
         />
         <ControlBar
+          // onMouseEnter={this.handleControlBarMouseEnter}
+          // onMouseLeave={this.handleControlBarMouseLeave}
+          cam={cam}
           playerControl={this.state}
+          handleControlBarMouseEnter={this.handleControlBarMouseEnter}
+          handleControlBarMouseLeave={this.handleControlBarMouseLeave}
           handlePlayOrPause={this.handlePlayOrPause}
           handlePlaying={this.handlePlaying}
           handleWaiting={this.handleWaiting}

@@ -9,10 +9,11 @@ const styles = theme => ({
     height: '100%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    background: "black",
   },
   text: {
-
+    color: theme.palette.common.white
   }
 })
 

@@ -72,9 +72,7 @@ const styles = theme => ({
 })
 
 class CamItem extends Component {
-  state = {
-    openDialog: false,
-  }
+  
 
   _onSubscribeClick = e => {
     e.stopPropagation()

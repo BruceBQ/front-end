@@ -3,6 +3,10 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import classnames from 'classnames'
 const styles = theme => ({
+  root: {
+    padding: 0,
+    border: '1px solid #fff'
+  },
   half: {
     width: '50%',
   },
@@ -24,7 +28,7 @@ class WrapperPlayer extends Component {
     const { classes, listSize } = this.props
     return (
       <div
-        className={classnames('p-0', {
+        className={classnames(classes.root, {
           [classes.half]: listSize === 4,
           [classes.oneThird]: listSize === 9,
           [classes.quarter]: listSize === 16,

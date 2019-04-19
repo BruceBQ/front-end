@@ -1,8 +1,8 @@
 import * as types from '../constant/constant_actions'
 
-export function signIn( user ) {
+export function logIn( user ) {
   return {
-    type: types.START_FETCHING,
+    type: types.LOGIN,
     user: user
   }
 }

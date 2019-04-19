@@ -43,6 +43,7 @@ export function* watchConnectCamera() {
   yield takeEvery(types.CONNECT_CAMERA, workerConnectCamera)
 }
 
+// connect to camera
 function* workerConnectCamera(action) {
   try {
     yield put(showLoadingModal('Đang kết nối tới camera'))

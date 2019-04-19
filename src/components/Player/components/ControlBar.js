@@ -7,16 +7,17 @@ import LiveToggle from './LiveToggle'
 import classNames from 'classnames'
 
 class ControlBar extends Component {
+
   render() {
     const {
+      cam,
       playerControl,
       video,
       handlePlaying,
       handleWaiting,
       handlePlayOrPause,
-      handleLive,
-      handleNotLive,
-      handleReload,
+      handleControlBarMouseEnter,
+      handleControlBarMouseLeave,
       src,
     } = this.props
     return (
@@ -24,6 +25,9 @@ class ControlBar extends Component {
         className={classNames('control-bar', {
           'control-bar__hide': !playerControl.showControls
         })}
+        onClick={e => e.stopPropagation()}
+        onMouseEnter={handleControlBarMouseEnter}
+        onMouseLeave={handleControlBarMouseLeave}
       >
         <div className="video-controls__left">
           <PlayToggle
@@ -44,7 +48,7 @@ class ControlBar extends Component {
           {/* <LiveToggle isLive={isLive} reload={handleReload} /> */}
         </div>
         <div className="video-controls__right">
-          <FollowToggle />
+          <FollowToggle cam={cam}/>
           <FullScreenToggle
             playerControl={playerControl}
             isFullScreen={this.props.isFullScreen}

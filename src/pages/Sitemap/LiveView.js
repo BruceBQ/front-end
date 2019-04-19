@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import ClearOutlined from '@material-ui/icons/ClearOutlined'
-import { Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core'
 import Player from '../../components/Player/components/Player'
 import { closeInfoWindow } from '../../actions/action_map'
 import Loading from '../../components/Loading'
@@ -21,7 +21,7 @@ const styles = theme => ({
     transform: 'translate(-50%, -100%)',
     transformStyle: 'preserve-3d',
     top: 0,
-    left: '50%'
+    left: '50%',
   },
   tooltip: {
     // maxWidth: 300,
@@ -35,28 +35,28 @@ const styles = theme => ({
     borderRadius: '4px',
     // padding: '4px 8px',
     left: '50%',
-    margin: '10px 0'
+    margin: '10px 0',
   },
   header: {
     display: 'flex',
     flexDirection: 'row',
     height: 30,
-    padding: '4px 4px 0 4px'
+    padding: '4px 4px 0 4px',
   },
   title: {
     flexGrow: 1,
-    fontWeight: 500
+    fontWeight: 500,
   },
   iconButton: {
-    padding: 6
+    padding: 6,
   },
   icon: {
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 })
 
 class LiveView extends Component {
-  _onInfoWindowClick = (event) => {
+  _onInfoWindowClick = event => {
     event.stopPropagation()
   }
   _onCloseInfoWindowClick = () => {
@@ -64,28 +64,43 @@ class LiveView extends Component {
     this.props.closeInfoWindow(id)
   }
   render() {
-    const { 
+    const {
       classes,
+      cams = [],
       detail = {},
       isFetchingStreaming,
-      streamingUrl
+      streamingUrl = {},
     } = this.props
-    return  (
+    // let cam = { }
+    // cam = cams.find(cam => cam.id === streamingUrl.cam_id)
+    // const camStream = {
+    //   ...streamingUrl,
+    //   is_in_followlist: Boolean(cam.is_in_followlist)
+    // }
+    // console.log(cam)
+    return (
       <Fragment>
-        {isFetchingStreaming ? <Loading /> :
-          <Player cam={streamingUrl} onClick={e =>e.stopPropagation}/>
-        }
+        {isFetchingStreaming ? (
+          <Loading />
+        ) : (
+          <Player
+            cam={streamingUrl}
+            onClick={e => e.stopPropagation()}
+          />
+        )}
       </Fragment>
     )
   }
 }
-const mapStateToProps = ({cameras}) => ({
+const mapStateToProps = ({ cameras }) => ({
+  cams: cameras.cameras,
   isFetchingStreaming: cameras.isFetchingStreaming,
-  streamingUrl: cameras.streamingUrl
+  streamingUrl: cameras.streamingUrl,
 })
 
-export default connect(mapStateToProps,
+export default connect(
+  mapStateToProps,
   {
-    closeInfoWindow: closeInfoWindow
-  }
+    closeInfoWindow: closeInfoWindow,
+  },
 )(withStyles(styles)(LiveView))

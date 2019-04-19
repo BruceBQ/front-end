@@ -60,9 +60,12 @@ class GoogleMap extends Component{
   }
   
   componentDidUpdate(prevProps){
-    const { cameras } = this.props
+    const { cameras = [] } = this.props
+    const arrCams = cameras.map(cam => cam.id)
+    const prevArrCams =prevProps.cameras.map(cam => cam.id)
+
     if(prevProps.cameras.length > 0 && this.props.cameras.length > 0 
-      && !_.isEqual(prevProps.cameras, cameras) ){
+      && !_.isEqual(arrCams, prevArrCams) ){
       apiIsLoaded(this.map, this.maps, cameras)
     }
   }

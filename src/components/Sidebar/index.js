@@ -6,15 +6,16 @@ import { withStyles } from '@material-ui/core/styles'
 import { Link } from '@material-ui/core/Link'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 import TooltipWrapper from '../TooltipWrapper'
 import AppsOutlined from '@material-ui/icons/AppsOutlined'
 import MapsOutlined from '@material-ui/icons/MapOutlined'
 import VideocamOutlined from '@material-ui/icons/VideocamOutlined'
+import Search from '@material-ui/icons/Search'
 import ScheduleOutlined from '@material-ui/icons/ScheduleOutlined'
-import IconButton from '@material-ui/core/IconButton';
-import  SettingsOutlined from '@material-ui/icons/SettingsOutlined'
+import IconButton from '@material-ui/core/IconButton'
+import SettingsOutlined from '@material-ui/icons/SettingsOutlined'
 import SettingsMenu from './SettingsMenu'
 import { toggleSettingsMenu } from '../../actions/action_ui'
 
@@ -26,7 +27,7 @@ const styles = theme => ({
     position: 'fixed',
     borderRight: '1px solid #E3E3E3',
     top: 50,
-    bottom: 0
+    bottom: 0,
   },
   wrapper: {
     height: '100%',
@@ -40,60 +41,55 @@ const styles = theme => ({
     flexShrink: 1,
   },
   bottomIcon: {
-    flexGrow: 0
+    flexGrow: 0,
   },
-  nav: {
-
-  },
+  nav: {},
   navItem: {
     // width: '100%',
   },
   navLink: {
-    display: 'flex'
+    display: 'flex',
   },
   navLinkActive: {
     display: 'block',
-    color: '#1967d2'
+    color: '#1967d2',
   },
-  smallIcon:{
-    fontSize: 20
+  smallIcon: {
+    fontSize: 20,
   },
   icon: {
     marginRight: -10,
   },
 
-  selected: {
-
-  },
+  selected: {},
   listItemText: {
     fontSize: '0.825rem',
-    fontWeight: 500
-  }
+    fontWeight: 500,
+  },
 })
 
-class Sidebar extends Component{
-  
+class Sidebar extends Component {
   state = {
     anchorEl: null,
   }
 
   toggleSettingsMenu = () => {
-    if(!this.props.settingsMenu){
+    if (!this.props.settingsMenu) {
       this.props.dispatch(toggleSettingsMenu())
-    }else{
+    } else {
       console.log('aaaaaaaaaa')
     }
   }
 
   handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
+    this.setState({ anchorEl: event.currentTarget })
   }
 
   handleClose = () => {
-    this.setState({ anchorEl: null });
+    this.setState({ anchorEl: null })
   }
 
-  render(){
+  render() {
     const { classes } = this.props
     const { anchorEl } = this.state
     return (
@@ -101,37 +97,62 @@ class Sidebar extends Component{
         <div className={classes.wrapper}>
           <div className={classes.topIcon}>
             <ul className={classes.nav}>
-                <li className={classes.navItem}>
-                  <NavLink to="/dashboard/sitemap" className={classes.navLink} activeClassName={classes.navLinkActive} exact={true}>
-                    {/* <span className='sidebar-icon'><FontAwesomeIcon icon={faSitemap} /></span> */}
-                    <TooltipWrapper title="BẢN ĐỒ" placement="right">
-                      <IconButton>
-                        <MapsOutlined className={classes.smallIcon}/>
-                      </IconButton>
-                    </TooltipWrapper>
-                  </NavLink>
-                </li>
-              <TooltipWrapper title="DS THEO DÕI" placement="right">
-                <li className={classes.navItem}>
-                  <NavLink to='/dashboard/follow_list' activeClassName='active' exact={true}>
+              <li className={classes.navItem}>
+                <NavLink
+                  to="/dashboard/sitemap"
+                  className={classes.navLink}
+                  activeClassName={classes.navLinkActive}
+                  exact={true}
+                >
+                  {/* <span className='sidebar-icon'><FontAwesomeIcon icon={faSitemap} /></span> */}
+                  <TooltipWrapper title="BẢN ĐỒ" placement="right">
                     <IconButton>
-                      <AppsOutlined className={classes.smallIcon}/>
+                      <MapsOutlined className={classes.smallIcon} />
                     </IconButton>
-                  </NavLink>
-                </li>
-              </TooltipWrapper>
+                  </TooltipWrapper>
+                </NavLink>
+              </li>
+              <li className={classes.navItem}>
+                <NavLink
+                  to="/dashboard/follow_list"
+                  activeClassName="active"
+                  exact={true}
+                >
+                  <TooltipWrapper title="DANH SÁCH THEO DÕI" placement="right">
+                    <IconButton>
+                      <AppsOutlined className={classes.smallIcon} />
+                    </IconButton>
+                  </TooltipWrapper>
+                </NavLink>
+              </li>
+              <li className={classes.navItem}>
+                <NavLink
+                  to="/dashboard/search_vehicles"
+                  activeClassName="active"
+                  exact={true}
+                >
+                  <TooltipWrapper title="TÌM KIẾM PHƯƠNG TIỆN" placement='right'>
+                    <IconButton>
+                      <Search className={classes.smallIcon} />
+                    </IconButton>
+                  </TooltipWrapper>
+                </NavLink>
+              </li>
             </ul>
           </div>
           <div className={classes.bottomIcon}>
             <Nav>
               <li className="nav-item">
-                <IconButton onClick={this.handleClick} className={classes.smallIcon}>
-                  <SettingsOutlined className={classes.smallIcon}/>
+                <IconButton
+                  onClick={this.handleClick}
+                  className={classes.smallIcon}
+                >
+                  <SettingsOutlined className={classes.smallIcon} />
                 </IconButton>
               </li>
             </Nav>
           </div>
-          <Menu 
+          <Menu
             id="expand-menu"
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
@@ -140,9 +161,12 @@ class Sidebar extends Component{
             <MenuItem onClick={this.handleClose}>
               <NavLink to="/dashboard/manage_cam" className={classes.navLink}>
                 <ListItemIcon className={classes.icon}>
-                  <VideocamOutlined className={classes.smallIcon}/>
+                  <VideocamOutlined className={classes.smallIcon} />
                 </ListItemIcon>
-                <ListItemText primary="QUẢN LÝ CAMERA" classes={{primary: classes.listItemText}}/>
+                <ListItemText
+                  primary="QUẢN LÝ CAMERA"
+                  classes={{ primary: classes.listItemText }}
+                />
               </NavLink>
             </MenuItem>
             {/* <MenuItem onClick={this.handleClose}>
@@ -161,8 +185,8 @@ class Sidebar extends Component{
   }
 }
 
-const mapStateToProps = ({ui}) => ({
-  settingsMenu: ui.settingsMenu
+const mapStateToProps = ({ ui }) => ({
+  settingsMenu: ui.settingsMenu,
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(Sidebar))

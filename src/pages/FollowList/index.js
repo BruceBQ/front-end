@@ -114,6 +114,6 @@ const mapStateToProps = ({ followList }) => ({
 export default withRouter(
   connect(
     mapStateToProps,
-    {},
+    
   )(withStyles(styles)(FollowList)),
 )

@@ -14,7 +14,10 @@ import ExitToApp from '@material-ui/icons/ExitToApp'
 import Search from '@material-ui/icons/Search'
 import classnames from 'classnames'
 import { toggleCameraFilter } from '../../actions/action_ui'
-import { NotificationImportantOutlined, SearchOutlined } from '@material-ui/icons'
+import {
+  NotificationImportantOutlined,
+  SearchOutlined,
+} from '@material-ui/icons'
 import TooltipWrapper from '../TooltipWrapper'
 import FollowListSize from './FollowListSize'
 import Size from './Size'
@@ -79,8 +82,8 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     height: '100%',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 class Header extends Component {
   state = {
@@ -109,6 +112,9 @@ class Header extends Component {
       case '/dashboard/manage_cam':
         titlePage = 'QUẢN LÝ CAMERA'
         break
+      case '/dashboard/search_vehicles':
+        titlePage = 'TÌM KIẾM PHƯƠNG TIỆN'
+        break
     }
     return (
       <header className={classes.root}>
@@ -118,20 +124,20 @@ class Header extends Component {
         <div className={classes.titlePage}>{titlePage}</div>
         <div className={classes.nav}>
           <div className={classes.leftControls}>
-            {location.pathname === '/dashboard/sitemap' && 
+            {location.pathname === '/dashboard/sitemap' && (
               <TooltipWrapper title="Tìm kiếm nâng cao">
                 <IconButton onClick={this._onToggleCamFilter}>
                   <SearchOutlined className={classes.smallIcon} />
                 </IconButton>
               </TooltipWrapper>
-            }
-            {location.pathname === '/dashboard/follow_list' && 
+            )}
+            {location.pathname === '/dashboard/follow_list' && (
               // <FollowListSize />
               <div className={classes.followList}>
                 <Pagination />
                 <Size />
               </div>
-            }
+            )}
           </div>
           <div className={classes.rightControls}>
             <TooltipWrapper title="Thông báo">
@@ -156,6 +162,11 @@ const mapStateToProps = ({ followList, cameras }) => ({
   // cameraHeaderMenu: cameras.headerMenu
 })
 
-export default withRouter(connect(mapStateToProps, {
-  toggleCameraFilter: toggleCameraFilter
-})(withStyles(styles)(Header)))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      toggleCameraFilter: toggleCameraFilter,
+    },
+  )(withStyles(styles)(Header)),
+)

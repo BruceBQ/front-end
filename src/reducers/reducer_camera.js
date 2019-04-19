@@ -1,4 +1,5 @@
 import * as types from '../constant/constant_actions'
+import _ from 'lodash'
 import { CardActions } from '@material-ui/core';
 
 const INITIAL_STATE = {
@@ -82,6 +83,16 @@ function updateCam(cams, action) {
     }
     return cam
   })
+}
+
+function updateStreamUrl(streamingUrl, action){
+  if(!_.isEmpty(streamingUrl)){
+    return {
+      ...streamingUrl,
+      is_in_followlist: !streamingUrl.is_in_followlist
+    }
+  }
+  return streamingUrl
 }
 
 const reducer_camera = ( state = INITIAL_STATE, action ) => {
@@ -357,7 +368,9 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
       })
     case types.SHOW_INFO_WINDOW: 
       return Object.assign({}, state, {
-        // isFetchingStreaming: true,
+        streamingUrl: {},
+        isFetchingStreaming: true,
+        isShowLiveView: false,
       })
     case types.CLOSE_INFO_WINDOW:
       return Object.assign({}, state, {
@@ -370,15 +383,18 @@ const reducer_camera = ( state = INITIAL_STATE, action ) => {
         isFetchingStreaming: false,
         streamingUrl: (action.streamingUrl)
       })
+
     
     // update follow list
     case types.ADD_CAM_TO_FOLLOWLIST_SUCCESS:
       return Object.assign({}, state, {
-        cameras: updateCam(state.cameras, action)
+        cameras: updateCam(state.cameras, action),
+        streamingUrl: updateStreamUrl(state.streamingUrl, action)
       })
     case types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS:
       return Object.assign({}, state, {
-        cameras: updateCam(state.cameras, action)
+        cameras: updateCam(state.cameras, action),
+        streamingUrl: updateStreamUrl(state.streamingUrl, action)
       })
     default:
       return state

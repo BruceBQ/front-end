@@ -12,6 +12,7 @@ const SitemapPage = lazy(() => import('../Sitemap'))
 const CameraDetail = lazy(() => import('../../containers/Pages/Sitemap/CameraDetail'))
 const FollowList = lazy(() => import('../FollowList'))
 const ManageCam = lazy(() =>import('../ManageCam'))
+const SearchVehicles = lazy(() => import('../SearchVehicles'))
 
 class Layout extends Component{
   render(){
@@ -27,6 +28,7 @@ class Layout extends Component{
               <Route path={`${match.url}/sitemap`} component={SitemapPage} />
               <Route path={`${match.url}/follow_list`} component={FollowList} />
               <Route path={`${match.url}/manage_cam`} component={ManageCam} />
+              <Route path={`${match.url}/search_vehicles`} component={SearchVehicles} />
             </Switch>
           </Suspense>
         </main>

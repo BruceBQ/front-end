@@ -6,7 +6,7 @@
     border: 0;
     background: transparent;
     width: 100%;
-    border: 1px solid white;
+    // border: 1px solid white;
 }
 
 .video-stream.html5-main-video{
@@ -86,7 +86,7 @@
     // background: rgb(70,70,70);
     background: black;
     // border: -1px solid #fff;
-    outline: 1px #fff solid; 
+    // outline: 1px #fff solid; 
     outline-offset: -1px;
     &:fullscreen{
         padding-top: 0;
@@ -133,7 +133,7 @@
     width: 100%;
     height: 100%;
     display: block;
-    border: 1px #fff solid; 
+    // border: 1px #fff solid; 
     // outline-offset: -2px;
 }
 

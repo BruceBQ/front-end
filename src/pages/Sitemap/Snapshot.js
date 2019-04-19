@@ -51,7 +51,9 @@ class Snapshot extends Component{
       snapshotImageUrl
     } = this.props 
     return (
-      <div className={classes.root}>
+      <div className={classes.root}
+        onClick={e => e.stopPropagation()}
+      >
         {isGettingSnapshot ? <Loading /> :
           <div className={classes.snapshot}>
             <img src={snapshotImageUrl} className={classes.snapshotImg}/>

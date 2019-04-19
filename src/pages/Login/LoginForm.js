@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import TextField from '@material-ui/core/TextField'
+import React, { Component } from 'react'
+import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import { withStyles } from '@material-ui/core/styles';
-import { signIn } from '../../actions/action_authetication'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import TextInput from '../../components/TextInput'
 import _ from 'lodash'
 
 const styles = theme => ({
@@ -20,82 +19,67 @@ const styles = theme => ({
     fontSize: '0.875rem',
     padding: '2.5px 14px',
   },
+  process: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  }
 })
 
-class LoginForm extends Component{
+class LoginForm extends Component {
   state = {
     username: '',
-    password: ''
+    password: '',
   }
 
-  onChange = name => event =>{
-    this.setState({
-      [name]: event.target.value,
-    })
-  }
-  onSubmit = (e) => {
-    e.preventDefault()
-    this.props.dispatch(signIn(this.state))
+  _onInputChange = event => {
+    event.persist()
+    this.props.handleChange(event)
   }
 
-  render(){
-    const { fetching, errors, classes } = this.props
-    return(
-      <form autoComplete="off">
+  render() {
+    const { 
+      classes, 
+      handleSubmit, 
+      errors = {},
+      isFetching
+    } = this.props
+    
+    return (
+      <form autoComplete="off" onSubmit={handleSubmit}>
         <div className="card-body">
           <div className="form-group">
-            <TextField
+            <TextInput 
               label="Tên đăng nhập"
               name="username"
-              margin="normal"
-              error={!_.isEmpty(errors.username)}
-              InputLabelProps	={{
-                classes: {
-                  root: classes.inputLabel
-                },
-              }}
-              InputProps={{
-                inputProps: {
-                  className: classes.inputProps
-                }
-              }}
               fullWidth
+              onChange={this._onInputChange}
+              error={_.has(errors,'username')}
               helperText={errors.username}
-              variant="outlined"
-              onChange={this.onChange('username')}
             />
           </div>
           <div className="form-group">
-            <TextField
+            <TextInput
               label="Mật khẩu"
               name="password"
               type="password"
               fullWidth
-              margin="none"
-              error={!_.isEmpty(errors.password)}
-              InputLabelProps	={{
-                classes: {
-                  root: classes.inputLabel
-                },
-              }}
-              InputProps={{
-                inputProps: {
-                  className: classes.inputProps
-                }
-              }}
+              onChange={this._onInputChange}
+              error={_.has(errors,'password')}
               helperText={errors.password}
-              variant="outlined"
-              onChange={this.onChange('password')}
             />
           </div>
           <div className="text-center">
             <Button
-              variant="contained" 
+              variant="contained"
               color="primary"
-              onClick={this.onSubmit}
-              disabled={fetching}
+              type="submit"
+              disabled={isFetching}
             >
-                Đăng nhập
+              Đăng nhập
+              { isFetching && <CircularProgress size={24} className={classes.process} color="primary"/> }
             </Button>
           </div>
         </div>
@@ -104,9 +88,4 @@ class LoginForm extends Component{
   }
 }
 
-const mapStateToProps = ({user}) => ({
-  errors: user.errors,
-  fetching: user.fetching
-})
-
-export default connect(mapStateToProps)(withStyles(styles)(LoginForm))
+export default (withStyles(styles)(LoginForm))

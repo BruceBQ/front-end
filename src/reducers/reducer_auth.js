@@ -5,28 +5,28 @@ const INITIAL_STATE = {
   authenticated: false,
   user: {},
   errors: {},
-  fetching: false,
+  isFetching: false,
 }
 
 const reducer_user = ( state = INITIAL_STATE, action ) => {
   switch (action.type){
-    case types.START_FETCHING:
-      return Object({}, state, {
-        fetching: true
+    case types.LOGIN:
+      return Object.assign({}, state, {
+        isFetching: true
       })
     case types.LOGIN_SUCCESS:
       return Object.assign({}, state, {
         authenticated: true,
         user: action.user,
         errors: {},
-        fetching: false
+        isFetching: false
       })
     case types.LOGIN_FAILURE:
       return Object.assign({}, state, {
         authenticated: false,
         user: {},
         errors: action.errors,
-        fetching: false
+        isFetching: false
       })
     default:
       return state;
