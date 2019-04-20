@@ -23,7 +23,7 @@ function* workersignIn(action) {
 }
 
 export function* watcherSignIn() {
-  yield takeEvery(types.START_FETCHING, workersignIn)
+  yield takeEvery(types.LOGIN, workersignIn)
 }
 
 // function* workerSignUp(){

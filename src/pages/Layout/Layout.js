@@ -1,9 +1,10 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom'
+import SecretRoute from '../../components/SecretRoute'
 import Loading from '../../components/Loading'
 
 import dashboard_routes from '../../routes/route_dashboard'
-// import { ToastContainer } from 'react-toastify'
+
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
 import ModalWrapper from '../../components/Modal'
@@ -25,10 +26,10 @@ class Layout extends Component{
           <Suspense fallback={<Loading />}>
             <Switch>
               <Redirect from="/dashboard" to="/dashboard/sitemap" exact={true}/>
-              <Route path={`${match.url}/sitemap`} component={SitemapPage} />
-              <Route path={`${match.url}/follow_list`} component={FollowList} />
-              <Route path={`${match.url}/manage_cam`} component={ManageCam} />
-              <Route path={`${match.url}/search_vehicles`} component={SearchVehicles} />
+              <SecretRoute path={`${match.url}/sitemap`} component={SitemapPage} />
+              <SecretRoute path={`${match.url}/follow_list`} component={FollowList} />
+              <SecretRoute path={`${match.url}/manage_cam`} component={ManageCam} />
+              <SecretRoute path={`${match.url}/search_vehicles`} component={SearchVehicles} />
             </Switch>
           </Suspense>
         </main>

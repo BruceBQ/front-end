@@ -2,22 +2,18 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+import { CSSTransition } from 'react-transition-group'
 import GoogleMap from '../../components/GoogleMap'
-import Search from './Search'
 import CameraList from './CameraList'
-import Button from '@material-ui/core/Button'
 import MarkerInstance from './MarkerInstance'
 // import { SitemapMarkerCam } from '../../components/Marker'
 import Marker from './Marker'
-import SearchCamera from '../ManageCam/Search'
+import Search from './Search'
+// import SearchCamera from '../ManageCam/Search'
 import SearchResult from './SearchResult'
 import cx from 'classnames'
 import { changeBoundsMap } from '../../actions/action_map'
 import _ from 'lodash'
-import * as CameraActions from '../../actions/action_camera'
-import * as ModalActions from '../../actions/action_modal'
-import * as MapActions from '../../actions/action_map'
-import * as UIActions from '../../actions/action_ui'
 
 const styles = theme => ({
   root: {
@@ -48,15 +44,16 @@ const styles = theme => ({
   },
 })
 class SitemapPage extends Component {
+
   _onBoundsChange = ({ center, zoom, bounds, marginBounds }) => {
     this.props.changeBoundsMap({ center, zoom })
   }
 
-  onClick = () => {
+  _onClick = () => {
     console.log('map-onclick')
   }
 
-  onChildClick = (key, childProps) => {
+  _onChildClick = (key, childProps) => {
     console.log(childProps)
   }
 
@@ -73,10 +70,7 @@ class SitemapPage extends Component {
       defaultZoom,
       zoom,
     } = this.props
-    const cameraSearchStyles = cx(
-      'camera-search',
-      this.props.cameraFilterSidebar ? 'hidden-filter' : '',
-    )
+    
     return (
       <div className={classes.root}>
         <div
@@ -90,7 +84,8 @@ class SitemapPage extends Component {
             center={center}
             defaultZoom={defaultZoom}
             zoom={zoom}
-            onClick={this.onClick}
+            onClick={this._onClick}
+            onChildClick={this._onChildClick}
             onChange={this._onBoundsChange}
           >
             {cams.map((cam, index) => (
@@ -106,10 +101,14 @@ class SitemapPage extends Component {
           }
         >
           {cameraFilterSidebar && (
-            <Fragment>
-              <SearchCamera />
-              <SearchResult />
-            </Fragment>
+            <CSSTransition in={cameraFilterSidebar} timeout={300}>
+              <Fragment>
+                <Search />
+                {/* <SearchCamera /> */}
+                <SearchResult />
+              </Fragment>
+            </CSSTransition>
+            
           )}
         </div>
       </div>

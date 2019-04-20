@@ -30,16 +30,16 @@ const styles = theme => ({
     cursor: 'pointer',
   },
   cardMediaWrapper: {
-    width: 150,
+    width: 115,
   },
   focused: {
     backgroundColor: '#e0e0e0',
   },
   details: {
-    width: 'calc(100% - 150px)',
+    width: 'calc(100% - 115px)',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    // alignItems: 'center',
     justifyContent: 'center',
   },
   cardMedia: {
@@ -56,15 +56,21 @@ const styles = theme => ({
     paddingLeft: 16,
   },
   name: {
-    fontSize: 16,
+    fontSize: 14,
+    lineHeight: 1.3,
     fontWeight: 500,
   },
+  address: {
+    fontSize: 12,
+    lineHeight: 1.3,
+  },
   description: {
+
     lineHeight: '1.5em',
     fontSize: '0.825rem',
   },
   icon: {
-    fontSize: 16,
+    fontSize: 14,
   },
   iconButton: {
     padding: 6,
@@ -118,20 +124,7 @@ class CamItem extends Component {
             <Typography variant="inherit" noWrap className={classes.name}>
               {detail.name}
             </Typography>
-            <Typography
-              variant="inherit"
-              noWrap
-              // color="textSecondary"
-              // className={classes.description}
-            >
-              {/* {detail.ip} */}
-            </Typography>
-            <Typography
-              variant="inherit"
-              noWrap
-              // color="textSecondary"
-              // className={classes.description}
-            >
+            <Typography variant="inherit" noWrap className={classes.address}>
               {detail.address}
             </Typography>
           </CardContent>

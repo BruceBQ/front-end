@@ -3,15 +3,24 @@ import createSagaMiddleware from 'redux-saga'
 // import { logger } from 'redux-logger'
 import { createLogger } from 'redux-logger'
 import  rootSaga  from '../sagas'
-import  watchSignIn  from '../sagas/saga_authentication'
-
+import { loadFollowlistData,  loadUserData } from '../utils/localStorage'
 import reducer_root from '../reducers'
 
-// const middleware = [thunk]
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const sagaMiddleware = createSagaMiddleware()
 
-const preloadedState = { }
+const preloadedState = {
+  user: {
+    authenticated: Boolean(loadUserData()),
+    user: loadUserData(),
+    errors: {},
+    isFetching: false,
+  },
+  followList: {
+    currentPage: 1,
+    listSize: 9,
+  },
+}
 
 const logger = createLogger({
 	collapsed: true

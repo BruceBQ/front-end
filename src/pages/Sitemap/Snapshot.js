@@ -9,7 +9,7 @@ import { getCamSnapshot } from '../../actions/action_camera'
 import { getStreamingUrl } from '../../actions/action_streaming'
 const styles = theme => ({
   root: {
-    
+    transformStyle: 'preserve-3d',
   },
   
   snapshot: {
@@ -18,6 +18,7 @@ const styles = theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
     position: 'relative',
+    transformStyle: 'preserve-3d',
     backgroundColor: theme.palette.common.black,
   },
   snapshotImg: {

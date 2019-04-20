@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import { Formik } from 'formik'
 import * as yup from 'yup'
@@ -19,12 +21,32 @@ const styles = theme => ({
 })
 
 class LoginPage extends Component {
+  state = {
+
+  }
+  static getDerivedStateFromProps(props, state){
+    if(props.authenticated){
+      props.history.push('/dashboard/sitemap')
+    }
+    return null
+  }
+  
+  // componentDidUpdate(props){
+  //   if(props.authenticated){
+  //     props.history.push('/dashboard/sitemap')
+  //   }
+  // }
+  
+
   _onSubmit = values => {
     this.props.logIn(values)
   }
 
   render() {
-    const { classes, isFetching } = this.props
+    const { classes, isFetching, authenticated } = this.props
+    // if(authenticated){
+    //   return <Redirect to='/dashboard' />
+    // }
     return (
       <div className="login-page">
         <div className="content">
@@ -42,7 +64,9 @@ class LoginPage extends Component {
                     validationSchema={loginSchema}
                     validateOnChange={false}
                     onSubmit={values => this._onSubmit(values)}
-                    render={props => <LoginForm {...props} isFetching={isFetching} />}
+                    render={props => (
+                      <LoginForm {...props} isFetching={isFetching} />
+                    )}
                   />
                 </div>
               </div>
@@ -56,9 +80,10 @@ class LoginPage extends Component {
 
 const mapStateToProps = ({ user }) => ({
   isFetching: user.isFetching,
+  authenticated: user.authenticated
 })
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   { logIn: logIn },
-)(withStyles(styles)(LoginPage))
+)(withStyles(styles)(LoginPage)))
