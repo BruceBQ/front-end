@@ -21,15 +21,18 @@ const styles = theme => ({
 })
 
 class LoginPage extends Component {
-  state = {
 
-  }
-  static getDerivedStateFromProps(props, state){
-    if(props.authenticated){
-      props.history.push('/dashboard/sitemap')
-    }
-    return null
-  }
+  // componentDidMount() {
+  //   if(this.props.authenticated){
+  //     this.props.history.push('/dashboard')
+  //   }
+  // }
+  // static getDerivedStateFromProps(props, state){
+  //   if(props.authenticated){
+  //     props.history.push('/dashboard/sitemap')
+  //   }
+  //   return null
+  // }
   
   // componentDidUpdate(props){
   //   if(props.authenticated){
@@ -44,9 +47,10 @@ class LoginPage extends Component {
 
   render() {
     const { classes, isFetching, authenticated } = this.props
-    // if(authenticated){
-    //   return <Redirect to='/dashboard' />
-    // }
+    console.log(authenticated)
+    if(authenticated){
+      return <Redirect to='/dashboard' />
+    }
     return (
       <div className="login-page">
         <div className="content">

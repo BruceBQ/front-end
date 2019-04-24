@@ -13,7 +13,7 @@ import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import Search from '@material-ui/icons/Search'
 import classnames from 'classnames'
-import { toggleCameraFilter } from '../../actions/action_ui'
+import { toggleCameraFilter, toggleDrawer } from '../../actions/action_ui'
 import {
   NotificationImportantOutlined,
   SearchOutlined,
@@ -99,6 +99,10 @@ class Header extends Component {
     this.props.toggleCameraFilter()
   }
 
+  _onToggleDrawer = () => {
+    this.props.toggleDrawer()
+  }
+
   render() {
     const { classes, location, isFollowListPage, cameraHeaderMenu } = this.props
     let titlePage = ''
@@ -141,7 +145,7 @@ class Header extends Component {
           </div>
           <div className={classes.rightControls}>
             <TooltipWrapper title="Thông báo">
-              <IconButton>
+              <IconButton onClick={this._onToggleDrawer}>
                 <NotificationsNoneIcon className={classes.smallIcon} />
               </IconButton>
             </TooltipWrapper>
@@ -167,6 +171,7 @@ export default withRouter(
     mapStateToProps,
     {
       toggleCameraFilter: toggleCameraFilter,
+      toggleDrawer: toggleDrawer,
     },
   )(withStyles(styles)(Header)),
 )

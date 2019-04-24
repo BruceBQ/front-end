@@ -43,8 +43,10 @@ import {
 } from './saga_manageCam'
 
 import {
-  
-} from './saga_search'
+  watchSearchVehicles
+} from './saga_searchVehicles'
+
+
 
 export default function* rootSaga() {
   yield all([
@@ -81,5 +83,8 @@ export default function* rootSaga() {
     fork(watchGetDataBeforeConnect),
     //search
     fork(watchChangeSearchCamParams),
+
+    //search vehicles
+    fork(watchSearchVehicles)
   ])
 }

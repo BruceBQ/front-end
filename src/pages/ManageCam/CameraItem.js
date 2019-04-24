@@ -36,7 +36,7 @@ const styles = theme => ({
     backgroundColor: '#e0e0e0'
   },
   cardMediaWrapper: {
-    width: 150
+    width: 115
   },
   controls: {
     display: 'flex',
@@ -44,7 +44,7 @@ const styles = theme => ({
     paddingLeft: 16
   },
   details: {
-    width: 'calc(100% - 150px)',
+    width: 'calc(100% - 115px)',
     display: 'flex',
     flexDirection: 'column',
     // alignItems: 'center',
@@ -65,8 +65,13 @@ const styles = theme => ({
     fontSize: 16
   },
   name: {
-    fontSize: 16,
+    fontSize: 14,
+    lineHeight: 1.3,
     fontWeight: 500
+  },
+  address: {
+    fontSize: 12,
+    lineHeight: 1.3,
   },
   description: {
     lineHeight: '1.5em',
@@ -131,15 +136,7 @@ class CameraItem extends Component {
               variant="inherit"
               noWrap
               // color="textSecondary"
-              // className={classes.description}
-            >
-              {/* {detail.ip} */}
-            </Typography>
-            <Typography
-              variant="inherit"
-              noWrap
-              // color="textSecondary"
-              // className={classes.description}
+              className={classes.address}
             >
               {detail.address}
             </Typography>

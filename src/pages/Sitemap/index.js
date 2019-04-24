@@ -3,17 +3,14 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import { CSSTransition } from 'react-transition-group'
+import classNames from 'classnames'
+import _ from 'lodash'
+
 import GoogleMap from '../../components/GoogleMap'
-import CameraList from './CameraList'
-import MarkerInstance from './MarkerInstance'
-// import { SitemapMarkerCam } from '../../components/Marker'
 import Marker from './Marker'
 import Search from './Search'
-// import SearchCamera from '../ManageCam/Search'
 import SearchResult from './SearchResult'
-import cx from 'classnames'
 import { changeBoundsMap } from '../../actions/action_map'
-import _ from 'lodash'
 
 const styles = theme => ({
   root: {
@@ -44,17 +41,16 @@ const styles = theme => ({
   },
 })
 class SitemapPage extends Component {
-
   _onBoundsChange = ({ center, zoom, bounds, marginBounds }) => {
     this.props.changeBoundsMap({ center, zoom })
   }
 
   _onClick = () => {
-    console.log('map-onclick')
+    // console.log('map-onclick')
   }
 
   _onChildClick = (key, childProps) => {
-    console.log(childProps)
+    // console.log(childProps)
   }
 
   componentWillUnmount() {
@@ -70,7 +66,7 @@ class SitemapPage extends Component {
       defaultZoom,
       zoom,
     } = this.props
-    
+
     return (
       <div className={classes.root}>
         <div
@@ -94,21 +90,17 @@ class SitemapPage extends Component {
           </GoogleMap>
         </div>
         <div
-          className={
-            cameraFilterSidebar
-              ? classes.filterWrapper
-              : classes.hideFilterWrapper
-          }
+          className={classNames(classes.filterWrapper, {
+            [classes.hideFilterWrapper]: !cameraFilterSidebar,
+          })}
         >
           {cameraFilterSidebar && (
-            <CSSTransition in={cameraFilterSidebar} timeout={300}>
+            // <CSSTransition in={cameraFilterSidebar} timeout={300}>
               <Fragment>
                 <Search />
-                {/* <SearchCamera /> */}
                 <SearchResult />
               </Fragment>
-            </CSSTransition>
-            
+            // </CSSTransition>
           )}
         </div>
       </div>
@@ -126,9 +118,11 @@ const mapStateToProps = ({ cameras, map, ui }) => ({
   zoom: map.zoom,
 })
 
-export default connect(
-  mapStateToProps,
-  {
-    changeBoundsMap: changeBoundsMap,
-  },
-)(withStyles(styles)(SitemapPage))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      changeBoundsMap: changeBoundsMap,
+    },
+  )(withStyles(styles)(SitemapPage)),
+)

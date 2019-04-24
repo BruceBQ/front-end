@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import Search from './Search'
 import GoogleMap from '../../components/GoogleMap'
+import SearchResult from './SearchResult';
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -11,11 +12,12 @@ const styles = theme => ({
     height: '100%',
   },
   left: {
-    width: 400,
+    width: 350,
     zIndex:4,
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
+    flexDirection: 'column',
     boxShadow: '5px 0 5px -5px #333',
   },
   right: {
@@ -29,7 +31,8 @@ class SearchVehicles extends Component{
       lat: 16.036308499726402,
       lng: 108.20592484212307
     },
-    zoom: 13
+    zoom: 13,
+    
   }
   render(){
     const {
@@ -39,6 +42,7 @@ class SearchVehicles extends Component{
       <div className={classes.root}>
         <div className={classes.left}>
           <Search />
+          <SearchResult />
         </div>
         <div className={classes.right}>
           <GoogleMap 
@@ -52,7 +56,7 @@ class SearchVehicles extends Component{
 }
 
 const mapStateToProps = ({}) => ({
-
+  
 })
 
 export default connect()(withStyles(styles)(SearchVehicles))

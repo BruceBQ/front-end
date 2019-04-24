@@ -1,13 +1,14 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { loadUserData } from '../utils/localStorage'
-const user = loadUserData()
+
 const SecretRoute = ({ component: Component, ...rest }) => {
+  const user = loadUserData()
   return (
     <Route
       {...rest}
       render={props =>
-        (user !== undefined && user.access_token !== undefined) ? (
+        (user !== undefined && user.access_token !== undefined )? (
           <Component {...props} />
         ) : (
           <Redirect

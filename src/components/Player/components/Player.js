@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Hls from 'hls.js'
+import _ from 'lodash'
+
 import Video from './Video'
 import ControlBar from './ControlBar'
 import LoadingSpinner from './LoadingSpinner'
-import PropTypes from 'prop-types'
 import './player.scss'
 import fullscreen from '../utils/fullscreen'
-import Hls from 'hls.js'
 
 class Player extends Component {
   constructor(props) {
@@ -15,32 +17,19 @@ class Player extends Component {
       paused: false,
       fullscreen: false,
       waiting: true,
+      userActive: false
     }
     this.controlHideTimer = null
     this.video = React.createRef()
     this.player = React.createRef()
+    // this.handleControlBarMouseEnter = this.handleControlBarMouseEnter.bind(this)
   }
 
   static defaultProps = {
     aspectRatio: 'auto',
   }
 
-  getBuffer = () => {
-    for (let i = 0; i < this.video.video.buffered.length; i++) {
-      console.log(
-        i +
-          ':' +
-          '[' +
-          this.video.video.buffered.start(i) +
-          ' ' +
-          this.video.video.buffered.end(i) +
-          ']',
-      )
-    }
-  }
-
   componentDidMount() {
-    console.log(this.props.cam)
     window.addEventListener('resize', this.handleResize)
     fullscreen.addEventListener(this.handleFullScreenChange)
   }
@@ -50,6 +39,7 @@ class Player extends Component {
     fullscreen.removeEventListener(this.handleFullScreenChange)
     if (this.controlsHideTimer) {
       window.clearTimeout(this.controlsHideTimer);
+      this.controlHideTimer = null
     }
   }
 
@@ -61,37 +51,57 @@ class Player extends Component {
     this.startControlsTimer()
   }
 
-  startControlsTimer = () => {
+  startControlsTimer = () => {    
+    console.log('start timer')
     this.setState({
       showControls: true
     })
-    let controlBarActiveTime = 1500
+    let controlBarActiveTime = 2500
     clearTimeout(this.controlHideTimer)
+    console.log(this.controlHideTimer)
+
     this.controlHideTimer = setTimeout(() => {
+      console.log('vietbq')
       this.setState({
         showControls: false
-      })
+      }, () => console.log('hide control bar'))
     }, controlBarActiveTime)
   }
 
-  // handleMouseLeave = () => {
-  //   this.setState({
-  //     showControls: false,
-  //   })
-  // }
-
-  handleControlBarMouseEnter = () => {
-    // if(this.controlHideTimer){
-    //   clearTimeout(this.controlsHideTimer);
-    // }
+  stopControlTimer = () => {
+    clearTimeout(this.controlHideTimer)
+  }
+  handleMouseLeave = () => {
     this.setState({
-      showControls: true
+      showControls: false,
     })
   }
 
-  handleControlBarMouseLeave = () => {
+  handleControlBarMouseEnter = (e) => {
+    e.stopPropagation()
+    // this.setState({
+    //   showControls: true
+    // }, () => console.log('show controlbar'))
+    // console.log('mouse enter control bar')
+    // if(this.controlHideTimer){
+    //   this.stopControlTimer()
+    //   this.setState({
+    //     showControls: true
+    //   })
+    //   this.controlHideTimer = 0
+    // }
     this.setState({
-      showControls: false,
+      userActive: true
+    })
+  }
+
+  handleControlBarMouseLeave = (e) => {
+    // console.log(e)
+    // e.stopPropagation()
+    // console.log('mouse leave control bar')
+    this.setState({
+      // showControls: false,
+      userActive: false
     })
   }
   handleFocus = () => {}
@@ -143,10 +153,11 @@ class Player extends Component {
     const {
       cam
     } = this.props
-    if(cam.stream_url == null){
+
+    if(_.isEmpty(cam.stream_url)){
       return (
-        <div classeName="video-player">
-          <div>CÓ LỖI</div>
+        <div className="video-player-error">
+          <div>{cam.error}</div>
         </div>
       )
     }

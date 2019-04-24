@@ -9,6 +9,7 @@ import reducer_manageCam from './reducer_manageCam'
 import reducer_notifications from './reducer_notifications'
 import reducer_political from './reducer_political';
 import reducer_search from './reducer_search'
+import reducer_searchVehicles from './reducer_searchVehicles'
 
 const reducer_root = combineReducers({
   user: reducer_user,
@@ -21,6 +22,7 @@ const reducer_root = combineReducers({
   political: reducer_political,
   notifications: reducer_notifications,
   search: reducer_search,
+  searchVehicles: reducer_searchVehicles
 })
 
 export default reducer_root

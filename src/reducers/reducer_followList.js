@@ -7,6 +7,21 @@ const INITIAL_STATE = {
   currentPage: 1,
   totalPage: 1,
 }
+function updateCam(cams, action) {
+  return cams.map((cam, index) => {
+    if (action.camId.includes(cam.id)) {
+      return {
+        ...cam,
+        is_in_followlist: !cam.is_in_followlist,
+      }
+    }
+    return cam
+  })
+}
+
+function removeCam(cams, action) {
+  return cams.filter(cam => cam.id === action.camId[0])
+}
 
 const reducer_followList = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -22,23 +37,27 @@ const reducer_followList = (state = INITIAL_STATE, action) => {
       return Object.assign({}, state, {
         listSize: action.listSize,
         currentPage: 1,
-        totalPage: Math.ceil(state.cameras.length/action.listSize)
+        totalPage: Math.ceil(state.cameras.length / action.listSize),
       })
-    case types.CHANGE_FOLLOWLIST_PAGE: 
+    case types.CHANGE_FOLLOWLIST_PAGE:
       return Object.assign({}, state, {
-        currentPage: action.page
+        currentPage: action.page,
       })
     case types.GET_FOLLOWLIST:
       return Object.assign({}, state, {
-        isFetching: true
+        isFetching: true,
       })
     case types.GET_FOLLOWLIST_SUCCESS:
       return Object.assign({}, state, {
         isFetching: false,
         cameras: action.camList,
-        totalPage: Math.ceil(action.camList.length/state.listSize)
+        totalPage: Math.ceil(action.camList.length / state.listSize),
       })
-
+    // case types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS:
+    //   return Object.assign({}, state, {
+    //     cameras: removeCam(state.cameras, action),
+    //     // streamingUrl: updateStreamUrl(state.streamingUrl, action),
+    //   })
     default:
       return state
   }

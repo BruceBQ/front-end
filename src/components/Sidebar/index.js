@@ -4,10 +4,12 @@ import { Nav } from 'reactstrap'
 import { NavLink } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from '@material-ui/core/Link'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import TooltipWrapper from '../TooltipWrapper'
 import AppsOutlined from '@material-ui/icons/AppsOutlined'
 import MapsOutlined from '@material-ui/icons/MapOutlined'
@@ -53,6 +55,8 @@ const styles = theme => ({
   navLinkActive: {
     display: 'block',
     color: '#1967d2',
+    backgroundColor: '#e8f0fe',
+    fontWeight: 500,
   },
   smallIcon: {
     fontSize: 20,
@@ -61,10 +65,19 @@ const styles = theme => ({
     marginRight: -10,
   },
 
-  selected: {},
+  menuItem: {
+    padding: 0,
+    height: '100%',
+    // paddingLeft: 0,
+    // paddingRight: 0,
+  },
   listItemText: {
     fontSize: '0.825rem',
     fontWeight: 500,
+  },
+  navLinkMenu: {
+    display: 'flex',
+    padding: '11px 16px',
   },
 })
 
@@ -104,9 +117,8 @@ class Sidebar extends Component {
                   activeClassName={classes.navLinkActive}
                   exact={true}
                 >
-                  {/* <span className='sidebar-icon'><FontAwesomeIcon icon={faSitemap} /></span> */}
                   <TooltipWrapper title="BẢN ĐỒ" placement="right">
-                    <IconButton>
+                    <IconButton color="inherit">
                       <MapsOutlined className={classes.smallIcon} />
                     </IconButton>
                   </TooltipWrapper>
@@ -115,11 +127,11 @@ class Sidebar extends Component {
               <li className={classes.navItem}>
                 <NavLink
                   to="/dashboard/follow_list"
-                  activeClassName="active"
+                  activeClassName={classes.navLinkActive}
                   exact={true}
                 >
                   <TooltipWrapper title="DANH SÁCH THEO DÕI" placement="right">
-                    <IconButton>
+                    <IconButton color="inherit">
                       <AppsOutlined className={classes.smallIcon} />
                     </IconButton>
                   </TooltipWrapper>
@@ -128,11 +140,14 @@ class Sidebar extends Component {
               <li className={classes.navItem}>
                 <NavLink
                   to="/dashboard/search_vehicles"
-                  activeClassName="active"
+                  activeClassName={classes.navLinkActive}
                   exact={true}
                 >
-                  <TooltipWrapper title="TÌM KIẾM PHƯƠNG TIỆN" placement='right'>
-                    <IconButton>
+                  <TooltipWrapper
+                    title="TÌM KIẾM PHƯƠNG TIỆN"
+                    placement="right"
+                  >
+                    <IconButton color="inherit">
                       <Search className={classes.smallIcon} />
                     </IconButton>
                   </TooltipWrapper>
@@ -158,9 +173,14 @@ class Sidebar extends Component {
             open={Boolean(anchorEl)}
             onClose={this.handleClose}
           >
-            <MenuItem onClick={this.handleClose}>
-              <NavLink to="/dashboard/manage_cam" className={classes.navLink}>
-                <ListItemIcon className={classes.icon}>
+            <MenuItem onClick={this.handleClose} className={classes.menuItem}>
+              <NavLink
+                to="/dashboard/manage_cam"
+                className={classes.navLinkMenu}
+                // activeClassName={classes.navLinkActive}
+                exact={true}
+              >
+                <ListItemIcon className={classes.icon} >
                   <VideocamOutlined className={classes.smallIcon} />
                 </ListItemIcon>
                 <ListItemText

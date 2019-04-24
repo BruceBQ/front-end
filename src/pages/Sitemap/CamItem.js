@@ -79,7 +79,6 @@ const styles = theme => ({
 
 class CamItem extends Component {
   
-
   _onSubscribeClick = e => {
     e.stopPropagation()
     const { id } = this.props.detail

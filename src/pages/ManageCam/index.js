@@ -40,7 +40,7 @@ const styles = (theme) => ({
     height: '100%',
   },
   left: {
-    width: '30%',
+    width: 400,
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
@@ -50,7 +50,7 @@ const styles = (theme) => ({
     overflow: 'hidden',
   },
   right: {
-    width: '70%',
+    width: 'calc(100% - 400px)',
     height: '100%'
   },
   wrapper: {

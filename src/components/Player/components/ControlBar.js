@@ -23,11 +23,12 @@ class ControlBar extends Component {
     return (
       <div
         className={classNames('control-bar', {
-          'control-bar__hide': !playerControl.showControls
+          'control-bar__hide': !playerControl.showControls,
+          'control-bar__user-active': playerControl.userActive
         })}
         onClick={e => e.stopPropagation()}
-        onMouseEnter={handleControlBarMouseEnter}
-        onMouseLeave={handleControlBarMouseLeave}
+        onMouseEnter={e => handleControlBarMouseEnter(e)}
+        onMouseLeave={e => handleControlBarMouseLeave(e)}
       >
         <div className="video-controls__left">
           <PlayToggle

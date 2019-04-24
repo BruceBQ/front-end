@@ -57,11 +57,11 @@ class FollowList extends Component {
   }
 
   renderEmptyRow = amountEmptyRow => {
-    const {listSize } = this.props
-    if(amountEmptyRow > 0){
+    const { listSize } = this.props
+    if (amountEmptyRow > 0) {
       let row = []
-      for(let i=0; i< amountEmptyRow; i++){
-        row.push(<RowCamera empty key={i+listSize} cams={[]}/>)
+      for (let i = 0; i < amountEmptyRow; i++) {
+        row.push(<RowCamera empty key={i + listSize} cams={[]} />)
       }
       return row
     }
@@ -111,9 +111,4 @@ const mapStateToProps = ({ followList }) => ({
   currentPage: followList.currentPage,
   totalPage: followList.totalPage,
 })
-export default withRouter(
-  connect(
-    mapStateToProps,
-    
-  )(withStyles(styles)(FollowList)),
-)
+export default connect(mapStateToProps)(withStyles(styles)(FollowList))
