@@ -26,7 +26,8 @@ import {
   focusedCam,
   editCamConnectionFailure,
   getCamParamsSuccess,
-  getCamSnapshotSuccess
+  getCamSnapshotSuccess,
+  fetchAllCamsSuccess
 } from '../actions/action_camera'
 import * as CameraApi from '../api/camera'
 import * as PoliticalAPI from '../api/political'
@@ -415,5 +416,19 @@ function* workerRemoveCamFromFollowList(action){
         variant: 'error',
       },
     }))
+  }
+}
+
+//fetch all cams
+export function* watchFetchAllCams(){
+  yield takeEvery(types.FETCH_ALL_CAMS, workerFetchAllCams)
+}
+
+function* workerFetchAllCams(){
+  try {
+    const response = yield call(CameraApi.fetchAllCams)
+    yield put(fetchAllCamsSuccess(response.data.data.camera_list))
+  } catch (error) {
+    
   }
 }

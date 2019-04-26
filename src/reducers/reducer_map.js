@@ -67,7 +67,13 @@ const reducer_map = (state = INITIAL_STATE, action) => {
       return Object.assign({}, state, {
         isEditingCam: !state.isEditingCam
       })
-    // case types.
+    case types.HOVER_ROW_VEHICLE:
+      return Object.assign({}, state, {
+        center:{
+          lat: action.vehicle.camera.lat,
+          lng: action.vehicle.camera.lng,
+        }
+      })
     default:
       return { ...state }
   }

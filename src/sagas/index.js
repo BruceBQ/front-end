@@ -15,7 +15,8 @@ import {
   watchEditCamParams,
   watchGetCamSnapshot,
   watchAddCamToFollowList,
-  watchRemoveCamFromFollowList
+  watchRemoveCamFromFollowList, 
+  watchFetchAllCams,
 } from './saga_camera'
 import { 
   // watchShowEditModal,
@@ -64,6 +65,7 @@ export default function* rootSaga() {
     fork(watchGetCamSnapshot),
     fork(watchAddCamToFollowList),
     fork(watchRemoveCamFromFollowList),
+    fork(watchFetchAllCams),
     //modal
     // fork(watchShowEditModal),
     // fork(watchCloseModal),

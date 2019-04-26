@@ -1,4 +1,5 @@
 import * as types from '../constant/constant_actions'
+import  actionCreator from '../utils/actionCreator'
 
 export function clearCameraErrors() {
   return {
@@ -336,3 +337,9 @@ export function getCamSnapshotSuccess(snapshotImageUrl){
     snapshotImageUrl
   }
 }
+
+
+export const fetchAllCams = actionCreator(types.FETCH_ALL_CAMS)
+
+export const fetchAllCamsSuccess = actionCreator(types.FETCH_ALL_CAMS_SUCCESS, 'cams')
+

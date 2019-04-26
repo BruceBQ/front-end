@@ -42,6 +42,7 @@ const styles = theme => ({
 })
 class SitemapPage extends Component {
   _onBoundsChange = ({ center, zoom, bounds, marginBounds }) => {
+    
     this.props.changeBoundsMap({ center, zoom })
   }
 

@@ -384,6 +384,14 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
         cameras: updateCam(state.cameras, action),
         streamingUrl: updateStreamUrl(state.streamingUrl, action),
       })
+    case types.FETCH_ALL_CAMS_SUCCESS: 
+      return Object.assign({}, state, {
+        cameras: action.cams
+      })
+    case types.FETCH_ALL_CAMS_FAILURE: 
+      return Object.assign({}, state, {
+        cameras: []
+      })
     default:
       return state
   }

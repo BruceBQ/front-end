@@ -21,22 +21,7 @@ const styles = theme => ({
 class SearchResult extends Component {
   _onScroll = event => {
     const scrollbars = this.scrollbars
-    console.log(
-      scrollbars.getScrollTop(),
-      scrollbars.getClientHeight(),
-      scrollbars.getScrollTop() + scrollbars.getClientHeight(),
-      scrollbars.getScrollHeight(),
-    )
-    // console.log()
     const { currentPage, totalPage, isFetching, search } = this.props
-    // if (currentPage < totalPage && !isFetching) {
-    //   this.props.searchVehicles({
-    //     string: search.string,
-    //     start_time: search.startTime,
-    //     end_time: search.endTime,
-    //     page: currentPage + 1,
-    //   })
-    // }
     if (
       Number(scrollbars.getScrollTop() + scrollbars.getClientHeight()) >=
       Number(scrollbars.getScrollHeight() - 200)
@@ -50,21 +35,6 @@ class SearchResult extends Component {
         })
       }
     }
-    // _.throttle(() => {
-    //   if (
-    //     Number(scrollbars.getScrollTop() + scrollbars.getClientHeight()) >=
-    //     Number(scrollbars.getScrollHeight() - 200)
-    //   ) {
-    //     if (currentPage < totalPage && !isFetching) {
-    //       this.props.searchVehicles({
-    //         string: search.string,
-    //         start_time: search.startTime,
-    //         end_time: search.endTime,
-    //         page: currentPage + 1,
-    //       })
-    //     }
-    //   }
-    // }, 100)
   }
 
   render() {

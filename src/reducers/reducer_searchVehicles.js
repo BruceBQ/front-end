@@ -10,6 +10,9 @@ const INITIAL_STATE = {
   isFetching: false,
   currentPage: 1,
   totalPage: 5,
+  hoveredVehicle: {},
+  focusedVehicle: {},
+  selectedPlate: null,
 }
 
 const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
@@ -17,7 +20,10 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
     case types.CLEAR_VEHCLIES:
       return Object.assign({}, state, {
         vehicles: [],
-        currentPage: 1
+        currentPage: 1,
+        hoveredVehicle: {},
+        focusedVehicle: {},
+        selectedPlate: null,
       })
     case types.SEARCH_VEHICLES:
       return Object.assign({}, state, {
@@ -38,6 +44,19 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
     case types.SEARCH_VEHICLES_FAILURE:
       return Object.assign({}, state, {
         isFetching: false,
+      })
+    case types.HOVER_ROW_VEHICLE: 
+      return Object.assign({}, state, {
+        hoveredVehicle: action.vehicle
+      })
+    case types.CANCEL_HOVER_ROW_VEHICLE:
+      return Object.assign({}, state, {
+        hoveredVehicle: {}
+      })
+    case types.FOCUS_VEHICLE:
+      return Object.assign({}, state, {
+        focusedVehicle: action.vehicle,
+        selectedPlate: action.vehicle.plate_number
       })
     default:
       return state

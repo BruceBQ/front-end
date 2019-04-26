@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
+
+import { fetchAllCams } from '../../actions/action_camera'
 import Search from './Search'
 import GoogleMap from '../../components/GoogleMap'
-import SearchResult from './SearchResult';
+import SearchResult from './SearchResult'
+import Marker from './Marker'
+import { changeBoundsMap } from '../../actions/action_map'
+
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -13,7 +18,7 @@ const styles = theme => ({
   },
   left: {
     width: 350,
-    zIndex:4,
+    zIndex: 4,
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
@@ -21,23 +26,21 @@ const styles = theme => ({
     boxShadow: '5px 0 5px -5px #333',
   },
   right: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 })
 
-class SearchVehicles extends Component{
-  state = { 
-    center: {
-      lat: 16.036308499726402,
-      lng: 108.20592484212307
-    },
-    zoom: 13,
-    
+class SearchVehicles extends Component {
+
+  componentDidMount() {
+    this.props.fetchAllCams()
   }
-  render(){
-    const {
-      classes
-    } = this.props
+  _onBoundsChange = ({ center, zoom, bounds, marginBounds }) => {
+    console.log(bounds, marginBounds)
+    this.props.changeBoundsMap({ center, zoom })
+  }
+  render() {
+    const { classes, cams = [], center = {}, defaultZoom, zoom } = this.props
     return (
       <div className={classes.root}>
         <div className={classes.left}>
@@ -45,18 +48,31 @@ class SearchVehicles extends Component{
           <SearchResult />
         </div>
         <div className={classes.right}>
-          <GoogleMap 
-            defaultCenter={this.state.center}
-            defaultZoom={this.state.zoom}
-          />
+          <GoogleMap
+            center={center}
+            defaultZoom={defaultZoom}
+            zoom={zoom}
+            onChange={this._onBoundsChange}
+            
+          >
+            {cams.map((cam, index) => (
+              <Marker lat={cam.lat} lng={cam.lng} detail={cam} key={index} />
+            ))}
+          </GoogleMap>
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = ({}) => ({
-  
+const mapStateToProps = ({ cameras, map }) => ({
+  cams: cameras.cameras,
+  center: map.center,
+  defaultZoom: map.defaultZoom,
+  zoom: map.zoom,
 })
 
-export default connect()(withStyles(styles)(SearchVehicles))
+export default connect(
+  mapStateToProps,
+  { fetchAllCams, changeBoundsMap },
+)(withStyles(styles)(SearchVehicles))

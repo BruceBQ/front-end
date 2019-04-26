@@ -98,3 +98,11 @@ export function getCamSnapshot(id){
     headers: { 'Authorization': access_token },
   })
 }
+
+export function fetchAllCams(){
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/camera`,
+    header: { 'Authorization':  access_token }
+  })
+}
