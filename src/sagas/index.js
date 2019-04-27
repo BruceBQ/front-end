@@ -1,5 +1,6 @@
 import { all, fork } from 'redux-saga/effects'
-import { watcherSignIn }  from './saga_authentication'
+import watchUserAuthtication  from './authentication_watcher'
+import watchCamera from './camera_watcher'
 import { 
   watchConnectCamera,
   watchConfigParams,
@@ -16,7 +17,7 @@ import {
   watchGetCamSnapshot,
   watchAddCamToFollowList,
   watchRemoveCamFromFollowList, 
-  watchFetchAllCams,
+  // watchFetchAllCams,
 } from './saga_camera'
 import { 
   // watchShowEditModal,
@@ -40,7 +41,7 @@ import {
 } from './saga_sitemap'
 import {
   watchGetDataBeforeConnect,
-  watchGetDataBeforeSearch,
+  // watchGetDataBeforeSearch,
 } from './saga_manageCam'
 
 import {
@@ -51,12 +52,15 @@ import {
 
 export default function* rootSaga() {
   yield all([
-    fork(watcherSignIn),
+    //auth
+    fork(watchUserAuthtication),
     //camera
+    fork(watchCamera), 
+
     fork(watchConnectCamera),
     fork(watchConfigParams),
     fork(watchConfigFunctions),
-    fork(watchSearchCam),
+    // fork(watchSearchCam),
     fork(watchGetCamConnection),
     fork(watchChangeCamConnectionParams),
     fork(watchEditCamConnection),
@@ -65,7 +69,7 @@ export default function* rootSaga() {
     fork(watchGetCamSnapshot),
     fork(watchAddCamToFollowList),
     fork(watchRemoveCamFromFollowList),
-    fork(watchFetchAllCams),
+    // fork(watchFetchAllCams),
     //modal
     // fork(watchShowEditModal),
     // fork(watchCloseModal),
@@ -81,7 +85,7 @@ export default function* rootSaga() {
 
     fork(connectStream),
     //manageCam
-    fork(watchGetDataBeforeSearch),
+    // fork(watchGetDataBeforeSearch),
     fork(watchGetDataBeforeConnect),
     //search
     fork(watchChangeSearchCamParams),

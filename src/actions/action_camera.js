@@ -184,25 +184,13 @@ export function backStep() {
   }
 }
 
-export function searchCam() {
-  return {
-    type: types.SEARCH_CAMERA,
-  }
-}
 
-export function searchCamSuccess(payload) {
-  return {
-    type: types.SEARCH_CAMERA_SUCCESS,
-    payload,
-  }
-}
-
-export function searchCamFailure(errors) {
-  return {
-    type: types.SEARCH_CAMERA_FAILURE,
-    errors,
-  }
-}
+// export function searchCamFailure(errors) {
+//   return {
+//     type: types.SEARCH_CAMERA_FAILURE,
+//     errors,
+//   }
+// }
 
 export function focusOnCam({ center, zoom, id }) {
   return {
@@ -338,8 +326,13 @@ export function getCamSnapshotSuccess(snapshotImageUrl){
   }
 }
 
-
+// fetch all cameras
 export const fetchAllCams = actionCreator(types.FETCH_ALL_CAMS)
-
 export const fetchAllCamsSuccess = actionCreator(types.FETCH_ALL_CAMS_SUCCESS, 'cams')
+//search camera
+export const initSearchCam = actionCreator(types.INIT_SEARCH_CAM)
+export const searchCam = actionCreator(types.SEARCH_CAMERA)
+export const searchCamSuccess = actionCreator(types.SEARCH_CAMERA_SUCCESS, 'cams')
+export const searchCamFailure = actionCreator(types.SEARCH_CAMERA_FAILURE)
+
 

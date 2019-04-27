@@ -26,7 +26,7 @@ const styles = theme => ({
   card: {
     display: 'flex',
     marginTop: 5,
-    marginRight: 15,
+    // marginRight: 15,
     cursor: 'pointer',
   },
   cardMediaWrapper: {

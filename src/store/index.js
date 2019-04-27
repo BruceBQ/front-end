@@ -2,8 +2,8 @@ import { createStore, compose, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 // import { logger } from 'redux-logger'
 import { createLogger } from 'redux-logger'
-import  rootSaga  from '../sagas'
-import { loadFollowlistData,  loadUserData } from '../utils/localStorage'
+import rootSaga from '../sagas'
+import { loadFollowlistData, loadUserData } from '../utils/localStorage'
 import reducer_root from '../reducers'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -11,7 +11,9 @@ const sagaMiddleware = createSagaMiddleware()
 
 const preloadedState = {
   user: {
-    authenticated: Boolean(loadUserData()),
+    authenticated: Boolean(
+      loadUserData() !== undefined && loadUserData().access_token !== undefined,
+    ),
     user: loadUserData(),
     errors: {},
     isFetching: false,
@@ -23,18 +25,15 @@ const preloadedState = {
 }
 
 const logger = createLogger({
-	collapsed: true
+  collapsed: true,
 })
 
 const store = createStore(
-	reducer_root,
-	preloadedState,
-	composeEnhancers(
-		applyMiddleware( sagaMiddleware, logger )
-	),
+  reducer_root,
+  preloadedState,
+  composeEnhancers(applyMiddleware(sagaMiddleware, logger)),
 )
 
 sagaMiddleware.run(rootSaga)
-
 
 export default store

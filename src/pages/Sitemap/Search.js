@@ -10,7 +10,6 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Select from 'react-select'
-import { Scrollbars } from 'react-custom-scrollbars'
 import { withStyles } from '@material-ui/core/styles'
 
 import {
@@ -21,17 +20,15 @@ import {
   GroupControl,
   NoOptionsMessage,
 } from '../../components/Select/SelectControl'
-import { getDataBeforeSearch } from '../../actions/action_manageCam'
-
+import {
+  getDataBeforeSearch,
+} from '../../actions/action_manageCam'
+import {
+  initSearchCam
+} from '../../actions/action_camera'
 import { changeSearchCamParams } from '../../actions/action_search'
-
 import { clearProvince, clearDistrict } from '../../actions/action_political'
-const state = [
-  {
-    label: 'Bình thường',
-    value: '0',
-  },
-]
+
 const styles = theme => ({
   root: {
     padding: '10px 10px',
@@ -76,8 +73,11 @@ const selectStyles = {
 
 class Search extends Component {
   componentDidMount() {
-    this.props.getDataBeforeSearch()
+    // this.props.getDataBeforeSearch()
+    this.props.initSearchCam()
   }
+
+  componentWillUnmount() {}
 
   handleInputChange = name => event => {
     this.props.changeSearchCamParams({ [name]: event.target.value })
@@ -229,6 +229,7 @@ export default connect(
   mapStateToProps,
   {
     getDataBeforeSearch: getDataBeforeSearch,
+    initSearchCam: initSearchCam,
     changeSearchCamParams: changeSearchCamParams,
     clearProvince: clearProvince,
     clearDistrict: clearDistrict,

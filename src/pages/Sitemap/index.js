@@ -9,6 +9,7 @@ import _ from 'lodash'
 import GoogleMap from '../../components/GoogleMap'
 import Marker from './Marker'
 import Search from './Search'
+import SearchCam from './SearchCam'
 import SearchResult from './SearchResult'
 import { changeBoundsMap } from '../../actions/action_map'
 
@@ -42,7 +43,6 @@ const styles = theme => ({
 })
 class SitemapPage extends Component {
   _onBoundsChange = ({ center, zoom, bounds, marginBounds }) => {
-    
     this.props.changeBoundsMap({ center, zoom })
   }
 
@@ -97,10 +97,11 @@ class SitemapPage extends Component {
         >
           {cameraFilterSidebar && (
             // <CSSTransition in={cameraFilterSidebar} timeout={300}>
-              <Fragment>
-                <Search />
-                <SearchResult />
-              </Fragment>
+            <Fragment>
+              <Search />
+              {/* <SearchCam /> */}
+              <SearchResult />
+            </Fragment>
             // </CSSTransition>
           )}
         </div>
@@ -123,7 +124,7 @@ export default withRouter(
   connect(
     mapStateToProps,
     {
-      changeBoundsMap: changeBoundsMap,
+      changeBoundsMap,
     },
   )(withStyles(styles)(SitemapPage)),
 )

@@ -195,6 +195,7 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
           commune: [],
         },
       })
+
     //search camera
     case types.SEARCH_CAMERA:
       return Object.assign({}, state, {
@@ -203,13 +204,15 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
     case types.SEARCH_CAMERA_SUCCESS:
       return Object.assign({}, state, {
         isSearching: false,
-        cameras: action.payload,
+        cameras: action.cams,
       })
     case types.SEARCH_CAMERA_FAILURE:
       return Object.assign({}, state, {
         isSearching: false,
-        errors: action.errors,
+        cameras: []
+        // errors: action.errors,
       })
+      
     // step add camera
     case types.NEXT_STEP:
       return Object.assign({}, state, {

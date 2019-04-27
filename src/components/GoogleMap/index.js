@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button'
 import PinDrop from '@material-ui/icons/PinDrop'
 import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
-import { MAP_API_KEY } from '../constant/constant_endpoint'
+import { MAP_API_KEY } from '../../constant/constant_endpoint'
 import MapControl from './MapControl'
 import _ from 'lodash'
 

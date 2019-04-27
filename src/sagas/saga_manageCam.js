@@ -25,25 +25,25 @@ function* workerGetDataBeforeConnect(){
   }
 }
 
-export function* watchGetDataBeforeSearch(){
-  yield takeEvery(types.GET_DATA_BEFORE_SEARCH, workerGetDataBeforeSearch)
-}
+// export function* watchGetDataBeforeSearch(){
+//   yield takeEvery(types.GET_DATA_BEFORE_SEARCH, workerGetDataBeforeSearch)
+// }
 
-function* workerGetDataBeforeSearch(){
-  try {
-    //get all cameras
-    yield put(searchCam())
-    const [provinces, groups] = yield all([
-      call(PoliticalApi.getProvincesAvailable),
-      call(GroupApi.getAllGroupsSearch)
-    ])
-    yield put(reloadPolitical({
-      provinces:provinces.data.data.province_list, 
-      districts: [],
-      communes: [],
-      groups: groups.data.data.group_list
-    }))
-  } catch (error) {
-    console.log(error)
-  }
-}
+// function* workerGetDataBeforeSearch(){
+//   try {
+//     //get all cameras
+//     yield put(searchCam())
+//     const [provinces, groups] = yield all([
+//       call(PoliticalApi.fetchProvincesAvailable),
+//       call(GroupApi.getAllGroupsSearch)
+//     ])
+//     yield put(reloadPolitical({
+//       provinces:provinces.data.data.province_list, 
+//       districts: [],
+//       communes: [],
+//       groups: groups.data.data.group_list
+//     }))
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }

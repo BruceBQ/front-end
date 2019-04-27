@@ -418,17 +418,3 @@ function* workerRemoveCamFromFollowList(action){
     }))
   }
 }
-
-//fetch all cams
-export function* watchFetchAllCams(){
-  yield takeEvery(types.FETCH_ALL_CAMS, workerFetchAllCams)
-}
-
-function* workerFetchAllCams(){
-  try {
-    const response = yield call(CameraApi.fetchAllCams)
-    yield put(fetchAllCamsSuccess(response.data.data.camera_list))
-  } catch (error) {
-    
-  }
-}

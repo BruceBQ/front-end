@@ -1,12 +1,12 @@
-function getToken() {
+export function getToken() {
   try {
-    const access_token = JSON.parse(localStorage.getItem('user')).access_token
+    const access_token = JSON.parse(localStorage.getItem('USER')).access_token
     return access_token
   } catch (error) {}
 }
 const access_token = getToken()
 
-function getUserId() {
+export function getUserId() {
   try {
     const userId = JSON.parse(localStorage.getItem("USER")).id
     return userId

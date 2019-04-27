@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { API_URL } from '../constant/constant_endpoint'
-import { access_token } from './utils'
+import { getToken, getUserId } from './utils'
 
 export function getAllProvinces(){
   return axios({
     method: 'get',
     url: `${API_URL}api/political/provinces`,
-    headers: { 'Authorization': access_token },
+    headers: { 'Authorization': getToken() },
   })
 }
 
@@ -15,7 +15,7 @@ export function loadDistricts(province){
   return axios({
     method: 'get',
     url: `${API_URL}api/political/districts`,
-    headers: { 'Authorization': access_token },
+    headers: { 'Authorization': getToken() },
     params: {
       province: province
     }
@@ -26,7 +26,7 @@ export function loadCommunes(district){
     method: 'get',
     url: `${API_URL}api/political/communes`,
     headers: {
-      'Authorization': access_token
+      'Authorization': getToken()
     },
     params: {
       district: district
@@ -34,11 +34,11 @@ export function loadCommunes(district){
   })
 }
 
-export function getProvincesAvailable(){
+export function fetchProvincesAvailable(){
   return axios({
     method: 'get',
     url: `${API_URL}api/political/provinces/available`,
-    headers: { 'Authorization': access_token },
+    headers: { 'Authorization': getToken() },
     // params: {
     //   type: 'available'
     // }
@@ -49,7 +49,17 @@ export function getDistrictsAvailable(province){
   return axios({
     method: 'get',
     url: `${API_URL}api/political/districts/available`,
-    headers: { 'Authorization': access_token },
+    headers: { 'Authorization': getToken() },
+    params: {
+      province: province
+    }
+  })
+}
+export function fetchDistrictsAvailable(province){
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/political/districts/available`,
+    headers: { 'Authorization': getToken() },
     params: {
       province: province
     }
@@ -61,10 +71,21 @@ export function getCommunesAvailable(district){
   return axios({
     method: 'get',
     url: `${API_URL}api/political/communes/available`,
-    headers: { 'Authorization': access_token },
+    headers: { 'Authorization': getToken() },
     params: {
       district: district
     }
+  })
+}
+
+export function fetchGroupsAvailable(){
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/groups`,
+    headers: { 'Authorization': getToken() },
+    params: {
+      type: 'filter',
+    },
   })
 }
 
