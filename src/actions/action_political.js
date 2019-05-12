@@ -1,4 +1,5 @@
 import * as types from '../constant/constant_actions'
+import actionCreator from '../utils/actionCreator'
 
 export function getAllProvinces() {
   return {
@@ -39,3 +40,6 @@ export function clearDistrict(){
     type: types.CLEAR_DISTRICT
   }
 }
+
+export const fetchDistricts = actionCreator(types.FETCH_DISTRICTS, 'payload')
+export const fetchCommunes = actionCreator(types.FETCH_COMMUNES, 'payload')

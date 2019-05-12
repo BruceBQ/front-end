@@ -29,7 +29,7 @@ const styles = theme => ({
     position: 'relative',
   },
   filterWrapper: {
-    width: '400px',
+    width: 400,
     height: 'calc(100vh - 50px)',
     position: 'relative',
     display: 'flex',
@@ -41,6 +41,7 @@ const styles = theme => ({
     display: 'none',
   },
 })
+
 class SitemapPage extends Component {
   _onBoundsChange = ({ center, zoom, bounds, marginBounds }) => {
     this.props.changeBoundsMap({ center, zoom })

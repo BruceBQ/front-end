@@ -5,7 +5,7 @@ import { access_token } from './utils'
 export function searchVehicles(payload){
   return axios({
     method: 'post',
-    url: `${API_URL}api/event/search`,
+    url: `${API_URL}api/object/search`,
     headers: { 'Authorization': access_token },
     data: {...payload}
   })

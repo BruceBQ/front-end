@@ -12,7 +12,7 @@ import {
   QualityControl,
   NoOptionsMessage,
 } from '../../components/Select/SelectControl'
-import { getCamParams, editCamParams } from '../../actions/action_camera'
+import { getCamParams, editCamParams, fetchCamParams } from '../../actions/action_camera'
 import Loading from '../../components/Loading';
 import EditParamsForm from './EditParamsForm'
 
@@ -81,7 +81,8 @@ class EditParams extends Component {
 
   componentDidMount() {
     const { focusedCam } = this.props
-    this.props.getCamParams(focusedCam)
+    // this.props.getCamParams(focusedCam)
+    this.props.fetchCamParams(focusedCam)
   }
 
   onChange = name => event => {
@@ -91,9 +92,13 @@ class EditParams extends Component {
   changeSelect = name => value => {}
 
   handleSubmit = (values) => {
-    const{ focusedCam } = this.props
-    console.log(this.props)
-    this.props.editCamParams(focusedCam, values)
+    const { focusedCam } = this.props
+    const payload = {
+      ...values,
+      resolution: values.resolution.value,
+      quality: values.quality.value,
+    }
+    this.props.editCamParams(focusedCam, payload)
   }
 
   render() {
@@ -104,30 +109,8 @@ class EditParams extends Component {
       currentParams = {},
       errors = {}
     } = this.props
-    let resolutionOptions = [],
-      qualityOptions = [],
-      fps_range, bitrate_range,
-      resolution = {},
-      quality = {}
-       
-    if(_.has(currentParams, 'resolution_range')){
-      resolutionOptions = currentParams.resolution_range.map(r => ({
-        value: {
-          width: Number(r.width),
-          height: Number(r.height),
-        },
-        label: Number(r.width) + 'x' + Number(r.height)
-      }))
-    }
-    if(_.has(currentParams, 'quality_range')){
-      qualityOptions = currentParams.quality_range
-    }
-    if(_.has(currentParams, 'fps_range')){
-      fps_range = `${currentParams.fps_range.Min} - ${currentParams.fps_range.Max}`
-    }
-    if(_.has(currentParams, 'bitrate_range')){
-      bitrate_range = `${currentParams.bitrate_range.Min} - ${currentParams.bitrate_range.Max}`
-    }
+    let resolution = {}, quality = {}
+     
     if(_.has(currentParams, 'resolution')){
       resolution = {
         value: currentParams.resolution,
@@ -145,6 +128,7 @@ class EditParams extends Component {
         <div className={classes.formContent}>
           {isFetching ? <Loading /> : 
             <Formik
+              enableReinitialize
               initialValues={{
                 resolution,
                 quality,
@@ -174,4 +158,5 @@ const mapStateToProps = ({cameras}) => ({
 export default connect(mapStateToProps, {
   getCamParams: getCamParams,
   editCamParams: editCamParams,
+  fetchCamParams
 })(withStyles(styles)(EditParams))

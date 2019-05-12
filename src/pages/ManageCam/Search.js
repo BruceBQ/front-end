@@ -24,7 +24,9 @@ import {
 import {
   getDataBeforeSearch,
 } from '../../actions/action_manageCam'
-
+import {
+  initSearchCam
+} from '../../actions/action_camera'
 import {
   changeSearchCamParams
 } from '../../actions/action_search'
@@ -83,7 +85,8 @@ const selectStyles = {
 
 class Search extends Component{
   componentDidMount(){
-    this.props.getDataBeforeSearch()
+    // this.props.getDataBeforeSearch()
+    this.props.initSearchCam()
   }
 
   handleInputChange = name => event => {
@@ -232,7 +235,8 @@ const mapStateToProps = ({cameras, political}) => ({
 })
 
 export default connect(mapStateToProps, {
-  getDataBeforeSearch: getDataBeforeSearch,
+  // getDataBeforeSearch: getDataBeforeSearch,
+  initSearchCam,
   changeSearchCamParams: changeSearchCamParams,
   clearProvince: clearProvince,
   clearDistrict: clearDistrict, 

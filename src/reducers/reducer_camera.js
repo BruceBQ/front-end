@@ -1,11 +1,10 @@
-import * as types from '../constant/constant_actions'
 import _ from 'lodash'
-import { CardActions } from '@material-ui/core'
+import * as types from '../constant/constant_actions'
 
 const INITIAL_STATE = {
   cameras: [],
   addCamera: {
-    activeStep: 2,
+    activeStep: 0,
     name: 'Camera 237',
     port: '80',
     ip: '10.49.34.237',
@@ -66,6 +65,7 @@ const INITIAL_STATE = {
 
   focusedCam: -1,
   editingCam: -1,
+  changingCamStatus: null,
   isShowLiveView: false,
   isFetchingStreaming: false,
   snapshotImageUrl: null,
@@ -95,157 +95,214 @@ function updateStreamUrl(streamingUrl, action) {
   return streamingUrl
 }
 
+function changeStatusEditingCam(editCam, action){
+  if(!_.isEmpty(editCam.connection)){
+    return {
+      ...editCam,
+      connection: {
+        ...editCam.connection,
+        status: action.payload.status
+      }
+    }
+  }
+  return editCam
+}
+
 const reducer_camera = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.CHANGE_CAMERA_PARAMS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         addCamera: {
           ...state.addCamera,
           ...action.payload,
         },
-      })
+      }
+
     case types.GET_CAMERA_LOCATION:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         addCamera: {
           ...state.addCamera,
           ...action.payload,
         },
-      })
+      }
+
     case types.GET_CAMERA_POSITION_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         addCamera: {
           ...state.addCamera,
           province: action.province,
           district: action.district,
           commune: action.commune,
         },
-      })
+      }
 
     //get snapshot
     case types.GET_CAM_SNAPSHOT:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isGettingSnapshot: true,
         isFetchingStreaming: true,
         snapshotImageUrl: null,
-      })
+      }
     case types.GET_CAM_SNAPSHOT_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isGettingSnapshot: false,
         snapshotImageUrl: action.snapshotImageUrl,
-      })
+      }
 
-    // connect camera
-    case types.CONNECT_CAMERA_SUCCESS:
-      return Object.assign({}, state, {
+    // connect to camera
+    case types.CONNECT_TO_CAM_SUCCESS:
+      return {
+        ...state,
         addCamera: {
           ...state.addCamera,
           activeStep: state.addCamera.activeStep + 1,
           ...action.payload,
         },
         errors: {},
-      })
-    case types.CONNECT_CAMERA_FAILURE:
-      return Object.assign({}, state, {
-        errors: action.errors,
-      })
+      }
+
+    case types.CONNECT_TO_CAM_FAILURE:
+      return {
+        ...state,
+        errors: action.payload,
+      }
+
     //config params
-    case types.CONFIG_PARAMS_SUCCESS:
-      return Object.assign({}, state, {
+    case types.CONFIG_CAM_PARAMS_SUCCESS:
+      return {
+        ...state,
         addCamera: {
           ...state.addCamera,
           activeStep: state.addCamera.activeStep + 1,
         },
         errors: {},
-      })
-    case types.CONFIG_PARAMS_FAILURE:
-      return Object.assign({}, state, {
-        errors: action.errors,
-      })
+      }
+
+    case types.CONFIG_CAM_PARAMS_FAILURE:
+      return {
+        ...state,
+        errors: action.payload,
+      }
+
     // config functions
-    case types.CONFIG_FUNCTIONS_SUCCESS:
-      return Object.assign({}, state, {
+    case types.CONFIG_CAM_FUNCTIONS_SUCCESS:
+      return {
+        ...state,
         addCamera: INITIAL_STATE.addCamera,
-      })
-    case types.CONFIG_FUNCTIONS_FAILURE:
-      return Object.assign({}, state, {})
+        cameras: [
+          action.payload,
+          ...state.cameras
+        ],
+      }
+
+    case types.CONFIG_CAM_FUNCTIONS_FAILURE:
+      return {
+        ...state,
+      }
+
     //change search camera params
     case types.CHANGE_SEARCH_CAM_PARAMS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         searchCam: {
           ...state.searchCam,
           ...action.payload,
         },
-      })
+      }
+
     //clear province
     case types.CLEAR_PROVINCE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         searchCam: {
           ...state.searchCam,
           province: null,
           district: [],
           commune: [],
         },
-      })
+      }
+
     //clear district
     case types.CLEAR_DISTRICT:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         searchCam: {
           ...state.searchCam,
           district: [],
           commune: [],
         },
-      })
+      }
 
     //search camera
     case types.SEARCH_CAMERA:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isSearching: true,
-      })
+      }
+
     case types.SEARCH_CAMERA_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isSearching: false,
         cameras: action.cams,
-      })
-    case types.SEARCH_CAMERA_FAILURE:
-      return Object.assign({}, state, {
-        isSearching: false,
-        cameras: []
-        // errors: action.errors,
-      })
+      }
       
+    case types.SEARCH_CAMERA_FAILURE:
+      return {
+        ...state,
+        isSearching: false,
+        cameras: [],
+        // errors: action.errors,
+      }
+
     // step add camera
     case types.NEXT_STEP:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         addCamera: {
           ...state.addCamera,
           activeStep: state.addCamera.activeStep + 1,
         },
-      })
+      }
+
     case types.BACK_STEP:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         addCamera: {
           ...state.addCamera,
           activeStep: state.addCamera.activeStep - 1,
         },
-      })
-    //focused cam
-    // case types.FOCUSED_CAM:
-    //   return Object.assign({}, state, {
+      }
 
-    //   })
-    //focused cam
+    //focus on cam
     case types.FOCUS_ON_CAM:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         focusedCam: action.id,
-      })
+      }
+
+    case types.FOCUS_FIRST_CAM:
+      return {
+        ...state,
+        focusedCam: action.payload.id,
+      }
+
     case types.CANCEL_FOCUSED_CAM:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         editCam: INITIAL_STATE.editCam,
         focusedCam: -1,
-      })
+      }
+
     // config cam
     case types.CONFIG_CAM:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         focusedCam: action.id,
         editCam: {
           ...state.editCam,
@@ -256,41 +313,123 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
             ...action.center,
           },
         },
-      })
-    //get connection
-    case types.GET_CAM_CONNECTION:
-      return Object.assign({}, state, {
-        currentCam: {
-          ...state.currentCam,
-        },
-        editCam: {
-          ...state.editCam,
-        },
-        focusedCam: action.id,
-        editingCam: action.id,
-        isFetching: true,
-      })
+      }
 
-    case types.GET_CAM_CONNECTION_SUCCESS:
-      return Object.assign({}, state, {
+    // fetch camera connection
+    case types.FETCH_CAM_CONNECTION:
+      return {
+        ...state,
+        isFetching: true,
+        errors: {}
+      }
+
+    case types.FETCH_CAM_CONNECTION_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
         currentCam: {
           ...state.currentCam,
-          connection: action.connection,
+          connection: action.payload,
         },
         editCam: {
           ...state.editCam,
-          connection: action.connection,
+          connection: action.payload,
         },
-        errors: {},
+      }
+
+    case types.FETCH_CAM_CONNECTION_FAILURE:
+      return {
+        ...state,
         isFetching: false,
-      })
-    case types.GET_CAM_CONNECTION_FAILURE:
-      return Object.assign({}, state, {
+      }
+
+    // fetch camera's params
+    case types.FETCH_CAM_PARAMS:
+      return {
+        ...state,
+        isFetching: true,
+      }
+
+    case types.FETCH_CAM_PARAMS_SUCCESS:
+      return {
+        ...state,
         isFetching: false,
-      })
+        currentCam: {
+          ...state.currentCam,
+          params: action.payload,
+        },
+        editCam: {
+          ...state.editCam,
+          params: action.payload,
+        },
+      }
+
+    case types.FETCH_CAM_PARAMS_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+      }
+    
+    // edit camera's params
+    case types.EDIT_CAM_PARAMS:
+      return {
+        ...state,
+        isProcessing: true,
+      }
+    
+    case types.EDIT_CAM_PARAMS_SUCCESS:
+      return {
+        ...state,
+        isProcessing: false,
+        editCam: {
+          ...state.editCam,
+          params: action.payload
+        },
+        currentCam: {
+          ...state.currentCam,
+          params: action.payload
+        },
+        errors: {}
+      }
+    case types.EDIT_CAM_PARAMS_FAILURE:
+      return {
+        ...state,
+        isProcessing: false,
+        errors: action.payload
+      }
+    // edit camera's function
+    case types.EDIT_CAM_FUNCTIONS:
+      return {
+        ...state,
+        isProcessing: true
+      }
+
+    case types.EDIT_CAM_FUNCTIONS_SUCCESS:
+      return {
+        ...state,
+        isProcessing: false,
+        editCam: {
+          ...state.editCam,
+          functions: action.payload
+        },
+        currentCam: {
+          ...state.currentCam,
+          functions: action.payload
+        },
+        errors: {}
+      }
+
+    case types.EDIT_CAM_FUNCTIONS_FAILURE:
+      return {
+        ...state,
+        isProcessing: false,
+        errors: action.payload,
+      }
+
     //change cam connection params
     case types.CHANGE_CAM_CONNECTION_PARAMS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         editCam: {
           ...state.editCam,
           connection: {
@@ -298,9 +437,11 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
             ...action.payload,
           },
         },
-      })
+      }
+
     case types.CHANGE_CAM_LOCATION:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         editCam: {
           ...state.editCam,
           connection: {
@@ -308,9 +449,11 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
             ...action.payload,
           },
         },
-      })
+      }
+
     case types.CHANGE_CAM_POLITICAL:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         editCam: {
           ...state.editCam,
           connection: {
@@ -318,83 +461,173 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
             ...action.payload,
           },
         },
-      })
+      }
+
+    case types.EDIT_CAM_CONNECTION:
+      return {
+        ...state,
+        isProcessing: true
+      }
     case types.EDIT_CAM_CONNECTION_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
+        isProcessing: false,
+        cameras: state.cameras.map(cam => {
+          if (cam.id === action.payload.id) {
+            return {
+              ...cam,
+              lat: action.payload.lat,
+              lng: action.payload.lng,
+              name: action.payload.name,
+            }
+          }
+          return cam
+        }),
         errors: {},
-      })
+      }
+
     case types.EDIT_CAM_CONNECTION_FAILURE:
-      return Object.assign({}, state, {
-        errors: action.errors,
-      })
-    //get params
-    case types.GET_CAM_PARAMS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
+        isProcessing: false,
+        errors: action.payload,
+      }
+
+    //fetch functions
+    case types.FETCH_CAM_FUNCTIONS:
+      return {
+        ...state,
         isFetching: true,
-      })
-    case types.GET_CAM_PARAMS_SUCCESS:
-      return Object.assign({}, state, {
+        errors: {}
+      }
+
+    case types.FETCH_CAM_FUNCTIONS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
         currentCam: {
           ...state.currentCam,
-          params: action.params,
+          functions: action.payload,
         },
         editCam: {
           ...state.editCam,
-          params: action.params,
+          functions: action.payload,
         },
         errors: {},
+      }
+
+    case types.FETCH_CAM_FUNCTIONS_FAILURE:
+      return {
+        ...state,
         isFetching: false,
-      })
-    case types.GET_CAM_PARAMS_FAILURE: {
-      return Object.assign({}, state, {
-        isFetching: false,
-      })
-    }
-    //get functions
+      }
 
     //streaming
     case types.GET_STREAMING_URL:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isShowLiveView: true,
         // isFetchingStreaming: true
-      })
+      }
+
     case types.SHOW_INFO_WINDOW:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         streamingUrl: {},
         isFetchingStreaming: true,
         isShowLiveView: false,
-      })
+      }
+
     case types.CLOSE_INFO_WINDOW:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isShowLiveView: false,
         isFetchingStreaming: false,
         streamingUrl: null,
-      })
+      }
+
     case types.GET_STREAMING_URL_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetchingStreaming: false,
         streamingUrl: action.streamingUrl,
-      })
+      }
 
     // update follow list
     case types.ADD_CAM_TO_FOLLOWLIST_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         cameras: updateCam(state.cameras, action),
         streamingUrl: updateStreamUrl(state.streamingUrl, action),
-      })
+      }
+
     case types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         cameras: updateCam(state.cameras, action),
         streamingUrl: updateStreamUrl(state.streamingUrl, action),
-      })
-    case types.FETCH_ALL_CAMS_SUCCESS: 
-      return Object.assign({}, state, {
-        cameras: action.cams
-      })
-    case types.FETCH_ALL_CAMS_FAILURE: 
-      return Object.assign({}, state, {
-        cameras: []
-      })
+      }
+
+    case types.FETCH_ALL_CAMS_SUCCESS:
+      return {
+        ...state,
+        cameras: action.cams,
+      }
+
+    case types.FETCH_ALL_CAMS_FAILURE:
+      return {
+        ...state,
+        cameras: [],
+      }
+
+    case types.DELETE_CAM:
+      return {
+        ...state,
+        isProcessing: true,
+      }
+
+    case types.DELETE_CAM_SUCCESS:
+      return {
+        ...state,
+        editCam: INITIAL_STATE.editCam,
+        currentCam: INITIAL_STATE.currentCam,
+        cameras: state.cameras.filter(cam => cam.id !== action.id),
+        focusedCam: -1,
+        isProcessing: false,
+      }
+
+    case types.DELETE_CAM_FAILURE:
+      return {
+        ...state,
+        isProcessing: false,
+      }
+
+    // change camera's status
+    case types.CHANGE_CAM_STATUS:
+      return {
+        ...state,
+        changingCamStatus: action.id
+      }
+    case types.CHANGE_CAM_STATUS_SUCCESS:
+      return {
+        ...state,
+        changingCamStatus: null,
+        cameras: state.cameras.map(cam => {
+          if(cam.id === action.payload.id){
+            return { 
+              ...cam, 
+              status: action.payload.status
+            }
+          }
+          return cam
+        }),
+        editCam: changeStatusEditingCam(state.editCam, action)
+      }
+    case types.CHANGE_CAM_STATUS_FAILURE:
+      return {
+        ...state,
+        changingCamStatus: null
+      }
     default:
       return state
   }

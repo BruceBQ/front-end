@@ -1,10 +1,12 @@
 import { all, fork } from 'redux-saga/effects'
 import watchUserAuthtication  from './authentication_watcher'
 import watchCamera from './camera_watcher'
+import watchFollowList from './followList_watcher'
+import watchPolitical from './political_watcher'
 import { 
-  watchConnectCamera,
-  watchConfigParams,
-  watchConfigFunctions,
+  // watchConnectCamera,
+  // watchConfigParams,
+  // watchConfigFunctions,
   watchChangeSearchCamParams,
   watchClearProvince,
   watchClearDistrict,
@@ -52,20 +54,23 @@ import {
 
 export default function* rootSaga() {
   yield all([
-    //auth
+    // auth
     fork(watchUserAuthtication),
-    //camera
+    // camera
     fork(watchCamera), 
-
-    fork(watchConnectCamera),
-    fork(watchConfigParams),
-    fork(watchConfigFunctions),
+    // follow list and stream 
+    fork(watchFollowList),
+    // political
+    fork(watchPolitical),
+    // fork(watchConnectCamera),
+    // fork(watchConfigParams),
+    // fork(watchConfigFunctions),
     // fork(watchSearchCam),
-    fork(watchGetCamConnection),
-    fork(watchChangeCamConnectionParams),
-    fork(watchEditCamConnection),
-    fork(watchGetCamParams),
-    fork(watchEditCamParams),
+    // fork(watchGetCamConnection),
+    // fork(watchChangeCamConnectionParams),
+    // fork(watchEditCamConnection),
+    // fork(watchGetCamParams),
+    // fork(watchEditCamParams),
     fork(watchGetCamSnapshot),
     fork(watchAddCamToFollowList),
     fork(watchRemoveCamFromFollowList),
@@ -80,10 +85,10 @@ export default function* rootSaga() {
     //political
     fork(watchGetAllProvinces),
     fork(watchChangeCameraParams),
-    fork(watchClearProvince),
-    fork(watchClearDistrict),
+    // fork(watchClearProvince),
+    // fork(watchClearDistrict),
 
-    fork(connectStream),
+    // fork(connectStream),
     //manageCam
     // fork(watchGetDataBeforeSearch),
     fork(watchGetDataBeforeConnect),

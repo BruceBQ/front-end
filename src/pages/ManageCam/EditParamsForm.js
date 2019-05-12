@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import { TextField, Button, Switch, InputAdornment } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { Scrollbars } from 'react-custom-scrollbars'
 import _ from 'lodash'
 import Select from 'react-select'
@@ -53,6 +54,13 @@ const styles = theme => ({
   button: {
     marginRight: 10,
   },
+  process: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  }
 })
 
 const selectStyles = {
@@ -64,6 +72,9 @@ const selectStyles = {
   },
 }
 class EditParamsForm extends Component{
+  componentDidMount(){
+    this.props.resetForm()
+  }
   _onInputChange = name => event => {
     event.persist()
     this.props.handleChange(event)
@@ -79,26 +90,34 @@ class EditParamsForm extends Component{
       errors,
       currentParams = {},
       values,
-      handleSubmit
+      handleSubmit,
+      initialValues, 
+      isProcessing
     } =this.props
+
     let resolutionOptions = [],
       qualityOptions = [],
       fps_range, bitrate_range
+
     if(_.has(currentParams, 'resolution_range')){
       resolutionOptions = currentParams.resolution_range.map(r => ({
         value: r,
         label: r.width + 'x' + r.height
       }))
     }
+    
     if(_.has(currentParams, 'quality_range')){
       qualityOptions = currentParams.quality_range
     }
+
     if(_.has(currentParams, 'fps_range')){
       fps_range = `${currentParams.fps_range.Min} - ${currentParams.fps_range.Max}`
     }
+
     if(_.has(currentParams, 'bitrate_range')){
       bitrate_range = `${currentParams.bitrate_range.Min} - ${currentParams.bitrate_range.Max}`
     }
+
     return (
       <form className={classes.form} onSubmit={handleSubmit}>
         <div className={classes.formContent}>
@@ -208,12 +227,13 @@ class EditParamsForm extends Component{
         <div className={classes.actionButton}>
           <Button
             type="submit"
-            disabled={!dirty}
+            disabled={_.isEqual(initialValues, values) || isProcessing}
             color="primary"
             variant="contained"
             onClick={this.handleSubmit}
           >
             Lưu
+            {isProcessing && <CircularProgress size={24} className={classes.process} color="primary"/>}
           </Button>
         </div>
       </form>
@@ -226,7 +246,7 @@ const mapStateToProps = ({cameras}) => ({
   focusedCam: cameras.focusedCam,
   editParamsData: cameras.editCam.params,
   currentParams: cameras.currentCam.params,
-
+  isProcessing: cameras.isProcessing
 })
 
 export default connect(mapStateToProps)(withStyles(styles)(EditParamsForm))

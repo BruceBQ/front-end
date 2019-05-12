@@ -20,23 +20,35 @@ const reducer_ui = (state = INITIAL_STATE, action) => {
           typeNotification: action.typeNotification,
         },
       }
+
     case types.DISMISS_NOTIFICATION:
       return {
         ...state,
-        notification: { show: false, message: '', typeNotificaion: '' },
+        notification: {
+          show: false,
+          message: '',
+          typeNotificaion: '',
+        },
       }
+
     case types.TOGGLE_CAMERA_FILTER:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         cameraFilterSidebar: !state.cameraFilterSidebar,
-      })
+      }
+
     case types.TOGGLE_SETTINGS_MENU:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         settingsMenu: !state.settingsMenu,
-      })
+      }
+
     case types.TOGGLE_DRAWER:
-      return Object.assign({}, state, {
-        drawer: !state.drawer
-      })
+      return {
+        ...state,
+        drawer: !state.drawer,
+      }
+
     default:
       return state
   }

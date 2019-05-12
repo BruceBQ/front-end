@@ -1,26 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { TextField, Button, Switch, InputAdornment } from '@material-ui/core'
+import { Scrollbars } from 'react-custom-scrollbars'
+import DeleteIcon from '@material-ui/icons/Delete'
+import IconButton from '@material-ui/core/IconButton'
 import {
-    TextField,
-    Button,
-    Switch,
-    InputAdornment
-} from '@material-ui/core'
-import { Scrollbars } from 'react-custom-scrollbars';
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
-import { 
   changeAddCameraParams,
-  configParams
+  configCamParams,
 } from '../../actions/action_camera'
 import Select from 'react-select'
 import { withStyles } from '@material-ui/core/styles'
 import TextInput from '../../components/TextInput'
 import {
-    CamModesControl,
-    CamResolutionControl,
-    QualityControl,
-    NoOptionsMessage
+  CamModesControl,
+  CamResolutionControl,
+  QualityControl,
+  NoOptionsMessage,
 } from '../../components/Select/SelectControl'
 import { backStep } from '../../actions/action_camera'
 import isEmpty from 'lodash/isEmpty'
@@ -35,7 +30,7 @@ const styles = theme => ({
   },
   formGroup: {
     marginTop: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   actionButton: {
     textAlign: 'right',
@@ -45,7 +40,7 @@ const styles = theme => ({
   textField: {
     fontSize: '0.875rem',
   },
-  inputAdornment:{
+  inputAdornment: {
     fontSize: '0.875rem',
     whiteSpace: 'nowrap',
   },
@@ -63,44 +58,42 @@ const styles = theme => ({
     padding: '2.5px 0 2.5px 6px',
   },
   button: {
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 })
 
 const selectStyles = {
-  menu: (styles) => {
+  menu: styles => {
     return {
       ...styles,
-      zIndex: 2
+      zIndex: 2,
     }
-  }
+  },
 }
 
-
-class Param extends Component{
-
+class Param extends Component {
   handleBackStep = () => {
     this.props.backStep()
   }
 
   onChange = name => event => {
-    this.props.changeAddCameraParams({[name]: parseInt(event.target.value)})
+    this.props.changeAddCameraParams({ [name]: parseInt(event.target.value) })
   }
   changeSwitch = name => event => {
-    this.props.changeAddCameraParams({[name]: event.target.checked})
+    this.props.changeAddCameraParams({ [name]: event.target.checked })
   }
   changeSelect = name => value => {
-    if(name === 'quality'){
-      this.props.changeAddCameraParams({[name]: value.value })
-    }else{
-      const {height, width} = value.value
-      this.props.changeAddCameraParams({[name]: {height, width} })
+    if (name === 'quality') {
+      this.props.changeAddCameraParams({ [name]: value.value })
+    } else {
+      const { height, width } = value.value
+      this.props.changeAddCameraParams({ [name]: { height, width } })
     }
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     const {
-      resolution, 
+      resolution,
       bitrate,
       fps,
       quality,
@@ -108,9 +101,9 @@ class Param extends Component{
       fps_range,
     } = this.props.addCamera
 
-    this.props.configParams({
+    this.props.configCamParams({
       // id,
-      resolution, 
+      resolution,
       bitrate,
       fps,
       quality,
@@ -119,31 +112,30 @@ class Param extends Component{
     })
   }
 
-  render(){
-
+  render() {
     const { classes, addCamera = {}, errors = {} } = this.props
 
     const resolution = {
       value: addCamera.resolution,
-      label: addCamera.resolution.width + ' x ' + addCamera.resolution.height
+      label: addCamera.resolution.width + ' x ' + addCamera.resolution.height,
     }
 
     const resolutionOptions = addCamera.resolution_range.map(resolution => ({
-      value: { 
+      value: {
         width: parseInt(resolution.width),
-        height: parseInt(resolution.height)
+        height: parseInt(resolution.height),
       },
-      label: resolution.width + " x " + resolution.height
+      label: resolution.width + ' x ' + resolution.height,
     }))
     const quality = {
       value: addCamera.quality,
       label: addCamera.quality,
     }
     const qualityOptions = addCamera.quality_range
-    return(
+    return (
       <div className={classes.root}>
         <div className={classes.formContent}>
-          <Scrollbars style={{width: '100%', height: '100%'}}>
+          <Scrollbars style={{ width: '100%', height: '100%' }}>
             <div className={classes.formGroup}>
               {/* <div className="form-group">
                 <label className="control-label">Trạng thái</label>
@@ -155,18 +147,20 @@ class Param extends Component{
                 />
               </div> */}
               <div className="form-group">
-                <Select 
+                <Select
                   classes={classes}
                   components={{
                     Control: CamResolutionControl,
-                    NoOptionsMessage: NoOptionsMessage
+                    NoOptionsMessage: NoOptionsMessage,
                   }}
                   value={resolution}
                   options={resolutionOptions}
                   placeholder={false}
                   styles={selectStyles}
                   error={!isEmpty(errors.resolution)}
-                  helperText={!isEmpty(errors.resolution) ? errors.resolution : ''}
+                  helperText={
+                    !isEmpty(errors.resolution) ? errors.resolution : ''
+                  }
                   onChange={this.changeSelect('resolution')}
                 />
               </div>
@@ -175,7 +169,7 @@ class Param extends Component{
                   classes={classes}
                   components={{
                     Control: QualityControl,
-                    NoOptionsMessage: NoOptionsMessage
+                    NoOptionsMessage: NoOptionsMessage,
                   }}
                   placeholder={false}
                   value={quality}
@@ -187,60 +181,69 @@ class Param extends Component{
                 />
               </div>
               <div className="form-group">
-                <TextField 
+                <TextField
                   label="FPS"
                   fullWidth
-                  margin = "none"
+                  margin="none"
                   type="number"
-                  variant = "outlined"
-                  InputLabelProps = {{
+                  variant="outlined"
+                  InputLabelProps={{
                     classes: {
-                      root: classes.inputLabel
+                      root: classes.inputLabel,
                     },
                   }}
-                  InputProps = {{
+                  InputProps={{
                     inputProps: {
-                      className: classes.inputProps
+                      className: classes.inputProps,
                     },
-                    endAdornment: 
-                      <InputAdornment position="end" className={classes.inputAdornment}>
+                    endAdornment: (
+                      <InputAdornment
+                        position="end"
+                        className={classes.inputAdornment}
+                      >
                         {addCamera.fps_range.Min} - {addCamera.fps_range.Max}
                       </InputAdornment>
+                    ),
                   }}
                   value={addCamera.fps}
                   onChange={this.onChange('fps')}
-                  className = { classes.textField }
+                  className={classes.textField}
                   error={!isEmpty(errors.fps)}
                   helperText={!isEmpty(errors.fps) ? errors.fps : ''}
                 />
               </div>
               <div className="form-group">
-                <TextField 
-                    label="Bitrate (Kbps)"
-                    fullWidth
-                    margin = "none"
-                    type="number"
-                    variant = "outlined"
-                    InputLabelProps = {{
-                      classes: {
-                        root: classes.inputLabel
-                      },
-                    }}
-                    InputProps = {{
-                      inputProps: {
-                        className: classes.inputProps
-                      },
-                      endAdornment: 
-                        <InputAdornment position="end" className={classes.inputAdornment}>
-                          {addCamera.bitrate_range.Min} - {addCamera.bitrate_range.Max}
-                        </InputAdornment>,
-                    }}
-                    value={addCamera.bitrate}
-                    onChange={this.onChange('bitrate')}
-                    className = { classes.textField }
-                    error={!isEmpty(errors.bitrate)}
-                    helperText={!isEmpty(errors.bitrate) ? errors.bitrate : ''}
-                  />
+                <TextField
+                  label="Bitrate (Kbps)"
+                  fullWidth
+                  margin="none"
+                  type="number"
+                  variant="outlined"
+                  InputLabelProps={{
+                    classes: {
+                      root: classes.inputLabel,
+                    },
+                  }}
+                  InputProps={{
+                    inputProps: {
+                      className: classes.inputProps,
+                    },
+                    endAdornment: (
+                      <InputAdornment
+                        position="end"
+                        className={classes.inputAdornment}
+                      >
+                        {addCamera.bitrate_range.Min} -{' '}
+                        {addCamera.bitrate_range.Max}
+                      </InputAdornment>
+                    ),
+                  }}
+                  value={addCamera.bitrate}
+                  onChange={this.onChange('bitrate')}
+                  className={classes.textField}
+                  error={!isEmpty(errors.bitrate)}
+                  helperText={!isEmpty(errors.bitrate) ? errors.bitrate : ''}
+                />
               </div>
               {/* <div className="form-group">
                 <TextInput
@@ -265,31 +268,37 @@ class Param extends Component{
           </Scrollbars>
         </div>
         <div className={classes.actionButton}>
-          <Button 
-            variant="contained" 
-            color="default" 
+          <Button
+            variant="contained"
+            color="default"
             className={classes.button}
             onClick={this.handleBackStep}
-          >Quay lại</Button>
-          <Button 
-            color="primary" 
+          >
+            Quay lại
+          </Button>
+          <Button
+            color="primary"
             variant="contained"
             onClick={this.handleSubmit}
-          >Tiếp theo</Button>
+          >
+            Tiếp theo
+          </Button>
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = ({cameras}) => ({
+const mapStateToProps = ({ cameras }) => ({
   addCamera: cameras.addCamera,
   errors: cameras.errors,
 })
 
-export default connect(mapStateToProps, {
-  changeAddCameraParams:changeAddCameraParams,
-  configParams: configParams,
-  backStep: backStep,
-
-})(withStyles(styles)(Param))
+export default connect(
+  mapStateToProps,
+  {
+    changeAddCameraParams,
+    configCamParams,
+    backStep,
+  },
+)(withStyles(styles)(Param))

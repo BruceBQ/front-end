@@ -7,12 +7,13 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import classNames from 'classnames'
 import blueGrey from '@material-ui/core/colors/blueGrey'
+import _ from 'lodash'
 import {
   hoverRowVehicle,
   cancelHoverRowVehicle,
   focusVehicle,
 } from '../../actions/action_searchVehicles'
-
+import noImage from '../../assets/images/nopicture.jpg'
 const styles = theme => ({
   card: {
     display: 'flex',
@@ -33,6 +34,7 @@ const styles = theme => ({
   cardMedia: {
     width: 60,
     height: 60,
+    backgroundSize: '60px 60px',
   },
   details: {
     width: 'calc(100% - 60px)',
@@ -73,7 +75,7 @@ class VehicleItem extends Component {
         hovered: true,
       })
       this.props.hoverRowVehicle(this.props.data)
-    }, 200)
+    }, 300)
   }
 
   _onMouseLeave = () => {
@@ -111,7 +113,14 @@ class VehicleItem extends Component {
           })}
         >
           <div className={classes.cardMediaWrapper}>
-            <CardMedia className={classes.cardMedia} image={data.plate_img} />
+            <CardMedia
+              className={classes.cardMedia}
+              image={
+                _.has(data, 'plate_img') && !_.isEmpty(data.plate_img)
+                  ? data.plate_img
+                  : noImage
+              }
+            />
           </div>
           <div className={classes.details}>
             <CardContent className={classes.cardContent}>

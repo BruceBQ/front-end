@@ -48,7 +48,7 @@ const styles = theme => ({
     padding: '4px 4px 0 4px',
   },
   info: {
-    marginTop: -10,
+    marginTop: -25,
     padding: '0 5px',
   },
 
@@ -72,7 +72,8 @@ const styles = theme => ({
   image: {
     // width: '100%',
     maxWidth: '400px !important',
-    minWidth: '200px !important',
+    minWidth: '150px !important',
+    maxHeight: '600px !important',
     width: 'auto',
     pointerEvents: 'none'
   }, 
@@ -98,7 +99,7 @@ class InfoWindow extends Component {
           </div>
           <div className={classes.info}>
             <Typography noWrap className={classes.plate}>
-              {vehicle.plate_number}
+              Biển số xe: {vehicle.plate_number}
             </Typography>
             <Typography noWrap className={classes.camName}>
               {_.get(vehicle, 'camera.name')}
@@ -111,7 +112,7 @@ class InfoWindow extends Component {
             </Typography>
           </div>
           <div className={classes.imageWrapper}>
-            <img src={vehicle.vehicle_img} className={classes.image}/>
+            <img src={vehicle.object_img} className={classes.image}/>
           </div> 
           <span className="arrow-left" />
         </div>

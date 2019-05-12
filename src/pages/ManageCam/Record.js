@@ -76,9 +76,10 @@ class Record extends Component{
               }}
               onClick={this.handleSwitch('record')}
             />
+            <Typography>Ghi hình</Typography>
           </div>
           <div>
-            <Typography>Ghi hình (Độ dài file, thời gian lưu trữ...)</Typography>
+            <Typography noWrap>Độ dài file video, thời gian lưu trữ</Typography>
           </div>
           {/* <div>
             <Typography noWrap>Độ dài file video, thời gian lưu trữ</Typography>

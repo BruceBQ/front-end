@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import { Scrollbars } from 'react-custom-scrollbars';
 import {
-  configFunctions, 
+  configCamFunctions, 
   backStep 
 } from '../../actions/action_camera'
 import Enabled from './Enabled'
@@ -47,7 +47,7 @@ class Function extends Component{
   }
 
   handleSubmit = event => {
-    this.props.configFunctions(
+    this.props.configCamFunctions(
       omit(this.props.addCamera, ['activeStep'])
     )
   }
@@ -94,7 +94,7 @@ const mapStateToProps = ({cameras}) => ({
 })
 
 export default connect(mapStateToProps, {
-  backStep: backStep,
-  configFunctions: configFunctions
+  backStep,
+  configCamFunctions
 })(withStyles(styles)(Function))
 

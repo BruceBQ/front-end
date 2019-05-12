@@ -28,6 +28,12 @@ const reducer_user = ( state = INITIAL_STATE, action ) => {
         errors: action.errors,
         isFetching: false
       })
+    case types.LOG_OUT:
+      return {
+        ...state,
+        authenticated: false,
+        user: {}
+      }
     default:
       return state;
   }

@@ -1,7 +1,6 @@
 import * as types from '../constant/constant_actions'
 
 export function enqueueSnackbar(notification){
-  console.log(notification)
   return {
     type: types.ENQUEUE_SNACKBAR,
     notification: {

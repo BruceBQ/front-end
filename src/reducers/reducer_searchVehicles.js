@@ -8,8 +8,8 @@ const INITIAL_STATE = {
     endTime: null
   },
   isFetching: false,
-  currentPage: 1,
-  totalPage: 5,
+  currentPage: 0,
+  totalPage: 20,
   hoveredVehicle: {},
   focusedVehicle: {},
   selectedPlate: null,
@@ -18,15 +18,18 @@ const INITIAL_STATE = {
 const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.CLEAR_VEHCLIES:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         vehicles: [],
         currentPage: 1,
         hoveredVehicle: {},
         focusedVehicle: {},
         selectedPlate: null,
-      })
+      }
+
     case types.SEARCH_VEHICLES:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         search: {
           ...state.search,
           string: action.payload.string,
@@ -34,30 +37,41 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
           endTime: action.payload.end_time,
         },
         isFetching: true,
-      })
+      }
+
     case types.SEARCH_VEHICLES_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: false,
         vehicles: state.vehicles.concat(action.vehicles),
         currentPage: state.currentPage + 1
-      })
+      }
+
     case types.SEARCH_VEHICLES_FAILURE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: false,
-      })
+      }
+
     case types.HOVER_ROW_VEHICLE: 
-      return Object.assign({}, state, {
+      return {
+        ...state,
         hoveredVehicle: action.vehicle
-      })
+      }
+
     case types.CANCEL_HOVER_ROW_VEHICLE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         hoveredVehicle: {}
-      })
+      }
+
     case types.FOCUS_VEHICLE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         focusedVehicle: action.vehicle,
         selectedPlate: action.vehicle.plate_number
-      })
+      }
+
     default:
       return state
   }
@@ -67,6 +81,5 @@ function fetchVehiclesSuccess(state, action) {
   let vehicles = state.vehicles
   
 }
-
 
 export default reducer_searchVehicles

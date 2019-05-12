@@ -1,18 +1,21 @@
-import React, { Component }  from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Select from 'react-select'
-import TextInput from '../../components/TextInput'
-import Creatable from 'react-select/lib/Creatable';
+import Creatable from 'react-select/lib/Creatable'
+import isEmpty from 'lodash/isEmpty'
+
 import { withStyles } from '@material-ui/core/styles'
-import { Scrollbars } from 'react-custom-scrollbars';
-import { 
+import { Scrollbars } from 'react-custom-scrollbars'
+import TextInput from '../../components/TextInput'
+import {
   changeAddCameraParams,
-  connectCamera,
+  // connectCamera,
+  connectToCam,
 } from '../../actions/action_camera'
-import { toggleAddCamMap} from '../../actions/action_map'
-import {getDataBeforeConnect} from '../../actions/action_manageCam'
+import { toggleAddCamMap } from '../../actions/action_map'
+import { getDataBeforeConnect } from '../../actions/action_manageCam'
 import { showLoadingModal } from '../../actions/action_modal'
 import { getAllProvinces } from '../../actions/action_political'
 import {
@@ -21,10 +24,7 @@ import {
   CommuneControl,
   GroupControl,
   NoOptionsMessage,
-  Option
 } from '../../components/Select/SelectControl'
-
-import isEmpty from 'lodash/isEmpty'
 
 const styles = theme => ({
   root: {
@@ -37,7 +37,7 @@ const styles = theme => ({
   },
   formGroup: {
     marginTop: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   actionButton: {
     textAlign: 'right',
@@ -49,7 +49,7 @@ const styles = theme => ({
   },
   textField: {
     fontSize: '0.875rem',
-    width: 'calc(50% - 5px)'
+    width: 'calc(50% - 5px)',
   },
 
   inputProps: {
@@ -68,38 +68,39 @@ const styles = theme => ({
 })
 
 const selectStyles = {
-  menu: (styles) => {
+  menu: styles => {
     return {
       ...styles,
-      zIndex: 2
+      zIndex: 2,
     }
-  }
+  },
 }
 
-class Connect extends Component{
+class Connect extends Component {
   state = {
-    value: ''
+    value: '',
   }
   componentDidMount() {
     this.props.getDataBeforeConnect()
     // this.props.getAllProvinces()
     this.props.toggleAddCamMap()
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.props.toggleAddCamMap()
   }
   onChange = name => event => {
-    this.props.changeAddCameraParams({[name]: event.target.value})
+    this.props.changeAddCameraParams({ [name]: event.target.value })
   }
   changeSelect = name => value => {
     console.log(value)
-    this.props.changeAddCameraParams({[name]: value })
+    this.props.changeAddCameraParams({ [name]: value })
     // if(!isEmpty(value)){
     // }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     // this.props.showLoadingModal("Đang kết nối tới camera")
+    console.log('i am here')
     const {
       // id,
       name,
@@ -114,7 +115,7 @@ class Connect extends Component{
       cam_user,
       cam_pass,
     } = this.props.addCamera
-    this.props.connectCamera({
+    this.props.connectToCam({
       // id,
       name,
       lat,
@@ -129,20 +130,20 @@ class Connect extends Component{
       cam_pass,
     })
   }
-  render(){
-    const { 
-      classes, 
-      addCamera, 
+  render() {
+    const {
+      classes,
+      addCamera,
       errors = {},
       provinceOptions = [],
       districtOptions = [],
       communeOptions = [],
-      groupOptions = []
+      groupOptions = [],
     } = this.props
     return (
       <div className={classes.root}>
         <div className={classes.formContent}>
-          <Scrollbars style={{width: '100%', height: '100%'}}>
+          <Scrollbars style={{ width: '100%', height: '100%' }}>
             <div className={classes.formGroup}>
               <div className="form-group">
                 <TextInput
@@ -153,28 +154,28 @@ class Connect extends Component{
                   onChange={this.onChange('name')}
                   helperText={!isEmpty(errors.name) ? errors.name : ''}
                 />
-              </div>          
+              </div>
               <div className="form-group">
-                <TextInput 
+                <TextInput
                   disabled
                   label="Vĩ độ"
                   type="number"
                   value={addCamera.lat}
                   style={{
                     marginRight: 5,
-                    width: 'calc(50% - 5px)'
+                    width: 'calc(50% - 5px)',
                   }}
                   error={!isEmpty(errors.lat)}
                   helperText={!isEmpty(errors.lat) ? errors.lat : ''}
                 />
-                <TextInput 
+                <TextInput
                   disabled
                   label="Kinh độ"
                   type="number"
                   value={addCamera.lng}
                   style={{
                     marginLeft: 5,
-                    width: 'calc(50% - 5px)'
+                    width: 'calc(50% - 5px)',
                   }}
                   error={!isEmpty(errors.lng)}
                   helperText={!isEmpty(errors.lng) ? errors.lng : ''}
@@ -184,8 +185,8 @@ class Connect extends Component{
                 <Select
                   classes={classes}
                   components={{
-                      Control: ProvinceControl,
-                      NoOptionsMessage: NoOptionsMessage
+                    Control: ProvinceControl,
+                    NoOptionsMessage: NoOptionsMessage,
                   }}
                   placeholder={false}
                   options={provinceOptions}
@@ -201,7 +202,7 @@ class Connect extends Component{
                   classes={classes}
                   components={{
                     Control: DistrictControl,
-                    NoOptionsMessage: NoOptionsMessage
+                    NoOptionsMessage: NoOptionsMessage,
                   }}
                   placeholder={false}
                   options={districtOptions}
@@ -217,7 +218,7 @@ class Connect extends Component{
                   classes={classes}
                   components={{
                     Control: CommuneControl,
-                    NoOptionsMessage: NoOptionsMessage
+                    NoOptionsMessage: NoOptionsMessage,
                   }}
                   placeholder={false}
                   options={communeOptions}
@@ -233,10 +234,10 @@ class Connect extends Component{
                   classes={classes}
                   components={{
                     Control: GroupControl,
-                    NoOptionsMessage: NoOptionsMessage
+                    NoOptionsMessage: NoOptionsMessage,
                   }}
                   isMulti
-                  formatCreateLabel={(inputValue) => `Tạo mới "${inputValue}"`}
+                  formatCreateLabel={inputValue => `Tạo mới "${inputValue}"`}
                   placeholder={false}
                   options={groupOptions}
                   styles={selectStyles}
@@ -245,13 +246,14 @@ class Connect extends Component{
                   error={!isEmpty(errors.group)}
                   helperText={!isEmpty(errors.group) ? errors.group : ''}
                 />
-                { !isEmpty(errors.group) &&
-                  <FormHelperText 
-                    error={true} 
+                {!isEmpty(errors.group) && (
+                  <FormHelperText
+                    error={true}
                     className={classes.formHelperText}
                   >
                     {!isEmpty(errors.group) ? errors.group : ''}
-                  </FormHelperText>}
+                  </FormHelperText>
+                )}
               </div>
               <div className="form-group">
                 <TextInput
@@ -260,7 +262,7 @@ class Connect extends Component{
                   onChange={this.onChange('ip')}
                   style={{
                     marginRight: 5,
-                    width: 'calc(50% - 5px)'
+                    width: 'calc(50% - 5px)',
                   }}
                   error={!isEmpty(errors.ip)}
                   helperText={!isEmpty(errors.ip) ? errors.ip : ''}
@@ -273,7 +275,7 @@ class Connect extends Component{
                   className={classes.textField}
                   style={{
                     marginLeft: 5,
-                    width: 'calc(50% - 5px)'
+                    width: 'calc(50% - 5px)',
                   }}
                   error={!isEmpty(errors.port)}
                   helperText={!isEmpty(errors.port) ? errors.port : ''}
@@ -316,21 +318,22 @@ class Connect extends Component{
   }
 }
 
-const mapStateToProps = ({cameras, political}) => ({
-    addCamera: cameras.addCamera,
-    errors: cameras.errors,
-    provinceOptions: political.provinces,
-    districtOptions: political.districts,
-    communeOptions: political.communes,
-    groupOptions: political.groups
-
+const mapStateToProps = ({ cameras, political }) => ({
+  addCamera: cameras.addCamera,
+  errors: cameras.errors,
+  provinceOptions: political.provinces,
+  districtOptions: political.districts,
+  communeOptions: political.communes,
+  groupOptions: political.groups,
 })
-export default connect(mapStateToProps, {
-    getAllProvinces: getAllProvinces,
-    changeAddCameraParams: changeAddCameraParams,
-    connectCamera: connectCamera,
-    showLoadingModal: showLoadingModal,
-    getDataBeforeConnect: getDataBeforeConnect,
-    toggleAddCamMap: toggleAddCamMap
-})(withStyles(styles)(Connect))
-
+export default connect(
+  mapStateToProps,
+  {
+    getAllProvinces,
+    changeAddCameraParams,
+    connectToCam,
+    showLoadingModal,
+    getDataBeforeConnect,
+    toggleAddCamMap,
+  },
+)(withStyles(styles)(Connect))

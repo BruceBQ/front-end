@@ -11,6 +11,9 @@ import {
   MuiPickersUtilsProvider,
 } from 'material-ui-pickers'
 import viLocale from 'date-fns/locale/vi'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import TextInput from '../../components/TextInput'
 
@@ -33,6 +36,19 @@ const styles = theme => ({
     fontSize: '0.875rem',
     padding: '2.5px 14px',
   },
+  radioGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  radio: {
+    padding: 0,
+    // marginRight: 0,
+    // marginLeft: 0,
+    marginBottom: 0,
+  },
+  formControlLabel: {
+    marginLeft: 0
+  }
 })
 
 class SearchForm extends Component {
@@ -59,7 +75,11 @@ class SearchForm extends Component {
   }
   _onDayChange = name => async date => {
     const { values } = this.props
-    const old_day = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+    const old_day = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+    )
     const new_day = new Date(
       values[name].getFullYear(),
       values[name].getMonth(),
@@ -75,9 +95,14 @@ class SearchForm extends Component {
     const old_hour = new Date(values[name]).getTime()
     const new_hour = new Date(date).getTime()
     if (old_hour != new_hour) {
-      await this.props.setFieldValue(name, date.toISOString(), true)
+      await this.props.setFieldValue(name, date, true)
       this.props.handleSubmit()
     }
+  }
+
+  _onRadioChange = async (event) => {
+    await this.props.handleChange(event)
+    this.props.handleSubmit()
   }
 
   render() {
@@ -89,6 +114,7 @@ class SearchForm extends Component {
           <TextInput
             name="q"
             fullWidth
+            type="search"
             label="Nhập biển số phương tiện"
             onChange={this._onTextInputChange}
           />
@@ -192,6 +218,22 @@ class SearchForm extends Component {
             />
           </div>
         </MuiPickersUtilsProvider>
+        <div>
+          <RadioGroup className={classes.radioGroup} value={values.filter} onChange={this._onRadioChange} name="filter">
+            <FormControlLabel
+              value="plate_number"
+              control={<Radio className={classes.radio} color="primary"/>}
+              label="Biển số"
+              className={classes.formControlLabel}
+            />
+            <FormControlLabel
+              value="all"
+              control={<Radio className={classes.radio} color="primary"/>}
+              label="Tất cả"
+              className={classes.formControlLabel}
+            />
+          </RadioGroup>
+        </div>
       </form>
     )
   }

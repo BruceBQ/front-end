@@ -21,6 +21,17 @@ export function loadDistricts(province){
     }
   })
 }
+
+export function fetchDistricts(province) {
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/political/districts`,
+    headers: { 'Authorization': getToken() },
+    params: {
+      province: province
+    }
+  })
+}
 export function loadCommunes(district){
   return axios({
     method: 'get',
@@ -34,6 +45,16 @@ export function loadCommunes(district){
   })
 }
 
+export function fetchCommunes(district){
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/political/communes`,
+    headers: { 'Authorization': getToken() },
+    params: {
+      district: district
+    }
+  })
+}
 export function fetchProvincesAvailable(){
   return axios({
     method: 'get',
@@ -55,6 +76,7 @@ export function getDistrictsAvailable(province){
     }
   })
 }
+
 export function fetchDistrictsAvailable(province){
   return axios({
     method: 'get',
@@ -77,6 +99,18 @@ export function getCommunesAvailable(district){
     }
   })
 }
+
+export function fetchCommunesAvailable(district){
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/political/communes/available`,
+    headers: { 'Authorization': getToken() },
+    params: {
+      district: district
+    }
+  })
+}
+
 
 export function fetchGroupsAvailable(){
   return axios({

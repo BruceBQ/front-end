@@ -9,7 +9,6 @@ import CardMedia from '@material-ui/core/CardMedia'
 import IconButton from '@material-ui/core/IconButton'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
-
 import Info from '@material-ui/icons/Info'
 import Typography from '@material-ui/core/Typography'
 import Dialog from '@material-ui/core/Dialog'
@@ -17,6 +16,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+
 import TooltipWrapper from '../../components/TooltipWrapper'
 import { addCamToFollowList, removeCamFromFollowList } from '../../actions/action_followList'
 import { showInfoWindow } from '../../actions/action_map'
@@ -65,7 +65,6 @@ const styles = theme => ({
     lineHeight: 1.3,
   },
   description: {
-
     lineHeight: '1.5em',
     fontSize: '0.825rem',
   },
@@ -79,14 +78,14 @@ const styles = theme => ({
 
 class CamItem extends Component {
   
-  _onSubscribeClick = e => {
-    e.stopPropagation()
+  _onSubscribeClick = event => {
+    event.stopPropagation()
     const { id } = this.props.detail
     this.props.addCamToFollowList(Array(id))
   }
 
-  _onUnSubscribeClick = e => {
-    e.stopPropagation()
+  _onUnSubscribeClick = event => {
+    event.stopPropagation()
     const { id } = this.props.detail
     this.props.removeCamFromFollowList(Array(id))
   }
@@ -105,8 +104,13 @@ class CamItem extends Component {
       })
     }
   }
+
   render() {
-    const { classes, detail = {}, infoWindow } = this.props
+    const { 
+      classes, 
+      detail = {}, 
+      infoWindow 
+    } = this.props
     const isShowInfoWindow = detail.id === infoWindow
     return (
       <Card
@@ -167,9 +171,9 @@ const mapStateToProps = ({ cameras, map }) => ({
 export default connect(
   mapStateToProps,
   {
-    showInfoWindow: showInfoWindow,
-    closePrevStreaming: closePrevStreaming,
-    addCamToFollowList: addCamToFollowList,
-    removeCamFromFollowList: removeCamFromFollowList
+    showInfoWindow,
+    closePrevStreaming,
+    addCamToFollowList,
+    removeCamFromFollowList
   },
 )(withStyles(styles)(CamItem))

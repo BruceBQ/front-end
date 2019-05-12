@@ -7,18 +7,21 @@ const INITIAL_STATE = {
 const reducer_notifications = ( state = INITIAL_STATE, action) => {
   switch (action.type){
     case types.ENQUEUE_SNACKBAR:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         notifications: [
           ...state.notifications,
           {
             ...action.notification
           }
         ]
-      })
-    case types.REMOVE_SNACKBAR:
-      return Object.assign({}, state, {
+      }
 
-      })
+    case types.REMOVE_SNACKBAR:
+      return {
+        ...state,
+      }
+      
     default:
       return state
   }

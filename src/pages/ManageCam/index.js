@@ -50,14 +50,20 @@ const styles = (theme) => ({
     overflow: 'hidden',
   },
   right: {
-    width: 'calc(100% - 400px)',
+    // width: 'calc(100% - 400px)',
+    flexGrow: 1,
     height: '100%'
   },
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
     height:'100%'
+  },
+  tab: {
+    width: '33.333333%',
+    minWidth: 130
   }
+
 })
 
 class ManageCam extends Component{
@@ -135,9 +141,9 @@ class ManageCam extends Component{
               textColor="primary"
               variant="fullWidth"
             >
-              <Tab label="Danh sách" />
-              <Tab label="Cấu hình" />
-              <Tab label="Thêm mới" />
+              <Tab label="Danh sách" className={classes.tab} />
+              <Tab label="Cấu hình" className={classes.tab}/>
+              <Tab label="Thêm mới" className={classes.tab}/>
             </Tabs>
           </AppBar>
           <Suspense fallback={<Loading />}>

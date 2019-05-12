@@ -25,34 +25,33 @@ function removeCam(cams, action) {
 
 const reducer_followList = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.GOTO_FOLLOWLIST_PAGE:
-      return Object.assign({}, state, {
-        isCurrentPage: true,
-      })
-    case types.EXIT_FOLLOWLIST_PAGE:
-      return Object.assign({}, state, {
-        isCurrentPage: false,
-      })
     case types.CHANGE_LIST_SIZE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         listSize: action.listSize,
         currentPage: 1,
         totalPage: Math.ceil(state.cameras.length / action.listSize),
-      })
+      }
+
     case types.CHANGE_FOLLOWLIST_PAGE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         currentPage: action.page,
-      })
+      }
+
     case types.GET_FOLLOWLIST:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: true,
-      })
+      }
+
     case types.GET_FOLLOWLIST_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: false,
         cameras: action.camList,
         totalPage: Math.ceil(action.camList.length / state.listSize),
-      })
+      }
     // case types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS:
     //   return Object.assign({}, state, {
     //     cameras: removeCam(state.cameras, action),

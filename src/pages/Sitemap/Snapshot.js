@@ -28,9 +28,11 @@ const styles = theme => ({
     position: 'absolute',
     bottom: 0,
     width: '100%',
+    height: '100%',
     display: 'flex',
     alignItems: 'center',
-    padding: '0 20px 20px 20px'
+    justifyContent: 'center',
+    padding: '20px 20px 20px 20px'
   }, 
   playIcon: {
     color: 'rgba(255, 0, 0, 0.6);'

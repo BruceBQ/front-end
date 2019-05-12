@@ -58,8 +58,6 @@ class Player extends Component {
     })
     let controlBarActiveTime = 2500
     clearTimeout(this.controlHideTimer)
-    console.log(this.controlHideTimer)
-
     this.controlHideTimer = setTimeout(() => {
       console.log('vietbq')
       this.setState({

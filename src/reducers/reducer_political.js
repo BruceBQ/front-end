@@ -10,13 +10,17 @@ const INITTIAL_STATE = {
 const reducer_political = (state = INITTIAL_STATE, action) => {
   switch (action.type) {
     case types.GET_ALL_PROVINCES: 
-      return Object.assign({}, state, {
+      return {
+        ...state,
         provinces: action.provinces
-      })
+      }
+
     case types.GET_PROVINCES_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         provinces: action.provinces
-      })
+      }
+
     case types.GET_DISTRICTS_SUCCESS: 
       return Object.assign({}, state, {
 
@@ -25,15 +29,20 @@ const reducer_political = (state = INITTIAL_STATE, action) => {
       return Object.assign({}, state, {
 
       })
+
     case types.GET_POLITICAL_SUCCESS: 
-      return Object.assign({}, state, {
+      return {
+        ...state,
         districts: action.districts,
         communes: action.communes
-      })
+      }
+
     case types.RELOAD_POLITICAL: 
-      return Object.assign({}, state, {
+      return {
+        ...state,
         ...action.payload
-      })
+      }
+      
     default:
       return state
   }

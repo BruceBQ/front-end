@@ -25,57 +25,82 @@ const INITIAL_STATE = {
 const reducer_map = (state = INITIAL_STATE, action) => {
   switch(action.type){
     case types.SHOW_INFO_WINDOW:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         showInfoWindow: action.id,
         center: action.center
-      })
+      }
+
     case types.CLOSE_INFO_WINDOW:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         showInfoWindow: INITIAL_STATE.showInfoWindow
-      })
+      }
+
     //change bounds
     case types.CHANGE_BOUNDS_MAP:
-      return Object.assign({},state, {
+      return {
+        ...state, 
         center: action.center,
         zoom: action.zoom,
-      })
+      }
+
     // focus camera
     case types.FOCUS_ON_CAM:
-      return Object.assign({}, state, {
+      return {
+        ...state, 
         center: action.center,
         zoom: action.zoom,
         // focusedCam: action.id
-      })
+      }
     // case types.CANCEL_FOCUSED_CAM:
     //   return Object.assign({}, state, {
     //     focusedCam: -1
     //   })
+
+    case types.FOCUS_FIRST_CAM:
+      return {
+        ...state,
+        center: action.payload.center,
+        zoom: action.payload.zoom
+      }
+
     case types.CONFIG_CAM:
-      return Object.assign({}, state, {
+      return {
+        ...state, 
         center: action.center,
         zoom: action.zoom,
-      })
+      }
+
     case types.SEARCH_CAMERA_SUCCESS:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         fitBoundsMap: true
-      })
+      }
+
     case types.TOGGLE_ADD_CAM_MAP:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isAddingCam: !state.isAddingCam
-      })
+      }
+
     case types.TOGGLE_EDIT_CAM_MAP:
-      return Object.assign({}, state, {
+      return {
+        ...state, 
         isEditingCam: !state.isEditingCam
-      })
+      }
+
     case types.HOVER_ROW_VEHICLE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         center:{
           lat: action.vehicle.camera.lat,
           lng: action.vehicle.camera.lng,
         }
-      })
+      }
+      
     default:
-      return { ...state }
+      return state
   }
 }
 

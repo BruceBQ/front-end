@@ -1,4 +1,5 @@
 import * as types from '../constant/constant_actions'
+import actionCreator from '../utils/actionCreator'
 
 export function showAddModal(modalType){
   return {
@@ -44,3 +45,5 @@ export function closeModal(modalType){
     modalType
   }
 }
+
+export const showDeleteCamModal = actionCreator(types.SHOW_DELETE_CAM_MODAL, 'payload')

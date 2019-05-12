@@ -10,7 +10,8 @@ import {
   changeCamLocation,
   getCameraLocation,
 } from '../../actions/action_camera'
-import { MarkerCam } from '../../components/Marker'
+// import { MarkerCam } from '../../components/Marker'
+import MarkerCam from './MarkerCam'
 
 const styles = theme => ({
   root: {
@@ -76,13 +77,13 @@ class RightSite extends Component {
               <NewCameaMarker lat={newCamCoor.lat} lng={newCamCoor.lng} />
             )}
             {isEditingCam && focusedCam !== -1 && (
-              <MarkerCam 
-                lat={editCam.lat} 
-                lng={editCam.lng} 
+              <MarkerCam
+                lat={editCam.lat}
+                lng={editCam.lng}
                 detail={{
-                  ...editCam, 
-                  id: focusedCam
-                }} 
+                  ...editCam,
+                  id: focusedCam,
+                }}
               />
             )}
           </GoogleMap>

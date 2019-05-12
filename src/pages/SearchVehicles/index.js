@@ -17,7 +17,7 @@ const styles = theme => ({
     height: '100%',
   },
   left: {
-    width: 350,
+    width: 300,
     zIndex: 4,
     overflow: 'hidden',
     position: 'relative',
@@ -36,7 +36,6 @@ class SearchVehicles extends Component {
     this.props.fetchAllCams()
   }
   _onBoundsChange = ({ center, zoom, bounds, marginBounds }) => {
-    console.log(bounds, marginBounds)
     this.props.changeBoundsMap({ center, zoom })
   }
   render() {

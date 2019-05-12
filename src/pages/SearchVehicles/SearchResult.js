@@ -7,6 +7,7 @@ import _ from 'lodash'
 import VehicleItem from './VehicleItem'
 import Loading from '../../components/Loading'
 import { searchVehicles } from '../../actions/action_searchVehicles'
+import { Typography } from '@material-ui/core'
 
 const styles = theme => ({
   root: {
@@ -16,25 +17,30 @@ const styles = theme => ({
   wrapper: {
     padding: '0 10px 0 10px',
   },
+  noResult: {
+    fontSize: 16,
+  },
 })
 
 class SearchResult extends Component {
   _onScroll = event => {
     const scrollbars = this.scrollbars
     const { currentPage, totalPage, isFetching, search } = this.props
-    if (
-      Number(scrollbars.getScrollTop() + scrollbars.getClientHeight()) >=
-      Number(scrollbars.getScrollHeight() - 200)
-    ) {
-      if (currentPage <= totalPage && !isFetching) {
-        this.props.searchVehicles({
-          string: search.string,
-          start_time: search.startTime,
-          end_time: search.endTime,
-          page: currentPage + 1,
-        })
+    _.throttle(() => {
+      if (
+        Number(scrollbars.getScrollTop() + scrollbars.getClientHeight()) >=
+        Number(scrollbars.getScrollHeight() - 200)
+      ) {
+        if (currentPage <= totalPage && !isFetching) {
+          this.props.searchVehicles({
+            string: search.string,
+            start_time: search.startTime,
+            end_time: search.endTime,
+            page: currentPage + 1,
+          })
+        }
       }
-    }
+    }, 100)()
   }
 
   render() {
@@ -49,6 +55,13 @@ class SearchResult extends Component {
           }}
         >
           <div className={classes.wrapper}>
+            {!isFetching && vehicles.length === 0 && (
+              <div>
+                <Typography className={classes.noResult} align="center" noWrap>
+                  Không tìm thấy phương tiện
+                </Typography>
+              </div>
+            )}
             {vehicles.map((vehicle, index) => {
               return <VehicleItem data={vehicle} key={index} />
             })}

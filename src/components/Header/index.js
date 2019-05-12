@@ -2,26 +2,29 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import logo from '../../assets/images/logo.png'
-// import Size from '../Pages/FollowList/Size'
-// import Pagination from '../Pages/FollowList/Pagination'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import DeleteIcon from '@material-ui/icons/Delete'
-
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import Search from '@material-ui/icons/Search'
 import classnames from 'classnames'
-import { toggleCameraFilter, toggleDrawer } from '../../actions/action_ui'
 import {
   NotificationImportantOutlined,
   SearchOutlined,
 } from '@material-ui/icons'
+
+import logo from '../../assets/images/logo_copy.png'
+import logoVanLang from '../../assets/images/logo_vanlang.jpg'
+// import Size from '../Pages/FollowList/Size'
+// import Pagination from '../Pages/FollowList/Pagination'
+
+import { toggleCameraFilter, toggleDrawer } from '../../actions/action_ui'
 import TooltipWrapper from '../TooltipWrapper'
 import FollowListSize from './FollowListSize'
 import Size from './Size'
 import Pagination from './Pagination'
+import User from './User'
 
 const styles = theme => ({
   root: {
@@ -42,12 +45,13 @@ const styles = theme => ({
   },
   logoWrapper: {
     height: 50,
-    padding: '10px 10px 10px 10px',
+    // padding: '10px 10px 10px 10px',
     textAlign: 'center',
     borderRight: '2px solid #ccc',
   },
   logoImage: {
     height: '100%',
+    padding: 10,
     cursor: 'pointer',
   },
   titlePage: {
@@ -68,6 +72,7 @@ const styles = theme => ({
     fontSize: 20,
   },
   rightControls: {
+    display: 'flex',
     borderLeft: '1px solid #ccc',
     paddingRight: 10,
     paddingLeft: 10,
@@ -87,12 +92,7 @@ const styles = theme => ({
 })
 class Header extends Component {
   state = {
-    arrowRef: null,
-  }
-  handleArrowRef = node => {
-    this.setState({
-      arrowRef: node,
-    })
+    open: false,
   }
 
   _onToggleCamFilter = event => {
@@ -123,6 +123,7 @@ class Header extends Component {
     return (
       <header className={classes.root}>
         <div className={classes.logoWrapper}>
+          <img src={logoVanLang} className={classes.logoImage} alt="Centic logo" /> &
           <img src={logo} className={classes.logoImage} alt="Centic logo" />
         </div>
         <div className={classes.titlePage}>{titlePage}</div>
@@ -149,11 +150,12 @@ class Header extends Component {
                 <NotificationsNoneIcon className={classes.smallIcon} />
               </IconButton>
             </TooltipWrapper>
-            <TooltipWrapper title="Đăng xuất">
+            {/* <TooltipWrapper title="Đăng xuất">
               <IconButton>
                 <ExitToApp className={classes.smallIcon} />
               </IconButton>
-            </TooltipWrapper>
+            </TooltipWrapper> */}
+            <User />
           </div>
         </div>
       </header>

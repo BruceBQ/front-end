@@ -24,7 +24,6 @@ class Notifier extends Component{
   componentDidUpdate(){
     const { notifications = [] } = this.props
     notifications.map(notification => {
-      console.log(notification)
       if(this.displayed.includes(notification.key)) return
       this.props.enqueueSnackbar(notification.message, notification.options);
       this.storeDisplayed(notification.key)

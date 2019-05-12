@@ -9,12 +9,12 @@ import {
 } from 'redux-saga/effects'
 import * as types from '../constant/constant_actions'
 import {
-  connectCameraSuccess,
-  connectCameraFailure,
-  configParamsSucess,
+  // connectCameraSuccess,
+  // connectCameraFailure,
+  // configParamsSucess,
   nextStep,
-  configParamsFailure,
-  configFunctionsSuccess,
+  // configParamsFailure,
+  // configFunctionsSuccess,
   changeSearchCamParams,
   searchCam,
   searchCamSuccess,
@@ -40,86 +40,86 @@ import {} from '../actions/action_camera'
 import _ from 'lodash'
 import { removeCamFromFollowListSuccess, addCamToFollowListSuccess } from '../actions/action_followList';
 
-export function* watchConnectCamera() {
-  yield takeEvery(types.CONNECT_CAMERA, workerConnectCamera)
-}
+// export function* watchConnectCamera() {
+//   yield takeEvery(types.CONNECT_CAMERA, workerConnectCamera)
+// }
 
 // connect to camera
-function* workerConnectCamera(action) {
-  try {
-    yield put(showLoadingModal('Đang kết nối tới camera'))
-    const response = yield call(CameraApi.connectCamera, action.payload)
-    yield put(connectCameraSuccess(response.data.data))
-    yield put(closeModal())
-  } catch (error) {
-    yield put(
-      enqueueSnackbar({
-        message: error.response.data.notify,
-        options: {
-          variant: 'error',
-        },
-      }),
-    )
-    yield put(closeModal())
-    yield put(connectCameraFailure(error.response.data.data))
-  } finally {
-  }
-}
+// function* workerConnectCamera(action) {
+//   try {
+//     yield put(showLoadingModal('Đang kết nối tới camera'))
+//     const response = yield call(CameraApi.connectCamera, action.payload)
+//     yield put(connectCameraSuccess(response.data.data))
+//     yield put(closeModal())
+//   } catch (error) {
+//     yield put(
+//       enqueueSnackbar({
+//         message: error.response.data.notify,
+//         options: {
+//           variant: 'error',
+//         },
+//       }),
+//     )
+//     yield put(closeModal())
+//     yield put(connectCameraFailure(error.response.data.data))
+//   } finally {
+//   }
+// }
 
-export function* watchConfigParams() {
-  yield takeEvery(types.CONFIG_PARAMS, workerConfigParams)
-}
+// export function* watchConfigParams() {
+//   yield takeEvery(types.CONFIG_PARAMS, workerConfigParams)
+// }
 
-function* workerConfigParams(action) {
-  try {
-    yield put(showLoadingModal('Đang cấu hình camera'))
-    const response = yield call(CameraApi.configParams, action.payload)
-    yield put(configParamsSucess())
-    yield put(closeModal())
-  } catch (error) {
-    yield put(
-      enqueueSnackbar({
-        message: error.response.data.notify,
-        options: {
-          variant: 'error',
-        },
-      }),
-    )
-    yield put(closeModal())
-    yield put(configParamsFailure(error.response.data.data))
-  }
-}
+// function* workerConfigParams(action) {
+//   try {
+//     yield put(showLoadingModal('Đang cấu hình camera'))
+//     const response = yield call(CameraApi.configCamParams, action.payload)
+//     yield put(configParamsSucess())
+//     yield put(closeModal())
+//   } catch (error) {
+//     yield put(
+//       enqueueSnackbar({
+//         message: error.response.data.notify,
+//         options: {
+//           variant: 'error',
+//         },
+//       }),
+//     )
+//     yield put(closeModal())
+//     yield put(configParamsFailure(error.response.data.data))
+//   }
+// }
 
-export function* watchConfigFunctions() {
-  yield takeEvery(types.CONFIG_FUNCTIONS, workerConfigFunctions)
-}
+// export function* watchConfigFunctions() {
+//   yield takeEvery(types.CONFIG_FUNCTIONS, workerConfigFunctions)
+// }
 
-function* workerConfigFunctions(action) {
-  try {
-    yield put(showLoadingModal('Đang thêm mới camera'))
-    const response = yield call(CameraApi.configFunctions, action.payload)
-    yield put(
-      enqueueSnackbar({
-        message: response.data.notify,
-        options: {
-          variant: 'success',
-        },
-      }),
-    )
-    yield put(configFunctionsSuccess())
-    yield put(closeModal())
-  } catch (error) {
-    yield put(
-      enqueueSnackbar({
-        message: error.response.data.notify,
-        options: {
-          variant: 'error',
-        },
-      }),
-    )
-    yield put(closeModal())
-  }
-}
+// function* workerConfigFunctions(action) {
+//   try {
+//     yield put(showLoadingModal('Đang thêm mới camera'))
+//     const response = yield call(CameraApi.configFunctions, action.payload)
+//     yield put(
+//       enqueueSnackbar({
+//         message: response.data.notify,
+//         options: {
+//           variant: 'success',
+//         },
+//       }),
+//     )
+//     yield put(configFunctionsSuccess(response.data.data))
+//     yield put(closeModal())
+//   } catch (error) {
+//     yield put(
+//       enqueueSnackbar({
+//         message: error.response.data.notify,
+//         options: {
+//           variant: 'error',
+//         },
+//       }),
+//     )
+//     yield put(closeModal())
+//   }
+// }
 
 export function* watchClearProvince() {
   yield takeEvery(types.CLEAR_PROVINCE, workerClearProvince)
@@ -309,7 +309,7 @@ function* workerEditCamConnection(action) {
         }
       })
     )
-    yield put(editCamConnectionSuccess())
+    yield put(editCamConnectionSuccess(action.id, action.payload))
   } catch (error) {
     yield put(closeModal())
     yield put(editCamConnectionFailure(error.response.data.data))

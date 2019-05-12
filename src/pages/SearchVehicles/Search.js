@@ -29,6 +29,7 @@ class Search extends Component {
       start_hour: new Date().setHours(0, 0, 0),
       end_day: new Date(),
       end_hour: new Date(),
+      filter: 'plate_number',
     }
     
     this._onSubmit(values)
@@ -36,27 +37,28 @@ class Search extends Component {
   }
 
   _onSubmit = values => {
-    const { start_day, start_hour, end_day, end_hour } = values
+    const { start_day, start_hour, end_day, end_hour, filter } = values
     const start_time = new Date(
       new Date(start_day).getFullYear(),
       new Date(start_day).getMonth(),
       new Date(start_day).getDate(),
       new Date(start_hour).getHours(),
       new Date(start_hour).getMinutes(),
-    )
+    ).toString()
     const end_time = new Date(
       new Date(end_day).getFullYear(),
       new Date(end_day).getMonth(),
       new Date(end_day).getDate(),
       new Date(end_hour).getHours(),
       new Date(end_hour).getMinutes(),
-    )
+    ).toString()
     this.props.clearVehicles()
     this.props.searchVehicles({
       string: values.q,
       page: 1,
-      start_time,
-      end_time,
+      start_time: start_time,
+      end_time: end_time,
+      filter: values.filter
     })
   }
 
@@ -65,12 +67,14 @@ class Search extends Component {
     return (
       <div className={classes.root}>
         <Formik
+          enableReinitialize  
           initialValues={{
             q: '',
             start_day: new Date(),
             start_hour: new Date().setHours(0, 0, 0),
             end_day: new Date(),
             end_hour: new Date(),
+            filter: 'plate_number'
           }}
           onSubmit={values => this._onSubmit(values)}
           render={props => <SearchForm {...props} />}

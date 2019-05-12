@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
+import Typography from '@material-ui/core/Typography'
 
 import { toggleDrawer } from '../../actions/action_ui'
 
@@ -16,12 +17,10 @@ class RightDrawer extends Component {
   render() {
     const { classes, open, toggleDrawer } = this.props
     return (
-      <Drawer
-        anchor="right"
-        open={open}
-        onClose={toggleDrawer}
-      >
-        <div className={classes.root}>VIETBQ</div>
+      <Drawer anchor="right" open={open} onClose={toggleDrawer}>
+        <div className={classes.root}>
+          <Typography noWrap>THÔNG BÁO</Typography>
+        </div>
       </Drawer>
     )
   }

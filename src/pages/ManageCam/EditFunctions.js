@@ -1,18 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import { Scrollbars } from 'react-custom-scrollbars';
-import {
-  configFunctions, 
-  backStep 
-} from '../../actions/action_camera'
+import { Scrollbars } from 'react-custom-scrollbars'
+import { Formik } from 'formik'
+import omit from 'lodash/omit'
+
+import { configFunctions, fetchCamFunctions, editCamFunctions } from '../../actions/action_camera'
 import Enabled from './Enabled'
 import Record from './Record'
 import Surveillance from './Surveillance'
 import Stream from './Stream'
 import ALPR from './ALPR'
-import omit from 'lodash/omit'
+import Loading from '../../components/Loading'
+import EditFunctionsForm from './EditFunctionsForm'
 
 const styles = theme => ({
   root: {
@@ -25,7 +26,7 @@ const styles = theme => ({
   },
   formGroup: {
     marginTop: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   actionButton: {
     textAlign: 'right',
@@ -33,62 +34,64 @@ const styles = theme => ({
     marginBottom: 5,
   },
   panelSummary: {
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   button: {
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 })
 
-class EditFunctions extends Component{
-
+class EditFunctions extends Component {
+  componentDidMount() {
+    const { focusedCam } = this.props
+    this.props.fetchCamFunctions(focusedCam)
+  }
   changeSwitch = name => event => {
     event.stopPropagation()
   }
 
-  handleSubmit = event => {
-    this.props.configFunctions(
-      omit(this.props.addCamera, ['activeStep'])
-    )
+  handleSubmit = values => {
+    const { focusedCam } = this.props
+    this.props.editCamFunctions(focusedCam, values)
   }
 
-  handleBackStep = event => {
-    this.props.backStep()
-  }
-
-  render(){
-    const { classes } = this.props
+  render() {
+    const { 
+      classes,
+      isFetching,
+      functions
+    } = this.props
     return (
       <div className={classes.root}>
         <div className={classes.formContent}>
-          <Scrollbars style={{width: '100%', height: '100%'}}>
-            <div className={classes.formGroup}>
-              {/* <Enabled /> */}
-              <Record />
-              <Surveillance />
-              <Stream />
-              <ALPR />
-            </div>
-          </Scrollbars>
-        </div>
-        <div className={classes.actionButton}>
-        <Button 
-          color="primary" 
-          variant="contained"
-          onClick={this.handleSubmit}
-        >Lưu</Button>
+          {isFetching ? (
+            <Loading />
+          ) : (
+            <Formik
+              enableReinitialize
+              initialValues={{...functions}}
+              onSubmit={values => this.handleSubmit(values)}
+              render={props => <EditFunctionsForm {...props} />}
+            />
+          )}
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = ({cameras}) => ({
-  // addCamera: cameras.addCamera
+const mapStateToProps = ({ cameras }) => ({
+  isFetching: cameras.isFetching,
+  focusedCam: cameras.focusedCam,
+  functions: cameras.currentCam.functions,
 })
 
-export default connect(mapStateToProps, {
-  // backStep: backStep,
-  // configFunctions: configFunctions
-})(withStyles(styles)(EditFunctions))
-
+export default connect(
+  mapStateToProps,
+  {
+    fetchCamFunctions,
+    editCamFunctions
+    // backStep: backStep,
+    // configFunctions: configFunctions
+  },
+)(withStyles(styles)(EditFunctions))

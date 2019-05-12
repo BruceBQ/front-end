@@ -32,6 +32,10 @@ const styles = theme => ({
   remain: {
     display: 'flex',
     flexGrow: 1,
+  },
+  tab: {
+    width: '33.333333%',
+    minWidth: 130
   }
 })  
 
@@ -57,9 +61,9 @@ class EditCamera extends Component{
             textColor="primary"
             variant="fullWidth"
           >
-            <Tab label="Kết nối" />
-            <Tab label="Tham số" />
-            <Tab label="Chức năng" />
+            <Tab label="Kết nối" className={classes.tab}/>
+            <Tab label="Tham số" className={classes.tab}/>
+            <Tab label="Chức năng" className={classes.tab}/>
           </Tabs>
         </AppBar>
         <div className={classes.remain}>
