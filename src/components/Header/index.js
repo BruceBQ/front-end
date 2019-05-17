@@ -16,6 +16,7 @@ import {
 
 import logo from '../../assets/images/logo_copy.png'
 import logoVanLang from '../../assets/images/logo_vanlang.jpg'
+import logoQN from '../../assets/images/logo_quangnam.png'
 // import Size from '../Pages/FollowList/Size'
 // import Pagination from '../Pages/FollowList/Pagination'
 
@@ -51,7 +52,7 @@ const styles = theme => ({
   },
   logoImage: {
     height: '100%',
-    padding: 10,
+    paddingBottom: 1,
     cursor: 'pointer',
   },
   titlePage: {
@@ -80,8 +81,8 @@ const styles = theme => ({
   leftControls: {
     display: 'flex',
     flexDirection: 'row',
-    paddingRight: 10,
-    height: '100%',
+    marginRight: 10,
+    // height: '100%',
   },
   followList: {
     display: 'flex',
@@ -123,8 +124,8 @@ class Header extends Component {
     return (
       <header className={classes.root}>
         <div className={classes.logoWrapper}>
-          <img src={logoVanLang} className={classes.logoImage} alt="Centic logo" /> &
-          <img src={logo} className={classes.logoImage} alt="Centic logo" />
+          <img src={logoQN} className={classes.logoImage} alt="Centic logo" /> 
+          {/* <img src={logo} className={classes.logoImage} alt="Centic logo" /> */}
         </div>
         <div className={classes.titlePage}>{titlePage}</div>
         <div className={classes.nav}>

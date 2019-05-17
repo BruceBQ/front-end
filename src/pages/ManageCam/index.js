@@ -14,7 +14,8 @@ import { changeBoundsMap } from '../../actions/action_map'
 import { 
   focusOnCam, 
   changeCamLocation, 
-  getCameraLocation 
+  getCameraLocation,
+  clearCamState,
 } from '../../actions/action_camera'
 import { switchTab } from '../../actions/action_manageCam'
 import NewCameaMarker from '../../components/Marker/NewCameaMarker';
@@ -74,6 +75,10 @@ class ManageCam extends Component{
     mapApi: null,
     camPosition: [],
     activeStep: 0,
+  }
+
+  componentWillUnmount() {
+    this.props.clearCamState()
   }
 
   // apiHasLoaded = (map, maps) => {
@@ -195,10 +200,11 @@ const mapStateToProps = ({cameras, map, manageCam}) => ({
 })
 
 export default withRouter(connect(mapStateToProps, {
-  changeBoundsMap: changeBoundsMap,
-  focusOnCam: focusOnCam,
-  switchTab: switchTab, 
-  changeCamLocation: changeCamLocation,
-  getCameraLocation: getCameraLocation,
+  changeBoundsMap,
+  focusOnCam,
+  switchTab, 
+  changeCamLocation,
+  getCameraLocation,
+  clearCamState,
   
 })(withStyles(styles, { withTheme: true })(ManageCam)))

@@ -15,6 +15,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import LogoutIcon from '@material-ui/icons/ExitToApp'
 import ProfileIcon from '@material-ui/icons/AccountCircleOutlined'
+import Typography from '@material-ui/core/Typography';
 
 import { logOut } from '../../actions/action_authetication'
 
@@ -34,6 +35,13 @@ const styles = theme => ({
   listItemText: {
     fontSize: '14px !important',
   },
+  nameWrapper: {
+    padding: '5px 16px'
+  },
+  name: {
+    fontSize: 18,
+    fontWeight:400,
+  }
 })
 
 class User extends Component {
@@ -62,7 +70,6 @@ class User extends Component {
   render() {
     const { classes, user } = this.props
     const { open, anchorEl } = this.state
-    console.log(this.anchorEl)
     return (
       <div className={classes.root}>
         <Avatar
@@ -78,10 +85,13 @@ class User extends Component {
           anchorEl={anchorEl}
           onClose={this._onClose}
           PopoverClasses={{
-            // anchorOrigin: {{ vertical: "bottom", horizontal: "right" }},
-            // transformOrigin={ vertical: "bottom", horizontal: "right" }
+            // 
+            
           }}
         >
+          <div className={classes.nameWrapper}>
+            <Typography className={classes.name}>{user.name}</Typography>
+          </div>
           <MenuItem>
             <ListItemIcon className={classes.listItemIcon}>
               <ProfileIcon className={classes.icon} />

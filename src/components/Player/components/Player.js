@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import Hls from 'hls.js'
 import _ from 'lodash'
 
@@ -22,11 +21,6 @@ class Player extends Component {
     this.controlHideTimer = null
     this.video = React.createRef()
     this.player = React.createRef()
-    // this.handleControlBarMouseEnter = this.handleControlBarMouseEnter.bind(this)
-  }
-
-  static defaultProps = {
-    aspectRatio: 'auto',
   }
 
   componentDidMount() {
@@ -37,8 +31,8 @@ class Player extends Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
     fullscreen.removeEventListener(this.handleFullScreenChange)
-    if (this.controlsHideTimer) {
-      window.clearTimeout(this.controlsHideTimer);
+    if (this.controlHideTimer) {
+      window.clearTimeout(this.controlHideTimer);
       this.controlHideTimer = null
     }
   }
@@ -52,23 +46,22 @@ class Player extends Component {
   }
 
   startControlsTimer = () => {    
-    console.log('start timer')
     this.setState({
       showControls: true
     })
-    let controlBarActiveTime = 2500
+    const controlBarActiveTime = 2500
     clearTimeout(this.controlHideTimer)
     this.controlHideTimer = setTimeout(() => {
-      console.log('vietbq')
       this.setState({
         showControls: false
-      }, () => console.log('hide control bar'))
+      })
     }, controlBarActiveTime)
   }
 
   stopControlTimer = () => {
     clearTimeout(this.controlHideTimer)
   }
+
   handleMouseLeave = () => {
     this.setState({
       showControls: false,
@@ -77,31 +70,23 @@ class Player extends Component {
 
   handleControlBarMouseEnter = (e) => {
     e.stopPropagation()
-    // this.setState({
-    //   showControls: true
-    // }, () => console.log('show controlbar'))
-    // console.log('mouse enter control bar')
-    // if(this.controlHideTimer){
-    //   this.stopControlTimer()
-    //   this.setState({
-    //     showControls: true
-    //   })
-    //   this.controlHideTimer = 0
-    // }
     this.setState({
       userActive: true
     })
   }
 
   handleControlBarMouseLeave = (e) => {
-    // console.log(e)
-    // e.stopPropagation()
-    // console.log('mouse leave control bar')
     this.setState({
-      // showControls: false,
       userActive: false
     })
   }
+
+  handleControlBarMouseOut = (e) => {
+    this.setState({
+      userActive: false
+    })
+  }
+  
   handleFocus = () => {}
 
   handleBlur = () => {}
@@ -162,7 +147,6 @@ class Player extends Component {
     return (
       <div
         className="video-player"
-        onDoubleClick={e=>e.stopPropagation()}
         onMouseDown={this.handleMouseDown}
         onMouseMove={this.handleMouseMove}
         onMouseLeave={this.handleMouseLeave}
@@ -189,6 +173,7 @@ class Player extends Component {
           playerControl={this.state}
           handleControlBarMouseEnter={this.handleControlBarMouseEnter}
           handleControlBarMouseLeave={this.handleControlBarMouseLeave}
+          handleControlBarMouseOut={this.handleControlBarMouseOut}
           handlePlayOrPause={this.handlePlayOrPause}
           handlePlaying={this.handlePlaying}
           handleWaiting={this.handleWaiting}

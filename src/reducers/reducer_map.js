@@ -27,8 +27,8 @@ const reducer_map = (state = INITIAL_STATE, action) => {
     case types.SHOW_INFO_WINDOW:
       return {
         ...state,
-        showInfoWindow: action.id,
-        center: action.center
+        showInfoWindow: action.payload.id,
+        center: action.payload.center
       }
 
     case types.CLOSE_INFO_WINDOW:
@@ -41,8 +41,8 @@ const reducer_map = (state = INITIAL_STATE, action) => {
     case types.CHANGE_BOUNDS_MAP:
       return {
         ...state, 
-        center: action.center,
-        zoom: action.zoom,
+        center: action.payload.center,
+        zoom: action.payload.zoom,
       }
 
     // focus camera
@@ -98,7 +98,8 @@ const reducer_map = (state = INITIAL_STATE, action) => {
           lng: action.vehicle.camera.lng,
         }
       }
-      
+    case types.CLEAR_CAM_STATE:
+      return INITIAL_STATE
     default:
       return state
   }

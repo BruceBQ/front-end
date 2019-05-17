@@ -59,7 +59,6 @@ class RowCamera extends Component {
   }
 
   render() {
-    console.log('row camera')
     const { 
       classes,
       empty,

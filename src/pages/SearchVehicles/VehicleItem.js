@@ -133,6 +133,8 @@ class VehicleItem extends Component {
               <Typography noWrap className={classes.address}>
                 {data.address}
               </Typography>
+              <a href={data.object_img} target="_blank">Link image</a>
+
             </CardContent>
           </div>
         </Card>

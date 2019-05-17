@@ -117,6 +117,7 @@ class SearchForm extends Component {
             type="search"
             label="Nhập biển số phương tiện"
             onChange={this._onTextInputChange}
+            disabled={values.filter === 'no_plate_number'}
           />
         </div>
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={viLocale}>
@@ -227,9 +228,9 @@ class SearchForm extends Component {
               className={classes.formControlLabel}
             />
             <FormControlLabel
-              value="all"
+              value="no_plate_number"
               control={<Radio className={classes.radio} color="primary"/>}
-              label="Tất cả"
+              label="Phương tiện"
               className={classes.formControlLabel}
             />
           </RadioGroup>

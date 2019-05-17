@@ -1,6 +1,9 @@
 import fullscreen from '../utils/fullscreen'
-export const FULLSCREEN_CHANGE = 'FULLSCREEN_CHANGE'
+
 export const OPERATE = 'OPERATE'
+export const FULLSCREEN_CHANGE = 'FULLSCREEN_CHANGE'
+export const PLAYER_ACTIVATE = 'PLAYER_ACTIVATE'
+export const USER_ACTIVATE = 'USER_ACTIVATE'
 
 export function handleFullscreenChange(isFullscreen){
   return {

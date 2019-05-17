@@ -52,7 +52,6 @@ class Size extends Component {
         value = { value: 16, label: '4x4' }
         break
     }
-    console.log(value)
     return (
       <div className={classes.root}>
         <Select

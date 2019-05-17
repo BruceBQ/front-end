@@ -5,14 +5,22 @@ const INITIAL_STATE = {
   search: {
     string: '',
     startTime: null,
-    endTime: null
+    endTime: null,
+    filter: null,
   },
   isFetching: false,
   currentPage: 0,
-  totalPage: 20,
+  totalPage: 1,
   hoveredVehicle: {},
   focusedVehicle: {},
   selectedPlate: null,
+}
+
+function updateTotalPage(state, action) {
+  if(action.vehicles.length === 0){
+    return state.totalPage
+  } 
+  return state.totalPage + 1
 }
 
 const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
@@ -21,7 +29,8 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         vehicles: [],
-        currentPage: 1,
+        currentPage: 0,
+        totalPage: 1,
         hoveredVehicle: {},
         focusedVehicle: {},
         selectedPlate: null,
@@ -35,6 +44,7 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
           string: action.payload.string,
           startTime: action.payload.start_time,
           endTime: action.payload.end_time,
+          filter: action.payload.filter
         },
         isFetching: true,
       }
@@ -44,7 +54,8 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
         ...state,
         isFetching: false,
         vehicles: state.vehicles.concat(action.vehicles),
-        currentPage: state.currentPage + 1
+        currentPage: state.currentPage + 1,
+        totalPage: updateTotalPage(state, action)
       }
 
     case types.SEARCH_VEHICLES_FAILURE:

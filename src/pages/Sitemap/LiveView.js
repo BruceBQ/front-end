@@ -69,7 +69,7 @@ class LiveView extends Component {
       cams = [],
       detail = {},
       isFetchingStreaming,
-      streamingUrl = {},
+      streamingCam = {},
     } = this.props
     // let cam = { }
     // cam = cams.find(cam => cam.id === streamingUrl.cam_id)
@@ -84,7 +84,7 @@ class LiveView extends Component {
           <Loading />
         ) : (
           <Player
-            cam={streamingUrl}
+            cam={streamingCam}
             onClick={e => e.stopPropagation()}
           />
         )}
@@ -95,7 +95,7 @@ class LiveView extends Component {
 const mapStateToProps = ({ cameras }) => ({
   cams: cameras.cameras,
   isFetchingStreaming: cameras.isFetchingStreaming,
-  streamingUrl: cameras.streamingUrl,
+  streamingCam: cameras.streamingCam,
 })
 
 export default connect(

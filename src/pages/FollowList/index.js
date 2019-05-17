@@ -35,11 +35,13 @@ class FollowList extends Component {
   componentWillMount() {
     window.removeEventListener('resize', this.handleResize)
   }
-  componentDidUpdate(prevProps) {
-    if (this.props.currentPage !== prevProps.currentPage) {
-      this.forceUpdate()
-    }
-  }
+
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.currentPage !== prevProps.currentPage) {
+  //     this.forceUpdate()
+  //   }
+  // }
+  
   handleResize = () => {
     const height = window.innerHeight - 60,
       width = window.innerWidth - 50

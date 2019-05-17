@@ -1,5 +1,14 @@
-import { eventChannel, END } from 'redux-saga'
-import { takeEvery, apply, put, call, fork, take } from 'redux-saga/effects'
+import { eventChannel, END, delay } from 'redux-saga'
+import {
+  takeEvery,
+  apply,
+  put,
+  call,
+  fork,
+  take,
+  cancel,
+  cancelled,
+} from 'redux-saga/effects'
 import _ from 'lodash'
 
 import * as types from '../constant/constant_actions'
@@ -7,35 +16,32 @@ import { WS_URL } from '../constant/constant_endpoint'
 import { enqueueSnackbar, removeSnackbar } from '../actions/action_snackbar'
 import { loadUserData } from '../utils/localStorage'
 import { getStreamingUrlSuccess } from '../actions/action_streaming'
-import { getFollowListSuccess } from '../actions/action_followList'
+import {
+  getFollowListSuccess,
+  startFollowList,
+  cancelWebsocket,
+} from '../actions/action_followList'
+import { fetchCamStreamingUrlSuccess } from '../actions/action_camera'
 
 function createWebSocketConnection() {
   return new Promise((resolve, reject) => {
-    // window.WebSocket = window.WebSocket || window.MozWebSocket
-    const options = {
-      connectionTimeout: 1000,
-      maxRetries: 10,
-    }
-    // const socket = new ReconnectingWebSocket(WS_URL, [], options)
     const socket = new WebSocket(WS_URL)
     socket.onopen = () => {
+      console.log('Websocket openning')
       resolve(socket)
-    }
-    socket.onerror = event => {
-      console.log('WebSocket error: ')
-      reject(event)
     }
     socket.onclose = event => {
       console.log('WebSocket is closed now.')
-
       reject(event)
     }
-
-    socket.onerror = event => {
-      console.error('WebSocket error observed:', event)
-      socket.close()
-      reject(event)
+    socket.onmessage = event => {
+      console.log(event)
     }
+    // socket.onerror = event => {
+    //   console.error('WebSocket error observed:', event)
+    //   socket.close()
+    //   reject(event)
+    // }
   })
 }
 
@@ -45,7 +51,7 @@ function createSocketChannel(socket) {
       emit(JSON.parse(event.data))
     }
     socket.onclose = () => {
-      emit(END)
+      emit('close_websocket')
     }
     socket.onerror = () => {
       emit(END)
@@ -57,14 +63,22 @@ function createSocketChannel(socket) {
   })
 }
 
-export function* workerStartFollowList(){
-  yield fork(listenForSocketMessages)
+export function* workerStartFollowList() {
+  const socketTask = yield fork(listenForSocketMessages)
+  yield take(types.CANCEL_WEBSOCKET)
+  yield cancel(socketTask)
+  // yield takeEvery(types.CANCEL_WEBSOCKET, function*() {
+  //   yield cancel(socketTask)
+  //   yield delay(3000)
+  //   yield put(startFollowList())
+  // })
 }
-
+let socket, socketChannel
 function* listenForSocketMessages() {
-  let socket, socketChannel
   try {
-    socket = yield call(createWebSocketConnection)
+    socket = yield call(createWebSocketConnection) //sync
+    // socket = new WebSocket(WS_URL)
+    socketChannel = yield call(createSocketChannel, socket)
     const userId = loadUserData().id
     yield apply(socket, socket.send, [
       JSON.stringify({
@@ -74,6 +88,17 @@ function* listenForSocketMessages() {
         },
       }),
     ])
+    // socket.onopen = event => {
+    //   console.log(event)
+    //   socket.send(
+    //     JSON.stringify({
+    //       type: 'start_followlist',
+    //       data: {
+    //         id: userId,
+    //       },
+    //     }),
+    //   )
+    // }
     yield takeEvery(types.GET_FOLLOWLIST, function*() {
       const userId = loadUserData().id
       yield apply(socket, socket.send, [
@@ -96,7 +121,7 @@ function* listenForSocketMessages() {
       ])
     })
 
-    yield takeEvery(types.GET_CAM_SNAPSHOT, function*(action) {
+    yield takeEvery(types.FETCH_CAM_SNAPSHOT, function*(action) {
       const userId = loadUserData().id
       yield apply(socket, socket.send, [
         JSON.stringify({
@@ -143,23 +168,32 @@ function* listenForSocketMessages() {
         }),
       ])
     })
-    socketChannel = yield call(createSocketChannel, socket)
 
     while (true) {
-      const payload = yield take(socketChannel)
-      //start streaming success
-      if (payload.type === 'start_streaming_success') {
-        yield put(getStreamingUrlSuccess(payload.data))
-      }
-      if (
-        payload.type === 'start_followlist_success' ||
-        payload.type === 'add_followlist_success' ||
-        payload.type === 'remove_followlist_success'
-      ) {
-        yield put(getFollowListSuccess(payload.data))
+      try {
+        const payload = yield take(socketChannel)
+        if (payload === 'close_websocket') {
+          yield put(cancelWebsocket())
+        }
+        //start streaming success
+        if (payload.type === 'start_streaming_success') {
+          yield put(fetchCamStreamingUrlSuccess(payload.data))
+          // yield put(getStreamingUrlSuccess(payload.data))
+        }
+        if (
+          payload.type === 'start_followlist_success' ||
+          payload.type === 'add_followlist_success' ||
+          payload.type === 'remove_followlist_success'
+        ) {
+          yield put(getFollowListSuccess(payload.data))
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   } catch (error) {
+    console.log('error connection', error)
+
     yield put(
       enqueueSnackbar({
         message: 'Kết nối với server thất bại!',
@@ -168,6 +202,16 @@ function* listenForSocketMessages() {
         },
       }),
     )
+  } finally {
+    if (yield cancelled()) {
+      console.log('cancelled')
+      yield call(delay, 10000)
+      yield put(startFollowList())
+    }
+    // socketChannel.close()
+    if (socket) {
+      socket.close()
+    }
+    yield put(cancelWebsocket())
   }
 }
-

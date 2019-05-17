@@ -26,7 +26,7 @@ import {
   focusedCam,
   editCamConnectionFailure,
   getCamParamsSuccess,
-  getCamSnapshotSuccess,
+  // getCamSnapshotSuccess,
   fetchAllCamsSuccess
 } from '../actions/action_camera'
 import * as CameraApi from '../api/camera'
@@ -40,86 +40,6 @@ import {} from '../actions/action_camera'
 import _ from 'lodash'
 import { removeCamFromFollowListSuccess, addCamToFollowListSuccess } from '../actions/action_followList';
 
-// export function* watchConnectCamera() {
-//   yield takeEvery(types.CONNECT_CAMERA, workerConnectCamera)
-// }
-
-// connect to camera
-// function* workerConnectCamera(action) {
-//   try {
-//     yield put(showLoadingModal('Đang kết nối tới camera'))
-//     const response = yield call(CameraApi.connectCamera, action.payload)
-//     yield put(connectCameraSuccess(response.data.data))
-//     yield put(closeModal())
-//   } catch (error) {
-//     yield put(
-//       enqueueSnackbar({
-//         message: error.response.data.notify,
-//         options: {
-//           variant: 'error',
-//         },
-//       }),
-//     )
-//     yield put(closeModal())
-//     yield put(connectCameraFailure(error.response.data.data))
-//   } finally {
-//   }
-// }
-
-// export function* watchConfigParams() {
-//   yield takeEvery(types.CONFIG_PARAMS, workerConfigParams)
-// }
-
-// function* workerConfigParams(action) {
-//   try {
-//     yield put(showLoadingModal('Đang cấu hình camera'))
-//     const response = yield call(CameraApi.configCamParams, action.payload)
-//     yield put(configParamsSucess())
-//     yield put(closeModal())
-//   } catch (error) {
-//     yield put(
-//       enqueueSnackbar({
-//         message: error.response.data.notify,
-//         options: {
-//           variant: 'error',
-//         },
-//       }),
-//     )
-//     yield put(closeModal())
-//     yield put(configParamsFailure(error.response.data.data))
-//   }
-// }
-
-// export function* watchConfigFunctions() {
-//   yield takeEvery(types.CONFIG_FUNCTIONS, workerConfigFunctions)
-// }
-
-// function* workerConfigFunctions(action) {
-//   try {
-//     yield put(showLoadingModal('Đang thêm mới camera'))
-//     const response = yield call(CameraApi.configFunctions, action.payload)
-//     yield put(
-//       enqueueSnackbar({
-//         message: response.data.notify,
-//         options: {
-//           variant: 'success',
-//         },
-//       }),
-//     )
-//     yield put(configFunctionsSuccess(response.data.data))
-//     yield put(closeModal())
-//   } catch (error) {
-//     yield put(
-//       enqueueSnackbar({
-//         message: error.response.data.notify,
-//         options: {
-//           variant: 'error',
-//         },
-//       }),
-//     )
-//     yield put(closeModal())
-//   }
-// }
 
 export function* watchClearProvince() {
   yield takeEvery(types.CLEAR_PROVINCE, workerClearProvince)
@@ -154,6 +74,7 @@ export function* watchChangeSearchCamParams() {
 
 function* workerChangeSearchCamParams(action) {
   try {
+    console.log('hahahah')
     if (_.has(action.payload, 'province')) {
       yield fork(getDistrictsAvailable, action.payload.province)
     }
@@ -351,23 +272,23 @@ function* workerEditCamParams(action){
 }
 
 //get snapshot
-export function* watchGetCamSnapshot(){
-  yield takeEvery(types.GET_CAM_SNAPSHOT, workerGetCamSnapshot)
-}
+// export function* watchGetCamSnapshot(){
+//   yield takeEvery(types.GET_CAM_SNAPSHOT, workerGetCamSnapshot)
+// }
 
-function* workerGetCamSnapshot(action){
-  try {
-    const response = yield call(CameraApi.getCamSnapshot, action.id)
-    yield put(getCamSnapshotSuccess(response.data.data.snapshot_image_url))
-  } catch (error) {
-    yield put(enqueueSnackbar({
-      message: error.response.data.notify,
-      options: {
-        variant: 'error',
-      },
-    }))
-  }
-}
+// function* workerGetCamSnapshot(action){
+//   try {
+//     const response = yield call(CameraApi.getCamSnapshot, action.id)
+//     yield put(getCamSnapshotSuccess(response.data.data.snapshot_image_url))
+//   } catch (error) {
+//     yield put(enqueueSnackbar({
+//       message: error.response.data.notify,
+//       options: {
+//         variant: 'error',
+//       },
+//     }))
+//   }
+// }
 
 //add cam to followlist
 export function *watchAddCamToFollowList(){

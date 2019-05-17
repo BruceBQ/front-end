@@ -35,3 +35,6 @@ export const addCamToFollowListFailure = actionCreator(types.ADD_CAM_TO_FOLLOWLI
 export const removeCamFromFollowList = actionCreator(types.REMOVE_CAM_FROM_FOLLOWLIST, 'camId')
 export const removeCamFromFollowListSuccess = actionCreator(types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS, 'camId')
 export const removeCamFromFollowListFailure = actionCreator(types.REMOVE_CAM_FROM_FOLLOWLIST_FAILURE)
+
+
+export const cancelWebsocket = actionCreator(types.CANCEL_WEBSOCKET)

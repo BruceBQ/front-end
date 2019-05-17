@@ -18,6 +18,7 @@ class ControlBar extends Component {
       handlePlayOrPause,
       handleControlBarMouseEnter,
       handleControlBarMouseLeave,
+      handleControlBarMouseOut,
       src,
     } = this.props
     return (
@@ -29,15 +30,14 @@ class ControlBar extends Component {
         onClick={e => e.stopPropagation()}
         onMouseEnter={e => handleControlBarMouseEnter(e)}
         onMouseLeave={e => handleControlBarMouseLeave(e)}
+        onMouseOut={e => handleControlBarMouseOut(e)}
       >
         <div className="video-controls__left">
           <PlayToggle
             video={video}
             playerControl={playerControl}
-            // isPaused={isPaused}
             handlePlayOrPause={handlePlayOrPause}
             handleLive={this.props.handleLive}
-            // handleNotLive={handleNotLive}
             // src={src}
           />
           <Reload 

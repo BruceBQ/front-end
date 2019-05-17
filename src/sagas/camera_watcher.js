@@ -18,7 +18,8 @@ import {
   workerEditCamParams,
   workerFetchCamFunctions,
   workerEditCamFunctions,
-  workerChangeCamStatus
+  workerChangeCamStatus,
+  workerFetchCamSnapshot
 } from './camera_saga'
 
 export default function* watchCamera(){
@@ -56,4 +57,6 @@ export default function* watchCamera(){
   yield takeEvery(types.EDIT_CAM_FUNCTIONS, workerEditCamFunctions)
   // change camera's status
   yield takeEvery(types.CHANGE_CAM_STATUS, workerChangeCamStatus)
+  // fetch camera snapshot
+  yield takeEvery(types.FETCH_CAM_SNAPSHOT, workerFetchCamSnapshot)
 }

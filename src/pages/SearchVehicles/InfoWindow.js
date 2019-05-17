@@ -67,7 +67,9 @@ const styles = theme => ({
   imageWrapper: {
     width: '100%',
     padding: 5,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center'
   },
   image: {
     // width: '100%',

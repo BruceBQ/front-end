@@ -18,7 +18,7 @@ class FollowToggle extends Component {
     }
   }
   render() {
-    const { classes, cam } = this.props
+    const { cam } = this.props
     const titleText = cam.is_in_followlist ? 'Bỏ theo dõi' : 'Theo dõi'
     return (
       <button

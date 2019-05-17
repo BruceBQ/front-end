@@ -5,11 +5,11 @@ const INITIAL_STATE = {
   cameras: [],
   addCamera: {
     activeStep: 0,
-    name: 'Camera 237',
-    port: '80',
-    ip: '10.49.34.237',
-    cam_user: 'admin',
-    cam_pass: 'centic.vn',
+    name: '',
+    port: '',
+    ip: '',
+    cam_user: '',
+    cam_pass: '',
     lat: '',
     lng: '',
     information: {},
@@ -61,15 +61,15 @@ const INITIAL_STATE = {
   isFetching: false,
   isProcessing: false,
   isGettingSnapshot: false,
+  isFetchingSnapshot: false,
   headerMenu: false,
-
   focusedCam: -1,
   editingCam: -1,
   changingCamStatus: null,
   isShowLiveView: false,
   isFetchingStreaming: false,
   snapshotImageUrl: null,
-  streamingUrl: {},
+  streamingCam: {},
   errors: {},
 }
 
@@ -85,14 +85,14 @@ function updateCam(cams, action) {
   })
 }
 
-function updateStreamUrl(streamingUrl, action) {
-  if (!_.isEmpty(streamingUrl)) {
+function updateStreamingCam(streamingCam, action) {
+  if (!_.isEmpty(streamingCam)) {
     return {
-      ...streamingUrl,
-      is_in_followlist: !streamingUrl.is_in_followlist,
+      ...streamingCam,
+      is_in_followlist: !streamingCam.is_in_followlist,
     }
   }
-  return streamingUrl
+  return streamingCam
 }
 
 function changeStatusEditingCam(editCam, action){
@@ -139,19 +139,20 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
         },
       }
 
-    //get snapshot
-    case types.GET_CAM_SNAPSHOT:
+    // fetch camera snapshot
+    case types.FETCH_CAM_SNAPSHOT: 
       return {
         ...state,
-        isGettingSnapshot: true,
+        isFetchingSnapshot: true,
         isFetchingStreaming: true,
-        snapshotImageUrl: null,
+        snapshotImageUrl: null
       }
-    case types.GET_CAM_SNAPSHOT_SUCCESS:
+
+    case types.FETCH_CAM_SNAPSHOT_SUCCESS:
       return {
         ...state,
-        isGettingSnapshot: false,
-        snapshotImageUrl: action.snapshotImageUrl,
+        isFetchingSnapshot: false,
+        snapshotImageUrl: action.payload
       }
 
     // connect to camera
@@ -523,13 +524,18 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
       }
 
     //streaming
-    case types.GET_STREAMING_URL:
+    case types.FETCH_CAM_STREAMING_URL:
       return {
         ...state,
         isShowLiveView: true,
-        // isFetchingStreaming: true
       }
-
+    case types.FETCH_CAM_STREAMING_URL_SUCCESS:
+      return {
+        ...state,
+        isFetchingStreaming: false,
+        streamingCam: action.payload
+      }
+      // infowindow
     case types.SHOW_INFO_WINDOW:
       return {
         ...state,
@@ -546,26 +552,21 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
         streamingUrl: null,
       }
 
-    case types.GET_STREAMING_URL_SUCCESS:
-      return {
-        ...state,
-        isFetchingStreaming: false,
-        streamingUrl: action.streamingUrl,
-      }
+    
 
     // update follow list
     case types.ADD_CAM_TO_FOLLOWLIST_SUCCESS:
       return {
         ...state,
         cameras: updateCam(state.cameras, action),
-        streamingUrl: updateStreamUrl(state.streamingUrl, action),
+        streamingCam: updateStreamingCam(state.streamingCam, action),
       }
 
     case types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS:
       return {
         ...state,
         cameras: updateCam(state.cameras, action),
-        streamingUrl: updateStreamUrl(state.streamingUrl, action),
+        streamingCam: updateStreamingCam(state.streamingCam, action),
       }
 
     case types.FETCH_ALL_CAMS_SUCCESS:
@@ -628,6 +629,8 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
         ...state,
         changingCamStatus: null
       }
+    case types.CLEAR_CAM_STATE:
+      return INITIAL_STATE
     default:
       return state
   }

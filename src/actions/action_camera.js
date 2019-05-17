@@ -105,13 +105,6 @@ export function getCameraPositionSuccess(province, district, commune) {
   }
 }
 
-export function changeSearchCamParams(payload) {
-  return {
-    type: types.CHANGE_SEARCH_CAM_PARAMS,
-    payload,
-  }
-}
-
 // export function searchCamFailure(errors) {
 //   return {
 //     type: types.SEARCH_CAMERA_FAILURE,
@@ -219,19 +212,19 @@ export function getCamParamsFailure() {
 // }
 
 //snapshot
-export function getCamSnapshot(id){
-  return {
-    type: types.GET_CAM_SNAPSHOT,
-    id
-  }
-}
+// export function getCamSnapshot(id){
+//   return {
+//     type: types.GET_CAM_SNAPSHOT,
+//     id
+//   }
+// }
 
-export function getCamSnapshotSuccess(snapshotImageUrl){
-  return {
-    type: types.GET_CAM_SNAPSHOT_SUCCESS,
-    snapshotImageUrl
-  }
-}
+// export function getCamSnapshotSuccess(snapshotImageUrl){
+//   return {
+//     type: types.GET_CAM_SNAPSHOT_SUCCESS,
+//     snapshotImageUrl
+//   }
+// }
 
 // next and back step add camera
 export const nextStep = actionCreator(types.NEXT_STEP)
@@ -298,3 +291,17 @@ export const fetchCamSnapShot = actionCreator(types.FETCH_CAM_SNAPSHOT, 'id')
 export const changeCamStatus = actionCreator(types.CHANGE_CAM_STATUS, 'id', 'payload')
 export const changeCamStatusSuccess = actionCreator(types.CHANGE_CAM_STATUS_SUCCESS, 'payload')
 export const changeCamStatusFailure = actionCreator(types.CHANGE_CAM_STATUS_FAILURE, 'payload')
+
+// search camera
+export const changeSearchCamParams = actionCreator(types.CHANGE_SEARCH_CAM_PARAMS, 'payload')
+
+// snapshot 
+export const fetchCamSnapshot = actionCreator(types.FETCH_CAM_SNAPSHOT, 'id')
+export const fetchCamSnapshotSuccess = actionCreator(types.FETCH_CAM_SNAPSHOT_SUCCESS, 'payload')
+
+// streaming
+export const fetchCamStreamingUrl = actionCreator(types.FETCH_CAM_STREAMING_URL, 'id')
+export const fetchCamStreamingUrlSuccess = actionCreator(types.FETCH_CAM_STREAMING_URL_SUCCESS, 'payload')
+export const fetchCamStreamingUrlFailure = actionCreator(types.FETCH_CAM_STREAMING_URL_FAILURE)
+
+export const clearCamState = actionCreator(types.CLEAR_CAM_STATE)

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 import { Scrollbars } from 'react-custom-scrollbars'
 import _ from 'lodash'
 
 import VehicleItem from './VehicleItem'
 import Loading from '../../components/Loading'
 import { searchVehicles } from '../../actions/action_searchVehicles'
-import { Typography } from '@material-ui/core'
 
 const styles = theme => ({
   root: {
@@ -31,11 +31,12 @@ class SearchResult extends Component {
         Number(scrollbars.getScrollTop() + scrollbars.getClientHeight()) >=
         Number(scrollbars.getScrollHeight() - 200)
       ) {
-        if (currentPage <= totalPage && !isFetching) {
+        if (currentPage < totalPage && !isFetching) {
           this.props.searchVehicles({
             string: search.string,
             start_time: search.startTime,
             end_time: search.endTime,
+            filter: search.filter,
             page: currentPage + 1,
           })
         }

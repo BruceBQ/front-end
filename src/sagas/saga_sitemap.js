@@ -126,7 +126,7 @@ function* listenForSocketMessages() {
       ])
     })
 
-    yield takeEvery(types.GET_CAM_SNAPSHOT, function*(action) {
+    yield takeEvery(types.FETCH_CAM_SNAPSHOT, function*(action) {
       const userId = getUserId()
       yield apply(socket, socket.send, [
         JSON.stringify({

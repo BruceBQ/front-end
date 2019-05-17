@@ -19,16 +19,22 @@ class Video extends Component {
       const { stream_url } = cam
       this.hls.attachMedia(video)
       this.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        console.log('MEDIA_ATTACHED')
         this.hls.loadSource(cam.stream_url)
       })
       this.hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
-        console.log('MANIFEST_PARSED')
-        video.play()
-        console.log('PLAY STREAM SRC=' + stream_url)
+        const playPromise = video.play()
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            // Automatic playback started!
+            // Show playing UI.
+          })
+          .catch(error => {
+            // Auto-play was prevented
+            // Show paused UI.
+          });
+        }
       })
       this.hls.on(Hls.Events.ERROR, (event, data) => {
-        console.log(event, data)
         if (data.fatal) {
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
@@ -46,10 +52,6 @@ class Video extends Component {
         }
       })
       this.hls.on(Hls.Events.BUFFER_APPENDED, (event, data) => {})
-    }
-    
-    this.video.onError = function(){
-      console.log('error')
     }
   }
   componentWillUnmount() {

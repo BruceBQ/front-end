@@ -11,6 +11,7 @@ import Marker from './Marker'
 import Search from './Search'
 import SearchCam from './SearchCam'
 import SearchResult from './SearchResult'
+import { clearCamState } from '../../actions/action_camera'
 import { changeBoundsMap } from '../../actions/action_map'
 
 const styles = theme => ({
@@ -56,7 +57,7 @@ class SitemapPage extends Component {
   }
 
   componentWillUnmount() {
-    // this.props.exitSitemapPage()
+    this.props.clearCamState()
   }
 
   render() {
@@ -126,6 +127,7 @@ export default withRouter(
     mapStateToProps,
     {
       changeBoundsMap,
+      clearCamState,
     },
   )(withStyles(styles)(SitemapPage)),
 )

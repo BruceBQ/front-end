@@ -4,7 +4,6 @@ import { loadUserData } from '../utils/localStorage'
 
 const SecretRoute = ({ component: Component, ...rest }) => {
   const user = loadUserData()
-  console.log(user)
   return (
     <Route
       {...rest}

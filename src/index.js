@@ -14,7 +14,7 @@ ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider
       maxSnack={6}
-      autoHideDuration={1000}
+      autoHideDuration={2000}
       action={[
         <IconButton key={Math.random()} aria-label="Close" color="inherit">
           <CloseIcon />

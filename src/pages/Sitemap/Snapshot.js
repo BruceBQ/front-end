@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton'
 import PlayArrow from '@material-ui/icons/PlayArrow'
 import TooltipWrapper from '../../components/TooltipWrapper'
 import Loading from '../../components/Loading'
-import { getCamSnapshot } from '../../actions/action_camera'
+import { fetchCamSnapShot, fetchCamStreamingUrl } from '../../actions/action_camera'
 import { getStreamingUrl } from '../../actions/action_streaming'
 const styles = theme => ({
   root: {
@@ -41,23 +41,24 @@ const styles = theme => ({
 
 class Snapshot extends Component{
   componentDidMount(){
-    this.props.getCamSnapshot(this.props.id)
+    // this.props.getCamSnapshot(this.props.id)
+    this.props.fetchCamSnapShot(this.props.id)
   }
   _onLiveStreamClick = () => {
-    this.props.getStreamingUrl(this.props.id)
+    this.props.fetchCamStreamingUrl(this.props.id)
   }
 
   render(){
     const { 
       classes,
-      isGettingSnapshot,
+      isFetchingSnapshot,
       snapshotImageUrl
     } = this.props 
     return (
       <div className={classes.root}
         onClick={e => e.stopPropagation()}
       >
-        {isGettingSnapshot ? <Loading /> :
+        {isFetchingSnapshot ? <Loading /> :
           <div className={classes.snapshot}>
             <img src={snapshotImageUrl} className={classes.snapshotImg}/>
             <div className={classes.controls}>
@@ -75,13 +76,14 @@ class Snapshot extends Component{
 }
 
 const mapStateToProps = ({cameras}) => ({
-  isGettingSnapshot: cameras.isGettingSnapshot,
+  isFetchingSnapshot: cameras.isFetchingSnapshot,
   snapshotImageUrl: cameras.snapshotImageUrl,
 })
 
 export default connect(mapStateToProps, 
   {
-    getCamSnapshot: getCamSnapshot,
+    fetchCamSnapShot,
+    fetchCamStreamingUrl,
     getStreamingUrl: getStreamingUrl,
   }
 )(withStyles(styles)(Snapshot))

@@ -26,6 +26,7 @@ import {
   editCamFunctionFailure,
   editCamParamsFailure,
   changeCamStatusSuccess,
+  fetchCamSnapshotSuccess,
 } from '../actions/action_camera'
 import { reloadPolitical } from '../actions/action_political'
 import * as GroupApi from '../api/group'
@@ -115,6 +116,7 @@ export function* workerChangeSearchCamParams(action) {
     if (_.has(action.payload, 'district')) {
       yield fork(fetchCommunesAvailable, action.payload.district)
     }
+    yield put(searchCam())
   } catch (error) {}
 }
 
@@ -401,5 +403,14 @@ export function* workerChangeCamStatus(action) {
     )
   } catch (error) {
     console.log(error)
+  }
+}
+
+export function* workerFetchCamSnapshot(action) {
+  try {
+    const res = yield call(CameraApi.fetchCamSnapshot, action.id)
+    yield put(fetchCamSnapshotSuccess(res.data.data.snapshot_image_url))
+  } catch (error) {
+      
   }
 }

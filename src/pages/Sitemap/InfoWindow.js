@@ -2,14 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
-import PlayArrow from '@material-ui/icons/PlayArrow'
 import ClearOutlined from '@material-ui/icons/ClearOutlined'
-import Typography from '@material-ui/core/Typography';
-import { getCamSnapshot } from '../../actions/action_camera'
+import Typography from '@material-ui/core/Typography'
+
 import TooltipWrapper from '../../components/TooltipWrapper'
-import { getStreamingUrl } from '../../actions/action_streaming'
 import { closeInfoWindow } from '../../actions/action_map'
-import Loading from '../../components/Loading';
 import Snapshot from './Snapshot'
 import LiveView from './LiveView'
 // import Controls from './Controls'
@@ -92,10 +89,6 @@ class InfoWindow extends Component{
     this.props.closeInfoWindow(id)
   }
 
-  _onLiveStreamClick = () => {
-    const { id } = this.props.detail
-    this.props.getStreamingUrl(id)
-  }
   render(){
     const { 
       classes,
@@ -143,8 +136,6 @@ const mapStateToProps = ({cameras}) => ({
 
 export default connect(mapStateToProps, 
   {
-    getCamSnapshot: getCamSnapshot,
-    closeInfoWindow: closeInfoWindow,
-    getStreamingUrl: getStreamingUrl,
+    closeInfoWindow
   }
 )(withStyles(styles)(InfoWindow))
