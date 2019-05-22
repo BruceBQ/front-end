@@ -77,12 +77,6 @@ export function getCameraLocation(payload) {
   }
 }
 
-export function changeCamLocation(payload) {
-  return {
-    type: types.CHANGE_CAM_LOCATION,
-    payload,
-  }
-}
 
 export function gotoSitemapPage() {
   return {
@@ -303,5 +297,15 @@ export const fetchCamSnapshotSuccess = actionCreator(types.FETCH_CAM_SNAPSHOT_SU
 export const fetchCamStreamingUrl = actionCreator(types.FETCH_CAM_STREAMING_URL, 'id')
 export const fetchCamStreamingUrlSuccess = actionCreator(types.FETCH_CAM_STREAMING_URL_SUCCESS, 'payload')
 export const fetchCamStreamingUrlFailure = actionCreator(types.FETCH_CAM_STREAMING_URL_FAILURE)
+
+// fetch cam location via GoogleMapApi
+export const fetchCamLocation = actionCreator(types.FETCH_CAM_LOCATION, 'payload')
+export const fetchCamLocationSuccess = actionCreator(types.FETCH_CAM_LOCATION_SUCCESS, 'payload')
+export const fetcgCamLocationFailure = actionCreator(types.FETCH_CAM_LOCATION_FAILURE)
+
+export const changeCamLocation = actionCreator(types.CHANGE_CAM_LOCATION, 'payload')
+export const changeCamLocationSuccess = actionCreator(types.CHANGE_CAM_LOCATION_SUCCESS, 'payload')
+export const changeCamLocationFailure = actionCreator(types.CHANGE_CAM_LOCATION_FAILURE, 'payload')
+
 
 export const clearCamState = actionCreator(types.CLEAR_CAM_STATE)

@@ -51,15 +51,16 @@ const styles = theme => ({
     borderRight: '2px solid #ccc',
   },
   logoImage: {
+    padding: 10,
     height: '100%',
-    paddingBottom: 1,
+    // paddingBottom: 1,
     cursor: 'pointer',
   },
   titlePage: {
     marginRight: 'auto',
     display: 'flex',
     padding: '6px 24px',
-    fontSize: '0.825rem',
+    fontSize: 16,
     fontWeight: 500,
     alignItems: 'center',
   },
@@ -124,8 +125,8 @@ class Header extends Component {
     return (
       <header className={classes.root}>
         <div className={classes.logoWrapper}>
-          <img src={logoQN} className={classes.logoImage} alt="Centic logo" /> 
-          {/* <img src={logo} className={classes.logoImage} alt="Centic logo" /> */}
+          <img src={logo} className={classes.logoImage} alt="Centic logo" /> &
+          <img src={logoVanLang} className={classes.logoImage} alt="Centic logo" />
         </div>
         <div className={classes.titlePage}>{titlePage}</div>
         <div className={classes.nav}>

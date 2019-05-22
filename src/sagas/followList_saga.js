@@ -178,7 +178,7 @@ function* listenForSocketMessages() {
         //start streaming success
         if (payload.type === 'start_streaming_success') {
           yield put(fetchCamStreamingUrlSuccess(payload.data))
-          // yield put(getStreamingUrlSuccess(payload.data))
+          
         }
         if (
           payload.type === 'start_followlist_success' ||
@@ -192,8 +192,7 @@ function* listenForSocketMessages() {
       }
     }
   } catch (error) {
-    console.log('error connection', error)
-
+    yield put(cancelWebsocket())
     yield put(
       enqueueSnackbar({
         message: 'Kết nối với server thất bại!',
@@ -204,14 +203,8 @@ function* listenForSocketMessages() {
     )
   } finally {
     if (yield cancelled()) {
-      console.log('cancelled')
       yield call(delay, 10000)
       yield put(startFollowList())
     }
-    // socketChannel.close()
-    if (socket) {
-      socket.close()
-    }
-    yield put(cancelWebsocket())
   }
 }

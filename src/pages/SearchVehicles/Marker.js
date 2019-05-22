@@ -38,6 +38,10 @@ class Marker extends Component{
     this.props.$onMouseAllow(true)
   }
 
+  componentDidUpdate(props){
+    console.log(props)
+  }
+  
   _onMouseEnter = () => {
     this.setState({
       hover: true
@@ -53,20 +57,18 @@ class Marker extends Component{
     const {
       classes,
       detail,
-      hoveredVehicle = {}
+      hoveredVehicle = {}, 
+      cams = []
     } =  this.props
     const { hover } = this.state
-    
     const isShowInfoWindow = _.get(hoveredVehicle,'camera.id') === detail.id
-    isShowInfoWindow && console.log(this.props)
-    // isShowInfoWindow && console.log(this.props.$onMouseAllow)
-    // isShowInfoWindow && console.log(this.props.$getDimensions)
     return(
       <div
         className={classNames('marker-instance',{
           'camera-normal': detail.status === 'enabled',
           'camera-disabled': detail.status === 'disabled',
-          'marker-hover': hover || isShowInfoWindow
+          'marker-hover': hover || isShowInfoWindow,
+          'cam-alert': cams.includes(detail.id)
         })}
         onMouseEnter={this._onMouseEnter}
         onMouseLeave={this._onMouseLeave}
@@ -91,7 +93,8 @@ class Marker extends Component{
 }
 
 const mapStateToProps = ({searchVehicles}) => ({
-  hoveredVehicle: searchVehicles.hoveredVehicle
+  hoveredVehicle: searchVehicles.hoveredVehicle,
+  cams: searchVehicles.cams
 })
 
 export default  connect(mapStateToProps)(withStyles(styles)(Marker))

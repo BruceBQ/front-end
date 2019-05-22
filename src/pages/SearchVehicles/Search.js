@@ -36,7 +36,7 @@ class Search extends Component {
     
   }
 
-  _onSubmit = values => {
+  _onSubmit = async values => {
     const { start_day, start_hour, end_day, end_hour, filter } = values
     const start_time = new Date(
       new Date(start_day).getFullYear(),
@@ -52,7 +52,7 @@ class Search extends Component {
       new Date(end_hour).getHours(),
       new Date(end_hour).getMinutes(),
     ).toString()
-    this.props.clearVehicles()
+    await this.props.clearVehicles()
     this.props.searchVehicles({
       string: values.q,
       page: 1,

@@ -27,6 +27,9 @@ const styles = theme => ({
   cardFocused: {
     backgroundColor: blueGrey[100],
   },
+  cardMatch: {
+    backgroundColor: blueGrey[100],
+  },
   cardMediaWrapper: {
     width: 60,
     height: 60,
@@ -94,7 +97,7 @@ class VehicleItem extends Component {
   }
 
   render() {
-    const { classes, data, hoveredVehicle, focusedVehicle } = this.props
+    const { classes, data, hoveredVehicle, focusedVehicle, string, selectedPlate } = this.props
 
     return (
       <div
@@ -108,8 +111,9 @@ class VehicleItem extends Component {
             [classes.cardHovered]:
               this.state.hovered || focusedVehicle.id === data.id,
             [classes.cardFocused]:
-              focusedVehicle.plate_number === data.plate_number &&
+              selectedPlate === data.plate_number &&
               !this.state.hovered,
+
           })}
         >
           <div className={classes.cardMediaWrapper}>
@@ -133,8 +137,9 @@ class VehicleItem extends Component {
               <Typography noWrap className={classes.address}>
                 {data.address}
               </Typography>
-              <a href={data.object_img} target="_blank">Link image</a>
-
+              <a href={data.object_img} target="_blank">
+                Link image
+              </a>
             </CardContent>
           </div>
         </Card>
@@ -146,6 +151,8 @@ class VehicleItem extends Component {
 const mapStateToProps = ({ searchVehicles }) => ({
   hoveredVehicle: searchVehicles.hoveredVehicle,
   focusedVehicle: searchVehicles.focusedVehicle,
+  string: searchVehicles.search.string,
+  selectedPlate: searchVehicles.selectedPlate
 })
 
 export default connect(
@@ -154,5 +161,6 @@ export default connect(
     hoverRowVehicle: hoverRowVehicle,
     cancelHoverRowVehicle: cancelHoverRowVehicle,
     focusVehicle: focusVehicle,
+    
   },
 )(withStyles(styles)(VehicleItem))

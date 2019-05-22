@@ -90,7 +90,6 @@ class InfoWindow extends Component {
 
   render() {
     const { classes, vehicle } = this.props
-    console.log(this.props)
     return (
       <div className={classes.popper}>
         <div className={classes.tooltip}>

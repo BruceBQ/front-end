@@ -30,16 +30,20 @@ const styles = theme => ({
 })
 
 const getMapBounds = (map, maps, cameras) => {
-  const bounds = new maps.LatLngBounds()
-  cameras.map(cam => {
-    bounds.extend(new maps.LatLng(cam.lat, cam.lng))
-  })
-  return bounds
+  if (maps) {
+    const bounds = new maps.LatLngBounds()
+    cameras.map(cam => {
+      bounds.extend(new maps.LatLng(cam.lat, cam.lng))
+    })
+    return bounds
+  }
+  return
 }
 
 const apiIsLoaded = (map, maps, cameras) => {
   if (cameras.length > 0) {
     const bounds = getMapBounds(map, maps, cameras)
+    console.log(bounds)
     if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
       let extendPoint1 = new maps.LatLng(
         bounds.getNorthEast().lat() + 0.01,
@@ -52,7 +56,9 @@ const apiIsLoaded = (map, maps, cameras) => {
       bounds.extend(extendPoint1)
       bounds.extend(extendPoint2)
     }
-    map.fitBounds(bounds)
+    if(bounds){
+      map.fitBounds(bounds)
+    }
   }
 }
 class GoogleMap extends Component {

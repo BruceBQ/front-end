@@ -3,6 +3,9 @@ import watchUserAuthtication  from './authentication_watcher'
 import watchCamera from './camera_watcher'
 import watchFollowList from './followList_watcher'
 import watchPolitical from './political_watcher'
+import watchVehicle from './vehicle_watcher'
+import watchMap from './map_watcher'
+
 import { 
   // watchConnectCamera,
   // watchConfigParams,
@@ -21,15 +24,6 @@ import {
   watchRemoveCamFromFollowList, 
   // watchFetchAllCams,
 } from './saga_camera'
-import { 
-  // watchShowEditModal,
-  // watchShowDeleteModal, 
-  // watchCloseModal 
-} from './saga_modal'
-import { 
-  watchGetCameraLocation,
-  watchChangeCamLocation
-} from './saga_map'
 
 import {
   watchGetAllProvinces,
@@ -46,9 +40,7 @@ import {
   // watchGetDataBeforeSearch,
 } from './saga_manageCam'
 
-import {
-  watchSearchVehicles
-} from './saga_searchVehicles'
+
 
 
 
@@ -62,6 +54,14 @@ export default function* rootSaga() {
     fork(watchFollowList),
     // political
     fork(watchPolitical),
+    // vehicle
+    fork(watchVehicle),
+    // map
+    fork(watchMap),
+
+
+
+    
     // fork(watchConnectCamera),
     // fork(watchConfigParams),
     // fork(watchConfigFunctions),
@@ -80,8 +80,8 @@ export default function* rootSaga() {
     // fork(watchCloseModal),
     // fork(watchShowDeleteModal),
     //map
-    fork(watchGetCameraLocation),
-    fork(watchChangeCamLocation),
+    // fork(watchGetCameraLocation),
+    // fork(watchChangeCamLocation),
     //political
     fork(watchGetAllProvinces),
     fork(watchChangeCameraParams),
@@ -96,6 +96,6 @@ export default function* rootSaga() {
     // fork(watchChangeSearchCamParams),
 
     //search vehicles
-    fork(watchSearchVehicles)
+    // fork(watchSearchVehicles)
   ])
 }

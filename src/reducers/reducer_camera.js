@@ -118,24 +118,48 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
           ...action.payload,
         },
       }
-
-    case types.GET_CAMERA_LOCATION:
+    
+    //fetch camera location
+    case types.FETCH_CAM_LOCATION:
       return {
         ...state,
         addCamera: {
           ...state.addCamera,
-          ...action.payload,
-        },
+          ...action.payload
+        }
+      }
+    case types.FETCH_CAM_LOCATION_SUCCESS:
+      return {
+        ...state,
+        addCamera: {
+          ...state.addCamera,
+          province: action.payload.province,
+          district: action.payload.district,
+          commune: action.payload.commune,
+        }
       }
 
-    case types.GET_CAMERA_POSITION_SUCCESS:
+    case types.CHANGE_CAM_LOCATION:
       return {
         ...state,
-        addCamera: {
-          ...state.addCamera,
-          province: action.province,
-          district: action.district,
-          commune: action.commune,
+        editCam: {
+          ...state.editCam,
+          connection: {
+            ...state.editCam.connection,
+            ...action.payload,
+          },
+        },
+      }
+      
+    case types.CHANGE_CAM_LOCATION_SUCCESS:
+      return {
+        ...state,
+        editCam: {
+          ...state.editCam,
+          connection: {
+            ...state.editCam.connection,
+            ...action.payload,
+          },
         },
       }
 
@@ -440,30 +464,7 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
         },
       }
 
-    case types.CHANGE_CAM_LOCATION:
-      return {
-        ...state,
-        editCam: {
-          ...state.editCam,
-          connection: {
-            ...state.editCam.connection,
-            ...action.payload,
-          },
-        },
-      }
-
-    case types.CHANGE_CAM_POLITICAL:
-      return {
-        ...state,
-        editCam: {
-          ...state.editCam,
-          connection: {
-            ...state.editCam.connection,
-            ...action.payload,
-          },
-        },
-      }
-
+    
     case types.EDIT_CAM_CONNECTION:
       return {
         ...state,

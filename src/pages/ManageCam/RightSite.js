@@ -9,6 +9,7 @@ import {
   focusedCam,
   changeCamLocation,
   getCameraLocation,
+  fetchCamLocation,
 } from '../../actions/action_camera'
 // import { MarkerCam } from '../../components/Marker'
 import MarkerCam from './MarkerCam'
@@ -34,8 +35,14 @@ class RightSite extends Component {
 
   _onMapClick = ({ x, y, lat, lng, event }) => {
     const { isEditingCam, isAddingCam } = this.props
-    if (isEditingCam) this.props.changeCamLocation({ lat, lng })
-    if (isAddingCam) this.props.getCameraLocation({ lat, lng }) //need change ???
+    if (isEditingCam) { 
+      this.props.changeCamLocation({ lat, lng })
+      // this.props.fetchCamLocation({ lat, lng })
+    }
+    if (isAddingCam) {
+      // this.props.getCameraLocation({ lat, lng })
+      this.props.fetchCamLocation({lat, lng})
+    }
   }
 
   render() {
@@ -116,5 +123,6 @@ export default connect(
     changeBoundsMap: changeBoundsMap,
     changeCamLocation: changeCamLocation,
     getCameraLocation: getCameraLocation,
+    fetchCamLocation
   },
 )(withStyles(styles)(RightSite))
