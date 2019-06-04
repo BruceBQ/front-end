@@ -50,7 +50,7 @@ const reducer_map = (state = INITIAL_STATE, action) => {
       return {
         ...state, 
         center: action.center,
-        zoom: action.zoom,
+        // zoom: action.zoom,
         // focusedCam: action.id
       }
     // case types.CANCEL_FOCUSED_CAM:

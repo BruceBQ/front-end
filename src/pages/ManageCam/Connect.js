@@ -294,6 +294,7 @@ class Connect extends Component {
               <div className="form-group">
                 <TextInput
                   label="Mật khẩu"
+                  type="password"
                   fullWidth
                   value={addCamera.cam_pass}
                   onChange={this.onChange('cam_pass')}

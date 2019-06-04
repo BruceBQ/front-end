@@ -1,43 +1,218 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Typography from '@material-ui/core/Typography'
-import { Formik } from 'formik'
+import {
+  InlineDateTimePicker,
+  InlineDatePicker,
+  InlineTimePicker,
+  DatePicker,
+  MuiPickersUtilsProvider,
+} from 'material-ui-pickers'
+import DateFnsUtils from '@date-io/date-fns'
+import viLocale from 'date-fns/locale/vi'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import CheckBox from '@material-ui/core/Checkbox'
 
-import SearchForm from './SearchForm'
 import TextInput from '../../components/TextInput'
-import { searchVehicles, clearVehicles } from '../../actions/action_searchVehicles'
+import {
+  searchVehicles,
+  clearVehicles,
+} from '../../actions/action_searchVehicles'
+import { Button, Switch } from '@material-ui/core'
 
 const styles = theme => ({
   root: {
     width: '100%',
     padding: '10px 6px 6px 6px',
   },
-  heading: {},
+  textField: {
+    fontSize: '0.875rem',
+  },
+
+  inputProps: {
+    fontSize: '0.875rem',
+    padding: '12px 14px',
+  },
+
+  inputLabel: {
+    fontSize: '0.875rem',
+    transform: 'translate(19px, 14px) scale(1)',
+  },
+  input: {
+    display: 'flex',
+    fontSize: '0.875rem',
+    padding: '2.5px 14px',
+  },
+  radioGroup: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  radio: {
+    padding: 0,
+    // marginRight: 0,
+    // marginLeft: 0,
+    marginBottom: 0,
+  },
+  formControlLabel: {
+    marginLeft: 0,
+  },
+  checkBox: {
+    padding: 0,
+  },
 })
 
 class Search extends Component {
+  timeout = null
+  state = {
+    q: '',
+    auto: false,
+    real_time: true,
+    start_day: new Date(),
+    start_hour: new Date().setHours(0, 0, 0),
+    end_day: new Date(),
+    end_hour: new Date(),
+    filter: 'plate_number',
+  }
+
   componentDidMount() {
-    const values = {
-      q: '',
-      start_day: new Date(),
-      start_hour: new Date().setHours(0, 0, 0),
-      end_day: new Date(),
-      end_hour: new Date(),
-      filter: 'plate_number',
-    }
-    
-    this._onSubmit(values)
+    // this.autoUpdateVehicles()
+    // this.autoUpdateTime()
+    this.submitForm(this.state)
+  }
+
+  componentDidUpdate() {
     
   }
 
-  _onSubmit = async values => {
-    const { start_day, start_hour, end_day, end_hour, filter } = values
+  componentWillUnmount() {
+    clearTimeout(this.timeout)
+    clearInterval(this.interval)
+    clearInterval(this.intervalAutoUpdate)
+  }
+
+  autoUpdateTime = () => {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+    this.interval = setInterval(() => {
+      this.setState({
+        // start_day: new Date(),
+        // start_hour: new Date().setHours(0, 0, 0),
+        end_day: new Date(),
+        end_hour: new Date(),
+      })
+    }, 1000)
+  }
+
+  stopUpdateTime = () => {
+    console.log('stop update time')
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
+  }
+  autoUpdateVehicles = () => {
+    this.intervalAutoUpdate = setInterval(() => {
+      this.submitForm(this.state)
+    }, 30000)
+  }
+
+  stopAutoUpdateVehicles = () => {
+    if (this.intervalAutoUpdate) {
+      clearInterval(this.intervalAutoUpdate)
+    }
+  }
+  _onTextInputChange = async event => {
+    event.persist()
+    const TIMEOUT_INPUT = 500
+    await this.setState({
+      [event.target.name]: event.target.value,
+    })
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+    this.timeout = setTimeout(() => {
+      this.submitForm(this.state)
+    }, TIMEOUT_INPUT)
+  }
+
+  _onDatePickerChange = name => async date => {
+    const old_date = new Date(
+      this.state[name].getFullYear(),
+      this.state[name].getMonth(),
+      this.state[name].getDate(),
+    )
+    const new_date = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+    )
+    if (old_date.getTime() !== new_date.getTime()) {
+      await this.setState({
+        real_time: false,
+        [name]: date,
+      })
+      this.submitForm(this.state)
+    }
+  }
+
+  _onTimePickerChange = name => async date => {
+    const old_hour = new Date(this.state[name]).setSeconds(0)
+    const new_hour = new Date(date).setSeconds(0)
+    if (old_hour !== new_hour) {
+      await this.setState({
+        real_time: false,
+        [name]: date,
+      })
+      this.submitForm(this.state)
+    }
+  }
+
+  _onCheckBoxChange = name => async event => {
+    await this.setState({
+      [name]: event.target.checked,
+    })
+  }
+
+  _onRadioChange = async event => {
+    await this.setState({
+      [event.target.name]: event.target.value,
+    })
+    this.submitForm(this.state)
+  }
+
+  _onPickerOpen = () => {
+    this.stopUpdateTime()
+  }
+
+  _onPickerClose = () => {
+    if (this.state.real_time) {
+      this.autoUpdateTime()
+    }
+  }
+  _onSwitchChange = name => async event => {
+    await this.setState({
+      [name]: event.target.checked
+    })
+    if(this.state.auto){
+      this.autoUpdateTime()
+      this.autoUpdateVehicles()
+    }else {
+      this.stopUpdateTime()
+      this.stopAutoUpdateVehicles()
+    }
+  }
+  updateVehicles = async () => {
+    await this.setState({
+      end_day: new Date(),
+      end_hour: new Date()
+    })
+    this.submitForm(this.state)
+  }
+
+  submitForm = async values => {
+    const { start_day, start_hour, end_day, end_hour, q, filter } = values
     const start_time = new Date(
       new Date(start_day).getFullYear(),
       new Date(start_day).getMonth(),
@@ -54,11 +229,11 @@ class Search extends Component {
     ).toString()
     await this.props.clearVehicles()
     this.props.searchVehicles({
-      string: values.q,
+      string: q,
       page: 1,
       start_time: start_time,
       end_time: end_time,
-      filter: values.filter
+      filter: filter,
     })
   }
 
@@ -66,19 +241,180 @@ class Search extends Component {
     const { classes } = this.props
     return (
       <div className={classes.root}>
-        <Formik
-          enableReinitialize  
-          initialValues={{
-            q: '',
-            start_day: new Date(),
-            start_hour: new Date().setHours(0, 0, 0),
-            end_day: new Date(),
-            end_hour: new Date(),
-            filter: 'plate_number'
-          }}
-          onSubmit={values => this._onSubmit(values)}
-          render={props => <SearchForm {...props} />}
-        />
+        <form autoComplete="off">
+          <div className="form-group">
+            <TextInput
+              name="q"
+              fullWidth
+              type="search"
+              label="Nhập biển số phương tiện"
+              value={this.state.q}
+              onChange={this._onTextInputChange}
+              disabled={this.state.filter === 'no_plate_number'}
+            />
+          </div>
+          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={viLocale}>
+            <div className="form-group">
+              <InlineDatePicker
+                label="Ngày bắt đầu"
+                name="start_day"
+                variant="outlined"
+                format="dd/MM/yyyy"
+                value={this.state.start_day}
+                onChange={this._onDatePickerChange('start_day')}
+                onOpen={this._onPickerOpen}
+                onClose={this._onPickerClose}
+                style={{
+                  marginRight: 5,
+                  width: 'calc(50% - 5px)',
+                }}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.inputLabel,
+                  },
+                }}
+                InputProps={{
+                  inputProps: {
+                    className: classes.inputProps,
+                  },
+                }}
+                className={classes.textField}
+              />
+              <InlineTimePicker
+                ampm={false}
+                name="start_hour"
+                label="Giờ bắt đầu"
+                variant="outlined"
+                value={this.state.start_hour}
+                onChange={this._onTimePickerChange('start_hour')}
+                onOpen={this._onPickerOpen}
+                onClose={this._onPickerClose}
+                style={{
+                  marginLeft: 5,
+                  width: 'calc(50% - 5px)',
+                }}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.inputLabel,
+                  },
+                }}
+                InputProps={{
+                  inputProps: {
+                    className: classes.inputProps,
+                  },
+                }}
+                className={classes.textField}
+              />
+            </div>
+            <div className="form-group">
+              <InlineDatePicker
+                label="Ngày kết thúc"
+                name="end_day"
+                variant="outlined"
+                format="dd/MM/yyyy"
+                value={this.state.end_day}
+                onChange={this._onDatePickerChange('end_day')}
+                onOpen={this._onPickerOpen}
+                onClose={this._onPickerClose}
+                style={{
+                  marginRight: 5,
+                  width: 'calc(50% - 5px)',
+                }}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.inputLabel,
+                  },
+                }}
+                InputProps={{
+                  inputProps: {
+                    className: classes.inputProps,
+                  },
+                }}
+                className={classes.textField}
+              />
+              <InlineTimePicker
+                ampm={false}
+                name="end_hour"
+                label="Giờ kết thúc"
+                variant="outlined"
+                value={this.state.end_hour}
+                onChange={this._onTimePickerChange('end_hour')}
+                onOpen={this._onPickerOpen}
+                onClose={this._onPickerClose}
+                style={{
+                  marginLeft: 5,
+                  width: 'calc(50% - 5px)',
+                }}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.inputLabel,
+                  },
+                }}
+                InputProps={{
+                  inputProps: {
+                    className: classes.inputProps,
+                  },
+                }}
+                className={classes.textField}
+              />
+            </div>
+          </MuiPickersUtilsProvider>
+          {/* <div>
+            <FormControlLabel
+              className={classes.formControlLabel}
+              control={
+                <CheckBox
+                  className={classes.checkBox}
+                  checked={this.state.real_time}
+                  value="real_time"
+                  color="primary"
+                  onChange={this._onCheckBoxChange('real_time')}
+                />
+              }
+              label="Tìm kiếm theo thời gian thực"
+            />
+          </div> */}
+
+          <div>
+            <RadioGroup
+              className={classes.radioGroup}
+              value={this.state.filter}
+              onChange={this._onRadioChange}
+              name="filter"
+            >
+              <FormControlLabel
+                value="plate_number"
+                control={<Radio className={classes.radio} color="primary" />}
+                label="Biển số"
+                className={classes.formControlLabel}
+              />
+              <FormControlLabel
+                value="no_plate_number"
+                control={<Radio className={classes.radio} color="primary" />}
+                label="Phương tiện"
+                className={classes.formControlLabel}
+              />
+            </RadioGroup>
+          </div>
+          <div>
+            <FormControlLabel 
+              control={
+                <Switch 
+                  checked={this.state.auto}
+                  onChange={this._onSwitchChange('auto')}
+                  value="auto"
+                  color="primary"
+                />
+              }
+              label="Tự động cập nhật"
+            />
+          </div>
+          {/* <div className="form-group">
+            <Button variant="contained" color="primary" onClick={this.updateVehicles}>
+              Cập nhật đến thời điểm hiện tại
+            </Button>
+          </div> */}
+        </form>
       </div>
     )
   }
@@ -87,7 +423,7 @@ class Search extends Component {
 export default connect(
   null,
   {
-    searchVehicles: searchVehicles,
-    clearVehicles: clearVehicles
+    searchVehicles,
+    clearVehicles,
   },
 )(withStyles(styles)(Search))

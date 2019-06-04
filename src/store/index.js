@@ -31,7 +31,8 @@ const logger = createLogger({
 const store = createStore(
   reducer_root,
   preloadedState,
-  composeEnhancers(applyMiddleware(sagaMiddleware, logger)),
+  // composeEnhancers(applyMiddleware(sagaMiddleware, logger)),
+  composeEnhancers(applyMiddleware(sagaMiddleware))
 )
 
 sagaMiddleware.run(rootSaga)

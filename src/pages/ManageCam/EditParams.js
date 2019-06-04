@@ -134,6 +134,8 @@ class EditParams extends Component {
                 quality,
                 fps: currentParams.fps,
                 bitrate: currentParams.bitrate,
+                rtsp_link: currentParams.rtsp_link,
+                snapshot_url: currentParams.snapshot_url,
               }}
               onSubmit={values => this.handleSubmit(values)}
               render={(props) =>  <EditParamsForm {...props} />

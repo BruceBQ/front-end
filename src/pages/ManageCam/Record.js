@@ -48,13 +48,13 @@ const styles = theme => ({
 })
 class Record extends Component{
   
-
   handleSwitch = name => event => {
     event.stopPropagation()
     this.props.changeAddCameraParams({[name]: event.target.checked})
   }
+  
   onChange = name => event => {
-    this.props.changeAddCameraParams({[name]: event.target.value})
+    this.props.changeAddCameraParams({[name]: Number(event.target.value)})
   }
 
   render(){

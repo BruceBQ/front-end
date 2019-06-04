@@ -31,7 +31,6 @@ const styles = theme => ({
 })
 
 class SearchVehicles extends Component {
-
   componentDidMount() {
     this.props.fetchAllCams()
   }
@@ -39,7 +38,14 @@ class SearchVehicles extends Component {
     this.props.changeBoundsMap({ center, zoom })
   }
   render() {
-    const { classes, cams = [], center = {}, defaultZoom, zoom } = this.props
+    const {
+      classes,
+      cams = [],
+      center = {},
+      defaultZoom,
+      zoom,
+      matchCams = [],
+    } = this.props
     return (
       <div className={classes.root}>
         <div className={classes.left}>
@@ -52,10 +58,15 @@ class SearchVehicles extends Component {
             defaultZoom={defaultZoom}
             zoom={zoom}
             onChange={this._onBoundsChange}
-            
           >
             {cams.map((cam, index) => (
-              <Marker lat={cam.lat} lng={cam.lng} detail={cam} key={index} />
+              <Marker
+                lat={cam.lat}
+                lng={cam.lng}
+                detail={cam}
+                key={Math.random()}
+                isMatching={matchCams.includes(cam.id)}
+              />
             ))}
           </GoogleMap>
         </div>
@@ -64,11 +75,12 @@ class SearchVehicles extends Component {
   }
 }
 
-const mapStateToProps = ({ cameras, map }) => ({
+const mapStateToProps = ({ cameras, map, searchVehicles }) => ({
   cams: cameras.cameras,
   center: map.center,
   defaultZoom: map.defaultZoom,
   zoom: map.zoom,
+  matchCams: searchVehicles.matchCams,
 })
 
 export default connect(

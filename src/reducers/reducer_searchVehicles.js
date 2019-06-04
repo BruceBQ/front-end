@@ -11,52 +11,12 @@ const INITIAL_STATE = {
   isFetching: false,
   currentPage: 0,
   totalPage: 1,
-  cams: [],
+  matchCams: [],
   hoveredVehicle: {},
   focusedVehicle: {},
   selectedPlate: null,
 }
 
-function updateTotalPage(state, action) {
-  if (action.vehicles.length === 0) {
-    return state.totalPage
-  }
-  return state.totalPage + 1
-}
-
-function updateCam(state, action) {
-  let cams = state.cams
-  action.vehicles.forEach(vehicle => {
-    if (vehicle.match === true && !cams.includes(vehicle.camera.id)) {
-      console.log(cams)
-      cams.push(vehicle.camera.id)
-    }
-  })
-  return cams
-}
-
-function updatePlate(state, action) {
-  console.log('update plate')
-  let plateNumber = state.selectedPlate
-  action.vehicles.forEach(vehicle => {
-    if (vehicle.match) plateNumber = vehicle.plate_number
-  })
-  return plateNumber
-}
-
-function changeCamFocused(state, action) {
-  console.log('change cam focused')
-  let cams = []
-  state.vehicles.forEach(vehicle => {
-    if (
-      vehicle.plate_number === action.vehicle.plate_number &&
-      !cams.includes(vehicle.camera.id)
-    ){
-      cams.push(vehicle.camera.id)
-    }
-  })
-  return cams
-}
 
 const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -69,7 +29,7 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
         hoveredVehicle: {},
         focusedVehicle: {},
         selectedPlate: null,
-        cams: [],
+        matchCams: [],
       }
 
     case types.SEARCH_VEHICLES:
@@ -81,22 +41,13 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
           startTime: action.payload.start_time,
           endTime: action.payload.end_time,
           filter: action.payload.filter,
+          // matchCams: []
         },
-        cams: [],
         isFetching: true,
       }
 
     case types.SEARCH_VEHICLES_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        vehicles: state.vehicles.concat(action.vehicles),
-        currentPage: state.currentPage + 1,
-        totalPage: updateTotalPage(state, action),
-        cams: updateCam(state, action),
-        selectedPlate: updatePlate(state, action),
-      }
-
+      return updateResult(state, action)
     case types.SEARCH_VEHICLES_FAILURE:
       return {
         ...state,
@@ -116,11 +67,12 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
       }
 
     case types.FOCUS_VEHICLE:
+      const camFocused = changeCamFocused(state, action)
       return {
         ...state,
         focusedVehicle: action.vehicle,
         selectedPlate: action.vehicle.plate_number,
-        cams: changeCamFocused(state, action),
+        matchCams: camFocused,
       }
 
     default:
@@ -129,3 +81,53 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
 }
 
 export default reducer_searchVehicles
+
+function updateResult(state, action) {
+  let vehicles = state.vehicles.concat(action.vehicles)
+  let totalPage = state.totalPage
+  if(action.vehicles.length) {
+    totalPage = totalPage + 1
+  }
+  const matchCams = updateMatchingCams(state.matchCams, action.vehicles)
+  
+  const selectedPlate = updatePlate(state.selectedPlate, action.vehicles)
+  return {
+    ...state,
+    isFetching: false,
+    vehicles,
+    currentPage: state.currentPage + 1,
+    totalPage,
+    matchCams, 
+    selectedPlate,
+  }
+}
+
+function updateMatchingCams(matchCams, vehicles) {
+  vehicles.forEach(vehicle => {
+    if (vehicle.match === true && !matchCams.includes(vehicle.camera.id)) {
+      matchCams.push(vehicle.camera.id)
+    }
+  })
+  return matchCams
+}
+
+function updatePlate(selectedPlate, vehicles) {
+  vehicles.forEach(vehicle => {
+    if (vehicle.match) selectedPlate = vehicle.plate_number
+  })
+  return selectedPlate
+}
+
+function changeCamFocused(state, action) {
+  let cams = []
+  state.vehicles.forEach(vehicle => {
+    if (
+      vehicle.plate_number === action.vehicle.plate_number &&
+      !cams.includes(vehicle.camera.id)
+    ){
+      cams.push(vehicle.camera.id)
+    }
+  })
+  
+  return cams
+}

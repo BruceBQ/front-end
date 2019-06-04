@@ -14,6 +14,7 @@ import viLocale from 'date-fns/locale/vi'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { Checkbox } from '@material-ui/core';
 
 import TextInput from '../../components/TextInput'
 
@@ -48,7 +49,10 @@ const styles = theme => ({
   },
   formControlLabel: {
     marginLeft: 0
-  }
+  },
+  checkBox: {
+    padding: 0
+  },
 })
 
 class SearchForm extends Component {
@@ -59,21 +63,35 @@ class SearchForm extends Component {
       clearTimeout(this.timeout)
     }
   }
-  submitForm = () => {
-    this.props.handleSubmit()
+  // submitForm = () => {
+  //   this.props.handleSubmit()
+  // }
+  componentDidUpdate(prevProps){
+    
   }
+  _onClosePicker = () => {
+    console.log(this.props.values)
+    console.log(this.props.values.real_time)
+    if(this.props.values.real_time){
+      console.log('enable realtime from form')
+      // this.props.enableRealTime()
+    }
+  }
+
   _onTextInputChange = async event => {
-    const TIMEOUTINPUT = 500
     event.persist()
+    const TIMEOUT_INPUT = 500
     await this.props.handleChange(event)
     if (this.timeout) {
       clearTimeout(this.timeout)
     }
     this.timeout = setTimeout(() => {
-      this.submitForm()
-    }, TIMEOUTINPUT)
+      this.props.handleSubmit()
+    }, TIMEOUT_INPUT)
   }
+
   _onDayChange = name => async date => {
+    console.log(date)
     const { values } = this.props
     const old_day = new Date(
       date.getFullYear(),
@@ -86,23 +104,36 @@ class SearchForm extends Component {
       values[name].getDate(),
     )
     if (old_day.getTime() != new_day.getTime()) {
+      this.props.disableRealTime()
       await this.props.setFieldValue(name, date, true)
       this.props.handleSubmit()
     }
   }
+
   _onHourChange = name => async date => {
+    // console.log(date)
     const { values } = this.props
-    const old_hour = new Date(values[name]).getTime()
-    const new_hour = new Date(date).getTime()
+    const old_hour = new Date(values[name]).setSeconds(0).toString()
+    const new_hour = new Date(date).setSeconds(0).toString()
+    // console.log(old_hour, new_hour, old_hour === new_hour)
     if (old_hour != new_hour) {
+      this.props._onTimePickerChange(name, date)
       await this.props.setFieldValue(name, date, true)
       this.props.handleSubmit()
     }
   }
 
   _onRadioChange = async (event) => {
+    event.persist()
+    this.props._onFilterChange(event)
     await this.props.handleChange(event)
     this.props.handleSubmit()
+  }
+
+  _onCheckBoxChange = name => (event) => {
+    event.persist()
+    this.props._onRealTimeChange(event)
+    this.props.setFieldValue(name, event.target.checked, false)
   }
 
   render() {
@@ -133,6 +164,8 @@ class SearchForm extends Component {
                 width: 'calc(50% - 5px)',
               }}
               onChange={this._onDayChange('start_day')}
+              onOpen={() => this.props.stopUpdateTime()}
+              onClose={() => this._onClosePicker()}
               InputLabelProps={{
                 classes: {
                   root: classes.inputLabel,
@@ -150,6 +183,8 @@ class SearchForm extends Component {
               label="Giờ bắt đầu"
               variant="outlined"
               onChange={this._onHourChange('start_hour')}
+              onOpen={() => this.props.stopUpdateTime()}
+              onClose={() => this._onClosePicker()}
               value={values.start_hour}
               style={{
                 marginLeft: 5,
@@ -178,6 +213,8 @@ class SearchForm extends Component {
               format="dd/MM/yyyy"
               value={values.end_day}
               onChange={this._onDayChange('end_day')}
+              onOpen={() => this.props.stopUpdateTime()}
+              onClose={() => this._onClosePicker()}
               style={{
                 marginRight: 5,
                 width: 'calc(50% - 5px)',
@@ -201,6 +238,8 @@ class SearchForm extends Component {
               variant="outlined"
               value={values.end_hour}
               onChange={this._onHourChange('end_hour')}
+              onOpen={() => this.props.stopUpdateTime()}
+              onClose={() => this._onClosePicker()}
               style={{
                 marginLeft: 5,
                 width: 'calc(50% - 5px)',
@@ -219,6 +258,21 @@ class SearchForm extends Component {
             />
           </div>
         </MuiPickersUtilsProvider>
+        <div>
+          <FormControlLabel 
+            className={classes.formControlLabel}
+            control={
+              <Checkbox 
+                className={classes.checkBox}
+                checked={values.real_time}
+                value="real_time"
+                color="primary"
+                onChange={this._onCheckBoxChange('real_time')}
+              />
+            }
+            label="Tìm kiếm theo thời gian thực"
+          />
+        </div>
         <div>
           <RadioGroup className={classes.radioGroup} value={values.filter} onChange={this._onRadioChange} name="filter">
             <FormControlLabel

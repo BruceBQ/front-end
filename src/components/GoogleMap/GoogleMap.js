@@ -59,7 +59,11 @@ class GoogleMap extends Component {
   state = {
     mapControlShouldRender: false,
   }
-
+  componentWillUnmount() {
+    this.setState({
+      mapControlShouldRender: false
+    })
+  }
   componentDidUpdate(prevProps) {
     const { cameras = [] } = this.props
     const arrCams = cameras.map(cam => cam.id)

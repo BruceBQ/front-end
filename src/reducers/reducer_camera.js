@@ -26,16 +26,16 @@ const INITIAL_STATE = {
     resolution_range: [],
     fps: '',
     fps_range: {},
-    bitrate: '',
-    bitrate_range: {},
+    // bitrate: '',
+    // bitrate_range: {},
     record: true,
     record_max_keep_days: 30,
     record_file_duration: 20,
     stream: true,
     surveillance: true,
     alpr: true,
-    snapshot_image_url: '',
-    snapshot_image_name: '',
+    // snapshot_image_url: '',
+    // snapshot_image_name: '',
   },
   searchCam: {
     string: '',
@@ -199,10 +199,12 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
 
     //config params
     case types.CONFIG_CAM_PARAMS_SUCCESS:
+      
       return {
         ...state,
         addCamera: {
           ...state.addCamera,
+          ...action.payload,
           activeStep: state.addCamera.activeStep + 1,
         },
         errors: {},
@@ -570,16 +572,23 @@ const reducer_camera = (state = INITIAL_STATE, action) => {
         streamingCam: updateStreamingCam(state.streamingCam, action),
       }
 
+    case types.FETCH_ALL_CAMS:
+      return {
+        ...state,
+        isFetching: true,
+      }
     case types.FETCH_ALL_CAMS_SUCCESS:
       return {
         ...state,
         cameras: action.cams,
+        isFetching: false,
       }
 
     case types.FETCH_ALL_CAMS_FAILURE:
       return {
         ...state,
         cameras: [],
+        isFetching: false
       }
 
     case types.DELETE_CAM:

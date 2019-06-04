@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton'
 import {
   changeAddCameraParams,
   configCamParams,
+  backStep
 } from '../../actions/action_camera'
 import Select from 'react-select'
 import { withStyles } from '@material-ui/core/styles'
@@ -17,7 +18,7 @@ import {
   QualityControl,
   NoOptionsMessage,
 } from '../../components/Select/SelectControl'
-import { backStep } from '../../actions/action_camera'
+
 import isEmpty from 'lodash/isEmpty'
 const styles = theme => ({
   root: {
@@ -94,21 +95,25 @@ class Param extends Component {
   handleSubmit = event => {
     const {
       resolution,
-      bitrate,
       fps,
-      quality,
-      bitrate_range,
       fps_range,
+      quality,
+      rtsp_link, 
+      snapshot_url
+      // bitrate,
+      // bitrate_range,
     } = this.props.addCamera
 
     this.props.configCamParams({
       // id,
       resolution,
-      bitrate,
       fps,
-      quality,
-      bitrate_range,
       fps_range,
+      quality,
+      rtsp_link, 
+      snapshot_url,
+      // bitrate,
+      // bitrate_range,
     })
   }
 
@@ -184,6 +189,7 @@ class Param extends Component {
                 <TextField
                   label="FPS"
                   fullWidth
+                  
                   margin="none"
                   type="number"
                   variant="outlined"
@@ -212,7 +218,7 @@ class Param extends Component {
                   helperText={!isEmpty(errors.fps) ? errors.fps : ''}
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <TextField
                   label="Bitrate (Kbps)"
                   fullWidth
@@ -244,26 +250,26 @@ class Param extends Component {
                   error={!isEmpty(errors.bitrate)}
                   helperText={!isEmpty(errors.bitrate) ? errors.bitrate : ''}
                 />
-              </div>
-              {/* <div className="form-group">
+              </div> */}
+              <div className="form-group">
                 <TextInput
-                  label="Độ dài file video (phút)"
+                  label="Link RTSP"
                   fullWidth
-                  type="number"
-                  value={addCamera.record_file_duration}
-                  onChange={this.onChange('record_file_duration')}
+                  type="text"
+                  value={addCamera.rtsp_link}
+                  onChange={this.onChange('rtsp_link')}
                 />
                 
               </div>
               <div className="form-group">
                 <TextInput
-                  label="Thời gian lưu trữ file video (ngày)"
-                  type="number"
+                  label="Link snapshot"
+                  type="text"
                   fullWidth
-                  value={addCamera.max_keep_days}    
-                  onChange={this.onChange('max_keep_days')}
+                  value={addCamera.snapshot_url}    
+                  onChange={this.onChange('snapshot_url')}
                 />
-              </div> */}
+              </div>
             </div>
           </Scrollbars>
         </div>

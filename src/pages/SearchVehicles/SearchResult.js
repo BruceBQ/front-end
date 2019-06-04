@@ -45,6 +45,7 @@ class SearchResult extends Component {
   }
 
   render() {
+    // console.log('re render')
     const { classes, isFetching, vehicles = [] } = this.props
     return (
       <div className={classes.root}>

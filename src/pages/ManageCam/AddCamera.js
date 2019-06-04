@@ -9,6 +9,7 @@ import className from 'classnames'
 
 import Connect from './Connect'
 import Params from './Params'
+import AddCamParams from './AddCamParams'
 import Functions from './Functions'
 
 const styles = theme => ({
@@ -57,7 +58,7 @@ class AddCamera extends Component{
         </Stepper>
         <div className={classes.remaining}>
           { activeStep === 0 && <Connect />}
-          { activeStep === 1 && <Params />}
+          { activeStep === 1 && <AddCamParams />}
           { activeStep === 2 && <Functions />}
         </div>
       </div>

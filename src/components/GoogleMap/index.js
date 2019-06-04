@@ -30,20 +30,17 @@ const styles = theme => ({
 })
 
 const getMapBounds = (map, maps, cameras) => {
-  if (maps) {
-    const bounds = new maps.LatLngBounds()
-    cameras.map(cam => {
-      bounds.extend(new maps.LatLng(cam.lat, cam.lng))
-    })
-    return bounds
-  }
-  return
+  console.log('fit bounds')
+  const bounds = new maps.LatLngBounds()
+  cameras.map(cam => {
+    bounds.extend(new maps.LatLng(cam.lat, cam.lng))
+  })
+  return bounds
 }
 
 const apiIsLoaded = (map, maps, cameras) => {
   if (cameras.length > 0) {
     const bounds = getMapBounds(map, maps, cameras)
-    console.log(bounds)
     if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
       let extendPoint1 = new maps.LatLng(
         bounds.getNorthEast().lat() + 0.01,
@@ -56,7 +53,7 @@ const apiIsLoaded = (map, maps, cameras) => {
       bounds.extend(extendPoint1)
       bounds.extend(extendPoint2)
     }
-    if(bounds){
+    if (bounds) {
       map.fitBounds(bounds)
     }
   }
@@ -66,15 +63,24 @@ class GoogleMap extends Component {
     mapControlShouldRender: false,
   }
 
+  componentWillUnmount() {
+    this.setState({
+      mapControlShouldRender: false,
+    })
+  }
+
   componentDidUpdate(prevProps) {
     const { cameras = [] } = this.props
+    
     const arrCams = cameras.map(cam => cam.id)
     const prevArrCams = prevProps.cameras.map(cam => cam.id)
 
     if (
       prevProps.cameras.length > 0 &&
       this.props.cameras.length > 0 &&
-      !_.isEqual(arrCams, prevArrCams)
+      !_.isEqual(arrCams, prevArrCams) &&
+      this.map &&
+      this.maps
     ) {
       apiIsLoaded(this.map, this.maps, cameras)
     }
@@ -82,16 +88,24 @@ class GoogleMap extends Component {
 
   handleClick = () => {
     const { cameras } = this.props
-    apiIsLoaded(this.map, this.maps, cameras)
+    if (this.map && this.maps) {
+      apiIsLoaded(this.map, this.maps, cameras)
+    }
   }
+
   render() {
-    const { classes, cameras = [] } = this.props
+    const { classes, cameras = [], fetchingCams, searchingCams } = this.props
     return (
       <GoogleMapReact
         bootstrapURLKeys={{ key: MAP_API_KEY }}
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => {
-          apiIsLoaded(map, maps, cameras)
+
+          if (map && maps && !fetchingCams && !searchingCams) {
+            console.log('google loaded')
+            
+            apiIsLoaded(map, maps, cameras)
+          }
           this.map = map
           this.maps = maps
           // we need this setState to force the first mapcontrol render
@@ -127,6 +141,8 @@ GoogleMap.defaultProps = {
 }
 
 const mapStateToProps = ({ cameras, map }) => ({
+  searchingCams: cameras.isSearching,
+  fetchingCams: cameras.isFetching,
   cameras: cameras.cameras,
   fitBounds: map.fitBoundsMap,
 })

@@ -207,7 +207,7 @@ export function* workerConfigCamParams(action) {
   try {
     yield put(showLoadingModal('Đang cấu hình camera'))
     const res = yield call(CameraApi.configCamParams, action.payload)
-    yield put(configCamParamsSuccess())
+    yield put(configCamParamsSuccess(action.payload))
     yield put(closeModal())
   } catch (error) {
     yield put(

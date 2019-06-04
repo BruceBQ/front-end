@@ -6,12 +6,14 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { Scrollbars } from 'react-custom-scrollbars'
 import _ from 'lodash'
 import Select from 'react-select'
+
 import {
   CamModesControl,
   CamResolutionControl,
   QualityControl,
   NoOptionsMessage,
 } from '../../components/Select/SelectControl'
+import TextInput from '../../components/TextInput'
 
 const styles = theme => ({
   form: {
@@ -75,7 +77,7 @@ class EditParamsForm extends Component{
   componentDidMount(){
     this.props.resetForm()
   }
-  _onInputChange = name => event => {
+  _onInputChange = event => {
     event.persist()
     this.props.handleChange(event)
   }
@@ -181,14 +183,14 @@ class EditParamsForm extends Component{
                     </InputAdornment>
                   ),
                 }}
-                onChange={this._onInputChange('fps')}
+                onChange={this._onInputChange}
                 className={classes.textField}
                 defaultValue={values.fps}
                 error={!_.isEmpty(errors.fps)}
                 helperText={!_.isEmpty(errors.fps) ? errors.fps : ''}
               />
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <TextField
                 label="Bitrate (Kbps)"
                 name="bitrate"
@@ -219,6 +221,26 @@ class EditParamsForm extends Component{
                 defaultValue={values.bitrate}
                 error={!_.isEmpty(errors.bitrate)}
                 helperText={!_.isEmpty(errors.bitrate) ? errors.bitrate : ''}
+              />
+            </div> */}
+            <div className="form-group">
+              <TextInput 
+                label="Link RTSP"
+                name="rtsp_link"
+                fullWidth
+                type="text"
+                onChange={this._onInputChange}
+                value={values.rtsp_link}
+              />
+            </div>
+            <div className="form-group">
+              <TextInput 
+                label="Link snapshot"
+                name="snapshot_url"
+                fullWidth
+                type="text"
+                onChange={this._onInputChange}
+                value={values.snapshot_url}
               />
             </div>
           </div>

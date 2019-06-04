@@ -40,6 +40,7 @@
     width: 35px;
     height: 35px;
     z-index: 2;
+    transform-style: preserve-3d;
   }
   &.marker-editing {
     width: 35px;
