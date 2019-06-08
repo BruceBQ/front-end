@@ -25,3 +25,13 @@ export function removeCamFromFollowList(camId){
     }
   })
 }
+
+export function fetchCamNotFollowed() {
+  const userId = getUserId()
+  return axios({
+    method: 'get',
+    url: `${API_URL}api/followList/${userId}/unfollowed`,
+    headers: { 'Authorization': getToken() },
+  })
+}
+

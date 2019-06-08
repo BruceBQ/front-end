@@ -15,16 +15,19 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import LogoutIcon from '@material-ui/icons/ExitToApp'
 import ProfileIcon from '@material-ui/icons/AccountCircleOutlined'
-import Typography from '@material-ui/core/Typography';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 
 import { logOut } from '../../actions/action_authetication'
 
 const styles = theme => ({
   root: {
-    padding: 2,
+    padding: 0,
   },
   avatar: {
     cursor: 'pointer',
+    // margin: 4,
   },
   icon: {
     fontSize: 20,
@@ -36,12 +39,16 @@ const styles = theme => ({
     fontSize: '14px !important',
   },
   nameWrapper: {
-    padding: '5px 16px'
+    padding: '5px 16px',
   },
   name: {
-    fontSize: 18,
-    fontWeight:400,
-  }
+    fontSize: 14,
+    paddingLeft: 5, 
+    fontWeight: 500,
+  },
+  button: {
+    // padding: 0
+  },
 })
 
 class User extends Component {
@@ -72,22 +79,29 @@ class User extends Component {
     const { open, anchorEl } = this.state
     return (
       <div className={classes.root}>
-        <Avatar
-          alt={user.name}
-          src={user.avatar}
-          className={classes.avatar}
+        <Button
           onClick={this._onAvatarClick}
           ref={el => (this.anchorEl = el)}
-        />
+          className={classes.button}
+        >
+          <Avatar
+            alt={user.name}
+            src={user.avatar}
+            className={classes.avatar}  
+          />
+          <Typography className={classes.name}>{user.name}</Typography>
+          <KeyboardArrowDown />
+        </Button>
         <Menu
           open={Boolean(anchorEl)}
           disableAutoFocusItem
           anchorEl={anchorEl}
           onClose={this._onClose}
-          PopoverClasses={{
-            // 
-            
-          }}
+          PopoverClasses={
+            {
+              //
+            }
+          }
         >
           <div className={classes.nameWrapper}>
             <Typography className={classes.name}>{user.name}</Typography>
@@ -126,6 +140,11 @@ const mapStateToProps = ({ user }) => ({
   user: user.user,
 })
 
-export default withRouter(connect(mapStateToProps, {
-  logOut,
-})(withStyles(styles)(User)))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    {
+      logOut,
+    },
+  )(withStyles(styles)(User)),
+)

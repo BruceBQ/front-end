@@ -2,7 +2,9 @@ import * as types from '../constant/constant_actions'
 const INITIAL_STATE = {
   isCurrentPage: false,
   cameras: [],
+  camsNotFollowed: [],
   isFetching: false,
+  isFetchingCamsNotFollowed: false,
   listSize: 4,
   currentPage: 1,
   totalPage: 1,
@@ -57,6 +59,23 @@ const reducer_followList = (state = INITIAL_STATE, action) => {
     //     cameras: removeCam(state.cameras, action),
     //     // streamingUrl: updateStreamUrl(state.streamingUrl, action),
     //   })
+    case types.FETCH_CAMS_NOT_FOLLOWED:
+      return {
+        ...state,
+        isFetchingCamsNotFollowed: true,
+      }
+    case types.FETCH_CAMS_NOT_FOLLOWED_SUCCESS:
+      return {
+        ...state,
+        isFetchingCamsNotFollowed: false,
+        camsNotFollowed: action.payload,
+      }
+    case types.FETCH_CAMS_NOT_FOLLOWED_FAILURE:
+      return {
+        ...state,
+        isFetchingCamsNotFollowed: false,
+        camsNotFollowed: []
+      }
     default:
       return state
   }

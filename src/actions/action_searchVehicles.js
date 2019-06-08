@@ -14,3 +14,5 @@ export const hoverRowVehicle = actionCreator(types.HOVER_ROW_VEHICLE , 'vehicle'
 export const cancelHoverRowVehicle = actionCreator(types.CANCEL_HOVER_ROW_VEHICLE)
 
 export const focusVehicle = actionCreator(types.FOCUS_VEHICLE, 'vehicle')
+
+export const changeSearchString = actionCreator(types.CHANGE_SEARCH_STRING, 'payload')

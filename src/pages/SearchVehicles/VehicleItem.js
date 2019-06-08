@@ -5,6 +5,8 @@ import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import SearchIcon from '@material-ui/icons/Search'
 import classNames from 'classnames'
 import blueGrey from '@material-ui/core/colors/blueGrey'
 import _ from 'lodash'
@@ -12,14 +14,24 @@ import {
   hoverRowVehicle,
   cancelHoverRowVehicle,
   focusVehicle,
+  changeSearchString
 } from '../../actions/action_searchVehicles'
 import noImage from '../../assets/images/nopicture.jpg'
+import {
+  CardHeader,
+  IconButton,
+  CardActions,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+} from '@material-ui/core'
 const styles = theme => ({
   card: {
     display: 'flex',
     flexDirection: 'row',
     marginTop: 5,
     cursor: 'pointer',
+    position: 'relative',
   },
   cardHovered: {
     backgroundColor: blueGrey[50],
@@ -56,12 +68,21 @@ const styles = theme => ({
   time: {
     fontSize: 12,
   },
+  camName: {},
+  menu: {
+    position: 'absolute',
+    right: 0,
+  },
+  iconButton: {
+    padding: 4,
+  },
 })
 
 class VehicleItem extends Component {
   timeout = null
   state = {
     hovered: false,
+    anchorEl: null,
   }
 
   componentWillUnmount() {
@@ -69,14 +90,14 @@ class VehicleItem extends Component {
   }
 
   _onMouseEnter = () => {
+    this.setState({
+      hovered: true,
+    })
     if (this.timeout) {
       clearTimeout(this.timeout)
       this.timeout = null
     }
     this.timeout = setTimeout(() => {
-      this.setState({
-        hovered: true,
-      })
       this.props.hoverRowVehicle(this.props.data)
     }, 300)
   }
@@ -96,9 +117,36 @@ class VehicleItem extends Component {
     this.props.focusVehicle(this.props.data)
   }
 
-  render() {
-    const { classes, data, hoveredVehicle, focusedVehicle, string, selectedPlate } = this.props
+  _onIconButtonClick = event => {
+    event.stopPropagation()
+    this.setState({
+      anchorEl: event.currentTarget,
+    })
+  }
 
+  handleClose = () => {
+    this.setState({
+      anchorEl: null,
+    })
+  }
+
+  searchVehicle = () => {
+    this.setState({
+      anchorEl: null
+    })
+    this.props.changeSearchString(this.props.data.plate_number)
+  }
+  render() {
+    const {
+      classes,
+      data,
+      hoveredVehicle,
+      focusedVehicle,
+      string,
+      selectedPlate,
+    } = this.props
+    const { anchorEl } = this.state
+    const open = Boolean(anchorEl)
     return (
       <div
         className={classes.root}
@@ -111,9 +159,7 @@ class VehicleItem extends Component {
             [classes.cardHovered]:
               this.state.hovered || focusedVehicle.id === data.id,
             [classes.cardFocused]:
-              selectedPlate === data.plate_number &&
-              !this.state.hovered,
-
+              selectedPlate === data.plate_number && !this.state.hovered,
           })}
         >
           <div className={classes.cardMediaWrapper}>
@@ -131,6 +177,9 @@ class VehicleItem extends Component {
               <Typography noWrap className={classes.plate}>
                 {data.plate_number}
               </Typography>
+              <Typography noWrap className={classes.camName}>
+                {data.camera.name}
+              </Typography>
               <Typography noWrap className={classes.time}>
                 {data.timestamp}
               </Typography>
@@ -142,6 +191,37 @@ class VehicleItem extends Component {
               </a>
             </CardContent>
           </div>
+          <div className={classes.menu}>
+            <IconButton
+              className={classes.iconButton}
+              onClick={this._onIconButtonClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={this.handleClose}
+              disableAutoFocusItem
+              getContentAnchorEl={null}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem onClick={this.searchVehicle}>
+                <ListItemIcon>
+                  <SearchIcon />
+                </ListItemIcon>
+                <Typography>Tìm kiếm phương tiện này</Typography>
+              </MenuItem>
+            </Menu>
+          </div>
         </Card>
       </div>
     )
@@ -152,7 +232,7 @@ const mapStateToProps = ({ searchVehicles }) => ({
   hoveredVehicle: searchVehicles.hoveredVehicle,
   focusedVehicle: searchVehicles.focusedVehicle,
   string: searchVehicles.search.string,
-  selectedPlate: searchVehicles.selectedPlate
+  selectedPlate: searchVehicles.selectedPlate,
 })
 
 export default connect(
@@ -161,6 +241,6 @@ export default connect(
     hoverRowVehicle: hoverRowVehicle,
     cancelHoverRowVehicle: cancelHoverRowVehicle,
     focusVehicle: focusVehicle,
-    
+    changeSearchString
   },
 )(withStyles(styles)(VehicleItem))

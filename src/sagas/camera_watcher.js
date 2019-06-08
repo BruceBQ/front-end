@@ -59,4 +59,5 @@ export default function* watchCamera(){
   yield takeEvery(types.CHANGE_CAM_STATUS, workerChangeCamStatus)
   // fetch camera snapshot
   yield takeEvery(types.FETCH_CAM_SNAPSHOT, workerFetchCamSnapshot)
+  
 }

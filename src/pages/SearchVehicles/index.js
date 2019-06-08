@@ -17,7 +17,7 @@ const styles = theme => ({
     height: '100%',
   },
   left: {
-    width: 300,
+    width: 320,
     zIndex: 4,
     overflow: 'hidden',
     position: 'relative',
@@ -64,7 +64,7 @@ class SearchVehicles extends Component {
                 lat={cam.lat}
                 lng={cam.lng}
                 detail={cam}
-                key={Math.random()}
+                key={cam.id}
                 isMatching={matchCams.includes(cam.id)}
               />
             ))}

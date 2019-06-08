@@ -72,8 +72,8 @@ export default function* rootSaga() {
     // fork(watchGetCamParams),
     // fork(watchEditCamParams),
     // fork(watchGetCamSnapshot),
-    fork(watchAddCamToFollowList),
-    fork(watchRemoveCamFromFollowList),
+    // fork(watchAddCamToFollowList),
+    // fork(watchRemoveCamFromFollowList),
     // fork(watchFetchAllCams),
     //modal
     // fork(watchShowEditModal),

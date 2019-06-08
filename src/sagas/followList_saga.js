@@ -13,6 +13,7 @@ import _ from 'lodash'
 
 import * as types from '../constant/constant_actions'
 import { WS_URL } from '../constant/constant_endpoint'
+import * as FollowListApi from '../api/followList'
 import { enqueueSnackbar, removeSnackbar } from '../actions/action_snackbar'
 import { loadUserData } from '../utils/localStorage'
 import { getStreamingUrlSuccess } from '../actions/action_streaming'
@@ -20,8 +21,12 @@ import {
   getFollowListSuccess,
   startFollowList,
   cancelWebsocket,
+  addCamToFollowListSuccess,
+  fetchCamNotFollowedSuccess,
+  removeCamFromFollowListSuccess,
 } from '../actions/action_followList'
 import { fetchCamStreamingUrlSuccess } from '../actions/action_camera'
+import { closeModal } from '../actions/action_modal'
 
 function createWebSocketConnection() {
   return new Promise((resolve, reject) => {
@@ -186,6 +191,7 @@ function* listenForSocketMessages() {
           payload.type === 'remove_followlist_success'
         ) {
           yield put(getFollowListSuccess(payload.data))
+          
         }
       } catch (error) {
         console.log(error)
@@ -206,5 +212,56 @@ function* listenForSocketMessages() {
       yield call(delay, 10000)
       yield put(startFollowList())
     }
+  }
+}
+
+export function* workerFetchCamNotFollowed(){
+  try {
+    const res = yield call(FollowListApi.fetchCamNotFollowed)
+    console.log(res.data)
+    yield put(fetchCamNotFollowedSuccess(res.data.data.unfollow_list))
+  } catch (error) {
+    
+  }
+}
+
+export function* workerAddCamToFollowList(action){
+  try {
+    const res = yield call(FollowListApi.addCamToFollowList, action.camId)
+    yield put(addCamToFollowListSuccess(action.camId))
+    yield put(closeModal())
+    yield put(enqueueSnackbar({
+      message: res.data.notify,
+      options: {
+        variant: 'success',
+      },
+    }))
+  } catch (error) {
+    yield put(enqueueSnackbar({
+      message: error.response.data.notify,
+      options: {
+        variant: 'error',
+      },
+    }))
+  }
+}
+
+export function* workerRemoveCamFromFollowList(action){
+  try {
+    const res = yield call(FollowListApi.removeCamFromFollowList, action.camId)
+    yield put(removeCamFromFollowListSuccess(action.camId))
+    yield put(enqueueSnackbar({
+      message: res.data.notify,
+      options: {
+        variant: 'success',
+      },
+    }))
+  } catch (error) {
+    yield put(enqueueSnackbar({
+      message: error.response.data.notify,
+      options: {
+        variant: 'error',
+      },
+    }))
   }
 }

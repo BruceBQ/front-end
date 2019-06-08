@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   isFetching: false,
   currentPage: 0,
   totalPage: 1,
-  matchCams: [],
+  matchCams: Array(),
   hoveredVehicle: {},
   focusedVehicle: {},
   selectedPlate: null,
@@ -74,7 +74,14 @@ const reducer_searchVehicles = (state = INITIAL_STATE, action) => {
         selectedPlate: action.vehicle.plate_number,
         matchCams: camFocused,
       }
-
+    case types.CHANGE_SEARCH_STRING:
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          string: action.payload
+        }
+      }
     default:
       return state
   }

@@ -47,3 +47,5 @@ export function closeModal(modalType){
 }
 
 export const showDeleteCamModal = actionCreator(types.SHOW_DELETE_CAM_MODAL, 'payload')
+
+export const modal_showAddCam = actionCreator(types.MODAL__SHOW_ADD_CAM, )

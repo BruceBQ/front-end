@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import DeleteIcon from '@material-ui/icons/Delete'
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone'
+
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import Search from '@material-ui/icons/Search'
 import classnames from 'classnames'
@@ -31,7 +32,7 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
-    height: 50,
+    height: 51,
     position: 'fixed',
     top: 0,
     left: 0,
@@ -76,6 +77,8 @@ const styles = theme => ({
   rightControls: {
     display: 'flex',
     borderLeft: '1px solid #ccc',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingRight: 10,
     paddingLeft: 10,
   },
@@ -91,6 +94,9 @@ const styles = theme => ({
     height: '100%',
     alignItems: 'center',
   },
+  iconButton: {
+    height: 44
+  }
 })
 class Header extends Component {
   state = {
@@ -148,15 +154,10 @@ class Header extends Component {
           </div>
           <div className={classes.rightControls}>
             <TooltipWrapper title="Thông báo">
-              <IconButton onClick={this._onToggleDrawer}>
+              <IconButton onClick={this._onToggleDrawer} className={classes.iconButton}>
                 <NotificationsNoneIcon className={classes.smallIcon} />
               </IconButton>
             </TooltipWrapper>
-            {/* <TooltipWrapper title="Đăng xuất">
-              <IconButton>
-                <ExitToApp className={classes.smallIcon} />
-              </IconButton>
-            </TooltipWrapper> */}
             <User />
           </div>
         </div>

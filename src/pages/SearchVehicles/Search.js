@@ -82,8 +82,13 @@ class Search extends Component {
     this.submitForm(this.state)
   }
 
-  componentDidUpdate() {
-    
+  componentDidUpdate = async (prevProps) => {
+    if(prevProps.searchString !== this.props.searchString){
+      await this.setState({
+        q: this.props.searchString
+      })
+      this.submitForm(this.state)
+    }
   }
 
   componentWillUnmount() {
@@ -238,17 +243,19 @@ class Search extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, searchString } = this.props
     return (
       <div className={classes.root}>
         <form autoComplete="off">
           <div className="form-group">
             <TextInput
+              id="query_string"
               name="q"
               fullWidth
               type="search"
               label="Nhập biển số phương tiện"
               value={this.state.q}
+              // value={searchString}
               onChange={this._onTextInputChange}
               disabled={this.state.filter === 'no_plate_number'}
             />
@@ -420,8 +427,12 @@ class Search extends Component {
   }
 }
 
+const mapStateToProps = ({searchVehicles}) => ({
+  searchString: searchVehicles.search.string
+})
+
 export default connect(
-  null,
+  mapStateToProps,
   {
     searchVehicles,
     clearVehicles,

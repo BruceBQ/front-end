@@ -2,9 +2,14 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
+import Fab from '@material-ui/core/Fab'
 import Grid from '@material-ui/core/Grid'
 import { withRouter } from 'react-router-dom'
+import AddIcon from '@material-ui/icons/Add'
 import _ from 'lodash'
+
+import TooltipWrapper from '../../components/TooltipWrapper'
+import { modal_showAddCam } from '../../actions/action_modal'
 import Loading from '../../components/Loading'
 import RowCamera from './RowCamera'
 
@@ -19,6 +24,11 @@ const styles = theme => ({
   wrapper: {
     // background: 'green',
   },
+  fab: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
 })
 
 class FollowList extends Component {
@@ -28,11 +38,12 @@ class FollowList extends Component {
   }
 
   componentDidMount() {
-    this.handleResize()
+    // this.handleResize()
     window.addEventListener('resize', this.handleResize)
   }
 
   componentWillMount() {
+    clearImmediate(this.immediate)
     window.removeEventListener('resize', this.handleResize)
   }
 
@@ -41,19 +52,27 @@ class FollowList extends Component {
   //     this.forceUpdate()
   //   }
   // }
-  
-  handleResize = () => {
+  _onAddCamClick = () => {
+    this.props.modal_showAddCam()
+  }
+
+  handleResize = async () => {
     const height = window.innerHeight - 60,
       width = window.innerWidth - 50
+    clearImmediate(this.clearImmediate)
     if (height / width <= 9 / 16) {
-      this.setState({
-        height: height,
-        width: (height * 16) / 9,
-      })
+      this.immediate = setImmediate(() =>
+        this.setState({
+          height: height,
+          width: (height * 16) / 9,
+        }),
+      )
     } else {
-      this.setState({
-        height: (width * 9) / 16,
-        width: width,
+      this.immediate = setImmediate(() => {
+        this.setState({
+          height: (width * 9) / 16,
+          width: width,
+        })
       })
     }
   }
@@ -71,9 +90,19 @@ class FollowList extends Component {
   }
 
   render() {
-    const stylesWrapper = {
-      height: this.state.height,
-      width: this.state.width,
+    let stylesWrapper
+    let height = window.innerHeight - 60,
+      width = window.innerWidth - 50
+    if (height / width <= 9 / 16) {
+      stylesWrapper = {
+        height: height,
+        width: (height * 16) / 9,
+      }
+    } else {
+      stylesWrapper = {
+        height: (width * 9) / 16,
+        width: width,
+      }
     }
     const {
       classes,
@@ -98,6 +127,15 @@ class FollowList extends Component {
                 return <RowCamera cams={cams} key={index} />
               })}
               {emptyRow}
+              <TooltipWrapper title="Thêm camera">
+                <Fab
+                  className={classes.fab}
+                  onClick={this._onAddCamClick}
+                  color="primary"
+                >
+                  <AddIcon />
+                </Fab>
+              </TooltipWrapper>
             </Fragment>
           )}
         </div>
@@ -113,4 +151,9 @@ const mapStateToProps = ({ followList }) => ({
   currentPage: followList.currentPage,
   totalPage: followList.totalPage,
 })
-export default connect(mapStateToProps)(withStyles(styles)(FollowList))
+export default connect(
+  mapStateToProps,
+  {
+    modal_showAddCam,
+  },
+)(withStyles(styles)(FollowList))

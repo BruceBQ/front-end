@@ -36,5 +36,9 @@ export const removeCamFromFollowList = actionCreator(types.REMOVE_CAM_FROM_FOLLO
 export const removeCamFromFollowListSuccess = actionCreator(types.REMOVE_CAM_FROM_FOLLOWLIST_SUCCESS, 'camId')
 export const removeCamFromFollowListFailure = actionCreator(types.REMOVE_CAM_FROM_FOLLOWLIST_FAILURE)
 
+// fetch cam not followed
+export const fetchCamNotFollowed = actionCreator(types.FETCH_CAMS_NOT_FOLLOWED)
+export const fetchCamNotFollowedSuccess = actionCreator(types.FETCH_CAMS_NOT_FOLLOWED_SUCCESS, 'payload')
+export const fetchCamNotFollowedFailure = actionCreator(types.FETCH_CAMS_NOT_FOLLOWED_FAILURE, 'payload')
 
 export const cancelWebsocket = actionCreator(types.CANCEL_WEBSOCKET)

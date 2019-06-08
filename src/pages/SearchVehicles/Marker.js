@@ -34,13 +34,23 @@ class Marker extends Component {
   state = {
     hover: false,
   }
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   return true
-  // }
+
+  static getDerivedStateFromProps(props, state){
+    console.log('getDerivedStateFromProps',props.matchCams)
+    return {
+      ...state,
+      matchCams: props.matchCams
+    }
+  }
+  
   componentDidMount() {}
 
   componentDidUpdate(prevProps) {
-    // console.log(prevProps.matchCams, this.props.matchCams)    
+    console.log('didupdate', prevProps.matchCams, this.props.matchCams)
+  }
+
+  componentWillUnmount(){
+    console.log('unmont')
   }
 
   _onMouseEnter = () => {
@@ -55,11 +65,12 @@ class Marker extends Component {
     })
   }
   render() {
-    const { classes, detail, hoveredVehicle = {}, matchCams = [] } = this.props
-    console.log(matchCams ,matchCams.length)
+    const { classes, detail = {}, hoveredVehicle = {}, matchCams = [] } = this.props
+    console.log(matchCams[0])
+    console.log('render', matchCams, detail.id, matchCams.includes(detail.id))
     const { hover } = this.state
     const isShowInfoWindow = _.get(hoveredVehicle, 'camera.id') === detail.id
-    console.log('marker re render')
+    // console.log('marker re render')
     return (
       <div
         className={classNames('marker-instance', {
@@ -96,10 +107,10 @@ class Marker extends Component {
 }
 
 const mapStateToProps = ({ searchVehicles }) => {
-  console.log(searchVehicles)
   return {
     hoveredVehicle: searchVehicles.hoveredVehicle,
     matchCams: searchVehicles.matchCams,
+    isFetching: searchVehicles.isFetching,
   }
 }
 

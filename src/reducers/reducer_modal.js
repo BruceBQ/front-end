@@ -60,7 +60,12 @@ const reducer_modal = (state = INITIAL_STATE, action) => {
         modalType: 'DELETE_CAM',
         data: action.payload,
       }
-
+    case types.MODAL__SHOW_ADD_CAM:
+      return {
+        ...state,
+        isOpen: true,
+        modalType: 'ADD_CAM'
+      }
     case types.CLOSE_MODAL:
       return INITIAL_STATE
 
